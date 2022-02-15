@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="JI3-gM-XBO" userLabel="Card View" customClass="PopOverAlertWithAction" customModule="LittleSDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="195"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dp3-Ae-zep" userLabel="Background view" customClass="CornerRoundingView" customModule="SwiftMessages">
+                    <rect key="frame" x="30" y="10" width="540" height="165"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P6Z-nW-YcL">
+                            <rect key="frame" x="0.0" y="0.0" width="540" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="6jD-5U-Ejg"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="15"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="This will be my title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaB-0I-7gm">
+                            <rect key="frame" x="8" y="28" width="524" height="28.5"/>
+                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="17"/>
+                            <color key="textColor" name="littleWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="This is now the text. This is now the text. This is now the text. This is now the text. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BB6-bX-TgH">
+                            <rect key="frame" x="8" y="66.5" width="524" height="36"/>
+                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
+                            <color key="textColor" name="littleWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="UEb-oP-QXo">
+                            <rect key="frame" x="435" y="117" width="90" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="33" id="RzJ-Mt-GFb"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            <state key="normal" title="Proceed">
+                                <color key="titleColor" name="littleWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="proceed" destination="JI3-gM-XBO" eventType="touchUpInside" id="4YN-RT-Pyf"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="ZYS-jL-VVh">
+                            <rect key="frame" x="335" y="117" width="85" height="33"/>
+                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="17"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            <state key="normal" title="Dismiss">
+                                <color key="titleColor" systemColor="lightTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="dismiss" destination="JI3-gM-XBO" eventType="touchUpInside" id="S46-17-fVf"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="littleBlue"/>
+                    <constraints>
+                        <constraint firstItem="BB6-bX-TgH" firstAttribute="top" secondItem="TaB-0I-7gm" secondAttribute="bottom" constant="10" id="3if-eX-pyy"/>
+                        <constraint firstItem="P6Z-nW-YcL" firstAttribute="top" secondItem="dp3-Ae-zep" secondAttribute="top" id="6uC-7D-Kh9"/>
+                        <constraint firstAttribute="trailing" secondItem="UEb-oP-QXo" secondAttribute="trailing" constant="15" id="Bpc-U3-Hfs"/>
+                        <constraint firstItem="ZYS-jL-VVh" firstAttribute="centerY" secondItem="UEb-oP-QXo" secondAttribute="centerY" id="CFH-En-DXu"/>
+                        <constraint firstAttribute="trailing" secondItem="P6Z-nW-YcL" secondAttribute="trailing" id="E8P-eF-eUw"/>
+                        <constraint firstItem="P6Z-nW-YcL" firstAttribute="leading" secondItem="dp3-Ae-zep" secondAttribute="leading" id="IzX-tz-3uf"/>
+                        <constraint firstItem="UEb-oP-QXo" firstAttribute="leading" secondItem="ZYS-jL-VVh" secondAttribute="trailing" constant="15" id="Nhj-nI-ePX"/>
+                        <constraint firstItem="UEb-oP-QXo" firstAttribute="top" secondItem="BB6-bX-TgH" secondAttribute="bottom" constant="14.5" id="OXK-I1-THd"/>
+                        <constraint firstAttribute="trailing" secondItem="TaB-0I-7gm" secondAttribute="trailing" constant="8" id="X78-Gt-Y8p"/>
+                        <constraint firstItem="ZYS-jL-VVh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dp3-Ae-zep" secondAttribute="leading" constant="15" id="ZY3-yB-n1H"/>
+                        <constraint firstAttribute="trailing" secondItem="BB6-bX-TgH" secondAttribute="trailing" constant="8" id="iRD-U6-BQd"/>
+                        <constraint firstItem="TaB-0I-7gm" firstAttribute="top" secondItem="P6Z-nW-YcL" secondAttribute="bottom" constant="8" id="jtp-MA-1s2"/>
+                        <constraint firstAttribute="bottom" secondItem="UEb-oP-QXo" secondAttribute="bottom" constant="15" id="luA-V0-mOO"/>
+                        <constraint firstItem="TaB-0I-7gm" firstAttribute="leading" secondItem="dp3-Ae-zep" secondAttribute="leading" constant="8" id="uWA-E0-CjV"/>
+                        <constraint firstItem="ZYS-jL-VVh" firstAttribute="height" secondItem="UEb-oP-QXo" secondAttribute="height" id="uzE-nc-ShZ"/>
+                        <constraint firstItem="BB6-bX-TgH" firstAttribute="leading" secondItem="dp3-Ae-zep" secondAttribute="leading" constant="8" id="yY3-dk-CgD"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="15"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailingMargin" secondItem="dp3-Ae-zep" secondAttribute="trailing" constant="10" id="gGP-zK-6VU"/>
+                <constraint firstItem="dp3-Ae-zep" firstAttribute="leading" secondItem="JI3-gM-XBO" secondAttribute="leadingMargin" constant="10" id="gyP-aD-uO3"/>
+                <constraint firstAttribute="bottomMargin" secondItem="dp3-Ae-zep" secondAttribute="bottom" constant="20" id="le8-gK-lcY"/>
+                <constraint firstItem="dp3-Ae-zep" firstAttribute="top" secondItem="JI3-gM-XBO" secondAttribute="topMargin" constant="10" id="s15-z9-aHc"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="bounceAnimationOffset">
+                    <real key="value" value="0.0"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="backgroundView" destination="dp3-Ae-zep" id="ZiK-GN-SXH"/>
+                <outlet property="btnDismiss" destination="ZYS-jL-VVh" id="09a-Qa-dsR"/>
+                <outlet property="btnProceed" destination="UEb-oP-QXo" id="VdS-4c-SPg"/>
+                <outlet property="imgConstraint" destination="6jD-5U-Ejg" id="GdB-So-ClM"/>
+                <outlet property="imgPopUp" destination="P6Z-nW-YcL" id="fGP-nN-p1C"/>
+                <outlet property="lblMessage" destination="BB6-bX-TgH" id="NOE-sn-LU8"/>
+                <outlet property="lblTitle" destination="TaB-0I-7gm" id="wva-aG-nUc"/>
+            </connections>
+            <point key="canvasLocation" x="304" y="550.97451274362822"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="littleBlue">
+            <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="littleWhite">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
