@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -17,16 +17,16 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/SwiftKickMobile/SwiftMessages", .upToNextMajor(from: "9.0.0")),
-        .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", .upToNextMajor(from: "5.0.0")),
-        .package(url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/Minitour/EasyNotificationBadge.git", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "8.0.0")),
-        .package(url: "https://github.com/MessageKit/MessageKit", .upToNextMajor(from: "3.0.0")),
-        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMajor(from: "6.0.0")),
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.0.0")),
-        .package(url: "https://github.com/SDWebImage/SDWebImage.git", .upToNextMajor(from: "5.0.0")),
-        .package(url: "https://github.com/hackiftekhar/IQKeyboardManager", .upToNextMajor(from: "6.0.5")),
+        .package(url: "https://github.com/SwiftKickMobile/SwiftMessages", from: "9.0.0"),
+        .package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
+        .package(url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
+        .package(url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.0.0"),
+        .package(url: "https://github.com/MessageKit/MessageKit", from: "3.0.0"),
+        .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", from: "6.0.0"),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.0.0"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.0.0"),
+        .package(url: "https://github.com/hackiftekhar/IQKeyboardManager", from: "6.0.5"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
