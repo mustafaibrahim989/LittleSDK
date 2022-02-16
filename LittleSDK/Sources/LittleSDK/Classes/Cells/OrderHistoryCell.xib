@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="100" id="K59-d1-dWc" customClass="OrderHistoryCell" customModule="little" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="K59-d1-dWc" id="05L-E2-MY1">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldF-2Y-nUk">
+                        <rect key="frame" x="8" y="8" width="304" height="84"/>
+                        <color key="backgroundColor" name="littleElevatedViews"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                                <size key="value" width="0.0" height="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                                <integer key="value" value="3"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                                <real key="value" value="0.29999999999999999"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="NO"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQB-3d-4Xj">
+                        <rect key="frame" x="8" y="8" width="304" height="84"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_food" translatesAutoresizingMaskIntoConstraints="NO" id="lqU-k8-7YO">
+                                <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="lqU-k8-7YO" secondAttribute="height" multiplier="1:1" id="1Ck-cy-TDJ"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipsToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="eeH-t9-FL1">
+                                <rect key="frame" x="92" y="8" width="204" height="18"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
+                                <color key="textColor" name="littleLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#1234TH -" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="hOo-EG-f4q">
+                                <rect key="frame" x="92" y="34" width="57.5" height="16"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="13"/>
+                                <color key="textColor" name="littleLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accepted" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Rdp-3C-ald">
+                                <rect key="frame" x="153.5" y="34" width="51.5" height="16"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="13"/>
+                                <color key="textColor" name="littleLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KES 1,234.56" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="me4-Bh-0pg">
+                                <rect key="frame" x="92" y="58" width="83" height="18"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
+                                <color key="textColor" name="littleBlue"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="03 Apr 12:15" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqO-DU-cGP">
+                                <rect key="frame" x="206" y="61.5" width="90" height="14.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="gkp-Nn-DiK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="12"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="littleElevatedViews"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="zqO-DU-cGP" secondAttribute="trailing" constant="8" id="0Bf-ce-H68"/>
+                            <constraint firstItem="hOo-EG-f4q" firstAttribute="top" secondItem="eeH-t9-FL1" secondAttribute="bottom" constant="8" id="5yb-Gh-sMt"/>
+                            <constraint firstAttribute="trailing" secondItem="eeH-t9-FL1" secondAttribute="trailing" constant="8" id="BAM-Uu-Gmp"/>
+                            <constraint firstItem="eeH-t9-FL1" firstAttribute="leading" secondItem="lqU-k8-7YO" secondAttribute="trailing" constant="8" id="Pp5-wY-tXZ"/>
+                            <constraint firstItem="lqU-k8-7YO" firstAttribute="top" secondItem="NQB-3d-4Xj" secondAttribute="top" id="RWg-CF-Lcm"/>
+                            <constraint firstItem="me4-Bh-0pg" firstAttribute="leading" secondItem="lqU-k8-7YO" secondAttribute="trailing" constant="8" id="VO8-PX-uVb"/>
+                            <constraint firstItem="hOo-EG-f4q" firstAttribute="leading" secondItem="lqU-k8-7YO" secondAttribute="trailing" constant="8" id="Vya-Se-NmZ"/>
+                            <constraint firstAttribute="bottom" secondItem="lqU-k8-7YO" secondAttribute="bottom" id="cgR-pW-xCb"/>
+                            <constraint firstAttribute="bottom" secondItem="zqO-DU-cGP" secondAttribute="bottom" constant="8" id="dhc-ei-1pk"/>
+                            <constraint firstItem="zqO-DU-cGP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="me4-Bh-0pg" secondAttribute="trailing" constant="8" id="f6O-O1-K5W"/>
+                            <constraint firstAttribute="bottom" secondItem="me4-Bh-0pg" secondAttribute="bottom" constant="8" id="gJ6-5G-LTr"/>
+                            <constraint firstItem="Rdp-3C-ald" firstAttribute="centerY" secondItem="lqU-k8-7YO" secondAttribute="centerY" id="gvu-ut-4CY"/>
+                            <constraint firstItem="Rdp-3C-ald" firstAttribute="leading" secondItem="hOo-EG-f4q" secondAttribute="trailing" constant="4" id="s0N-7Z-bfV"/>
+                            <constraint firstItem="me4-Bh-0pg" firstAttribute="top" secondItem="hOo-EG-f4q" secondAttribute="bottom" constant="8" id="sLD-lL-2nx"/>
+                            <constraint firstItem="lqU-k8-7YO" firstAttribute="leading" secondItem="NQB-3d-4Xj" secondAttribute="leading" id="uWR-2f-YXJ"/>
+                            <constraint firstItem="eeH-t9-FL1" firstAttribute="top" secondItem="NQB-3d-4Xj" secondAttribute="top" constant="8" id="zSr-2K-dkO"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="width" secondItem="ldF-2Y-nUk" secondAttribute="width" id="B27-HT-iUi"/>
+                    <constraint firstAttribute="bottom" secondItem="NQB-3d-4Xj" secondAttribute="bottom" constant="8" id="CWE-WV-YyN"/>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="leading" secondItem="05L-E2-MY1" secondAttribute="leading" constant="8" id="FMt-Xm-EJ3"/>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="height" secondItem="ldF-2Y-nUk" secondAttribute="height" id="KE9-3t-212"/>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="top" secondItem="05L-E2-MY1" secondAttribute="top" constant="8" id="W2t-gd-lqX"/>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="centerX" secondItem="ldF-2Y-nUk" secondAttribute="centerX" id="aJM-d2-l5j"/>
+                    <constraint firstItem="NQB-3d-4Xj" firstAttribute="centerY" secondItem="ldF-2Y-nUk" secondAttribute="centerY" id="dst-qq-XOm"/>
+                    <constraint firstAttribute="trailing" secondItem="NQB-3d-4Xj" secondAttribute="trailing" constant="8" id="ipn-Dp-31U"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="Iq7-jt-POs"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="lblOrderAmount" destination="me4-Bh-0pg" id="xen-JC-z39"/>
+                <outlet property="lblOrderID" destination="hOo-EG-f4q" id="LvL-5A-X4x"/>
+                <outlet property="lblOrderName" destination="eeH-t9-FL1" id="eIT-ff-1zE"/>
+                <outlet property="lblOrderStatus" destination="Rdp-3C-ald" id="B6m-7e-Fzd"/>
+                <outlet property="lblOrderTime" destination="zqO-DU-cGP" id="Wv2-yg-d5E"/>
+            </connections>
+            <point key="canvasLocation" x="136.23188405797103" y="170.75892857142856"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="default_food" width="450" height="450"/>
+        <namedColor name="littleBlue">
+            <color red="0.53333333333333333" green="0.10980392156862745" blue="0.33725490196078434" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="littleElevatedViews">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="littleLabelColor">
+            <color red="0.25099998712539673" green="0.25099998712539673" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

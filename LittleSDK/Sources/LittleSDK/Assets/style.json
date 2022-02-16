@@ -1,0 +1,28 @@
+ [
+  {
+  "stylers": [
+              {
+              "hue": "#e7ecf0"
+              }
+              ]
+  },
+  {
+  "featureType": "road",
+  "stylers": [
+              {
+              "saturation": -70
+              }
+              ]
+  },
+  {
+  "featureType": "water",
+  "stylers": [
+              {
+              "saturation": -60
+              },
+              {
+              "visibility": "simplified"
+              }
+              ]
+  }
+  ]
