@@ -33,9 +33,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources/LittleSDK"),
         .testTarget(
             name: "LittleSDKTests",
-            dependencies: ["LittleSDK"]),
+            dependencies: ["LittleSDK"],
+            path: "Tests/LittleSDKTests"),
     ]
 )
