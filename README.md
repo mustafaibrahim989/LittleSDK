@@ -9,8 +9,11 @@ LittleSDK Author & Maintainer: [@littleappdevs](https://github.com/littleappdevs
 ## Installation
 
 ### Swift Package Manager
+
 1. Click File &rarr; Swift Packages &rarr; Add Package Dependency
 2. Type `https://github.com/littleappdevs/littleapp.git`
+
+Alternatively, in Xcode and search for "LittleSDK". If multiple results are found, select the one owned by [@littleappdevs](https://github.com/littleappdevs).
 
 ## Acknowledgements
 
