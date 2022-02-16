@@ -614,38 +614,6 @@ class TripVC: UIViewController {
         
         if am.getCHAT() == "1" && !chatSetUp {
             chatSetUp = true
-            
-//            // Configure with manual options.
-//            let secondaryOptions = FirebaseOptions(googleAppID: "1:121987679654:ios:21717a0263b4154999fb67", gcmSenderID: "121987679654")
-//            secondaryOptions.bundleID = "craftsilicon.littledriver"
-//            secondaryOptions.apiKey = "AIzaSyCm1cVlvr4ezuqd9ttn6BakFSnlTPo5HRk"
-//            secondaryOptions.clientID = "121987679654-vvem0irbpkmkudh0uubrdegddcgrhn0c.apps.googleusercontent.com"
-//            secondaryOptions.databaseURL = "https://littledriverai.firebaseio.com"
-//            secondaryOptions.storageBucket = "littledriverai.appspot.com"
-//            secondaryOptions.projectID = "littledriverai"
-//
-//            if FirebaseApp.app(name: "driver") == nil {
-//                FirebaseApp.configure(name: "driver", options: secondaryOptions)
-//            }
-//
-//            guard let app = FirebaseApp.app(name: "driver") else {
-//                printVal(object: "Error is: Could not reference App")
-//                return
-//            }
-//
-//            self.app = app
-//
-//            ref = Database.database(app: self.app!, url: "https://littledriverai.firebaseio.com").reference(withPath: "fcQDCpI7H7HNMnUQ")
-//
-//            Auth.auth(app: self.app!).signInAnonymously() { (authResult, error) in
-//                guard let user = authResult?.user else {
-//                    printVal(object: "Error is: \(error?.localizedDescription ?? "nil")")
-//                    return
-//                }
-//                printVal(object: "User logged in successfully \(user.metadata)")
-//
-//                self.setupChat()
-//            }
         }
         
         switch am.getTRIPSTATUS() {
