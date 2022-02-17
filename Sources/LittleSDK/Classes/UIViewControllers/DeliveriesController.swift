@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import ESPullToRefresh
 import SwiftMessages
 import SDWebImage
 import UIView_Shimmer
