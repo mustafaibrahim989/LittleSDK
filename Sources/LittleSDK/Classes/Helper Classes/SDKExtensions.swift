@@ -345,20 +345,6 @@ extension UIViewController {
         return modelName
     }
     
-    func getPhoneFaceIdType() -> Bool {
-        var modelName = UIDevice.modelName
-        modelName = modelName.replacingOccurrences(of: "Simulator ", with: "")
-        switch modelName {
-        case "iPhone X","iPhone XS","iPhone XS Max","iPhone XR","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max":
-            return true
-        case "iPhone 12 mini","iPhone 12","iPhone 12 Pro","iPhone 12 Pro Max":
-            return true
-        default:
-            return false
-        }
-        
-    }
-    
     func getAppVersion() -> String {
         //First get the nsObject by defining as an optional anyObject
         let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
@@ -692,6 +678,10 @@ func getPhoneFaceIdType() -> Bool {
     case "iPhone X","iPhone XS","iPhone XS Max","iPhone XR","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max":
         return true
     case "iPhone 12 mini","iPhone 12","iPhone 12 Pro","iPhone 12 Pro Max":
+        return true
+    case "iPhone 13 mini","iPhone 13","iPhone 13 Pro","iPhone 13 Pro Max":
+        return true
+    case "iPad mini (6th generation)":
         return true
     default:
         return false
