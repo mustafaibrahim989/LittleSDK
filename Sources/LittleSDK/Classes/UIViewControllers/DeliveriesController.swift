@@ -97,11 +97,6 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             btnLocation.setTitle(am.getPICKUPADDRESS(), for: UIControl.State())
         }
         
-        scrollView.es.addPullToRefresh {
-            [unowned self] in
-            self.getRestaurants()
-        }
-        
         btnSearch.isEnabled = false
         
         currentPlaceCoordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[0] ?? "0.0")! , longitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[1] ?? "0.0")!)
@@ -235,7 +230,6 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     @objc func loadRestaurants(_ notification: NSNotification) {
         
-        scrollView.es.stopPullToRefresh()
         self.view.setTemplateWithSubviews(false)
         
         btnSearch.isEnabled = true

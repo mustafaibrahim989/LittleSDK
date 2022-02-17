@@ -70,11 +70,6 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             btnTrackOrder.backgroundColor = cn.littleSDKThemeColor
         }
         
-        scrollView.es.addPullToRefresh {
-            [unowned self] in
-            self.getOrderSummary()
-        }
-        
         self.menuTable.estimatedRowHeight = 80
         self.menuTable.rowHeight = UITableView.automaticDimension
         
@@ -114,7 +109,6 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     
     @objc func loadOrderSummary(_ notification: NSNotification) {
         
-        scrollView.es.stopPullToRefresh()
         stopLoading()
         
         let data = notification.userInfo?["data"] as? Data

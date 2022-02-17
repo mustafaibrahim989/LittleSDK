@@ -57,11 +57,6 @@ public class ExtraItemsController: UIViewController {
         tableView.reloadData()
         view.layoutIfNeeded()
         
-        tableView.es.addPullToRefresh {
-            [unowned self] in
-            self.getMenuAddons()
-        }
-        
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
         
         lblTitle.text = "\(selectedFood?.foodName ?? "") Details"
@@ -186,7 +181,6 @@ extension ExtraItemsController {
     
     @objc func loadMenuAddons(_ notification: NSNotification) {
         
-        tableView.es.stopPullToRefresh()
         self.view.setTemplateWithSubviews(false)
         
         let data = notification.userInfo?["data"] as? Data

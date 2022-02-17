@@ -89,11 +89,6 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         categoryCollection.layoutIfNeeded()
         categoryLoad.layoutIfNeeded()
         
-        menuTable.es.addPullToRefresh {
-            [unowned self] in
-            self.getRestaurantMenu()
-        }
-        
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
         
     }
@@ -150,7 +145,6 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     @objc func loadRestaurantMenu(_ notification: NSNotification) {
         
-        menuTable.es.stopPullToRefresh()
         self.view.setTemplateWithSubviews(false)
         
         let data = notification.userInfo?["data"] as? Data

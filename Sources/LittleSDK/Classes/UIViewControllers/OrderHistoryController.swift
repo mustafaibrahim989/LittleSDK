@@ -33,11 +33,6 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
         let nib = UINib.init(nibName: "OrderHistoryCell", bundle: sdkBundle!)
         histTable.register(nib, forCellReuseIdentifier: "cell")
         
-        histTable.es.addPullToRefresh {
-            [unowned self] in
-            self.getOrderHistory()
-        }
-        
         histTable.reloadData()
         histTable.layoutIfNeeded()
     }
@@ -74,7 +69,6 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     
     @objc func loadOrderHistory(_ notification: NSNotification) {
         
-        histTable.es.stopPullToRefresh()
         view.setTemplateWithSubviews(false)
         
         let data = notification.userInfo?["data"] as? Data
