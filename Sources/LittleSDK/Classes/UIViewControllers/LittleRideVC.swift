@@ -5026,7 +5026,7 @@ extension LittleRideVC: GMSMapViewDelegate {
 
 extension LittleRideVC: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         
         locationManager.stopUpdatingLocation()
@@ -5063,7 +5063,7 @@ extension LittleRideVC: CLLocationManagerDelegate {
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
         removeLoadingPage()
         // printVal(object: error.localizedDescription)
@@ -5071,7 +5071,7 @@ extension LittleRideVC: CLLocationManagerDelegate {
         checkLocation()
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         checkLocation()
     }
     
