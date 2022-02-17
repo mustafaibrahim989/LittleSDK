@@ -14,7 +14,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var cashsourceArr: [String] = []
     var walletArr: [Wallet] = []
@@ -63,12 +63,12 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
-        let cellNib = UINib(nibName: "RecentsCell", bundle: nil)
+        let cellNib = UINib(nibName: "RecentsCell", bundle: sdkBundle!)
         tableView.register(cellNib, forCellReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "KYCCell", bundle: nil)
+        let nib2 = UINib.init(nibName: "KYCCell", bundle: sdkBundle!)
         extraTableview.register(nib2, forCellReuseIdentifier: "cell")
         
         if am.getAmount() != "" {
@@ -101,7 +101,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "LOADCASH"), object: nil)
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "", message: "\(am.getMESSAGE()!)", image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
@@ -263,7 +263,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
                 let defaultMessage = try JSONDecoder().decode(DefaultMessage.self, from: data!)
                 if defaultMessage.status == "000" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                     view.loadPopup(title: "", message: "\n\(defaultMessage.message ?? "")\n", image: "", action: "")
                     view.proceedAction = {
                         SwiftMessages.hide()
@@ -286,7 +286,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
                     let defaultMessage = try JSONDecoder().decode(DefaultMessages.self, from: data!)
                     if defaultMessage[0].status == "000" {
                         
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                         view.loadPopup(title: "", message: "\n\(defaultMessage[0].message ?? "")\n", image: "", action: "")
                         view.proceedAction = {
                             SwiftMessages.hide()
@@ -400,7 +400,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         imgCoupon.image = UIImage()
         
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "Validate Coupon Code", message: "\nType the coupon code you wish to validate below.\n", image: "", placeholderText: "Enter coupon code", type: "")
         view.txtPopupText.text = couponCode
         view.proceedAction = {
@@ -666,7 +666,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     }
     
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+    @objc public func textFieldDidChange(_ textField: UITextField) {
         let field = kycFieldsArr[textField.tag]
         if field.fieldType == "DATE" {
             textField.text = textField.text?.filterDigitsWithHyphenOnly()

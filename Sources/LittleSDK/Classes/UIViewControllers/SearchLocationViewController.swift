@@ -18,7 +18,7 @@ public class SearchLocationViewController: UIViewController {
     
     let am = SDKAllMethods()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var noLocationsView: UIView!
     var imgNoLocations: UIImageView!
@@ -64,7 +64,7 @@ public class SearchLocationViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
         configureUI()
         
@@ -82,7 +82,7 @@ public class SearchLocationViewController: UIViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "Search Location"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: nil)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
         
         noLocationsView = UIView()
         view.addSubview(noLocationsView)
@@ -94,7 +94,7 @@ public class SearchLocationViewController: UIViewController {
         noLocationsView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         imgNoLocations = UIImageView()
-        imgNoLocations.image = getImage(named: "no_record", bundle: nil)
+        imgNoLocations.image = getImage(named: "no_record", bundle: sdkBundle!)
         noLocationsView.addSubview(imgNoLocations)
         
         imgNoLocations.translatesAutoresizingMaskIntoConstraints = false
@@ -164,7 +164,7 @@ public class SearchLocationViewController: UIViewController {
         view.bringSubviewToFront(noLocationsView)
         
         imgPoweredBy = UIImageView()
-        imgPoweredBy.image = getImage(named: "poweredbygoogle", bundle: nil)
+        imgPoweredBy.image = getImage(named: "poweredbygoogle", bundle: sdkBundle!)
         imgPoweredBy.contentMode = .scaleAspectFit
         view.addSubview(imgPoweredBy)
         
@@ -497,7 +497,7 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
 }
 
 extension SearchLocationViewController: UISearchResultsUpdating {
-    public func updateSearchResults(for searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         if searchBar.text != "" && locationSearch != searchBar.text && (searchBar.text?.count ?? 0) > 2 {
             startLoadingResults()

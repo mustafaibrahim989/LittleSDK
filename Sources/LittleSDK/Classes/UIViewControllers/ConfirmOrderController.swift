@@ -15,7 +15,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var selectedRestaurant: Restaurant?
     var selectedTicketNo: Int?
@@ -77,12 +77,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
 
-        let nib = UINib.init(nibName: "MenuCell", bundle: nil)
+        let nib = UINib.init(nibName: "MenuCell", bundle: sdkBundle!)
         menuTable.register(nib, forCellReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "MenuAddonsCell", bundle: nil)
+        let nib2 = UINib.init(nibName: "MenuAddonsCell", bundle: sdkBundle!)
         menuTable.register(nib2, forCellReuseIdentifier: "addonsCell")
         
         menuTable.reloadData()
@@ -198,7 +198,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if am.getPROMOTITLE() != "Invalid"  {
             promoValid()
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
             view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
             view.proceedAction = {
                 SwiftMessages.hide()
@@ -298,7 +298,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                         
                         self.view.removeAnimation()
                         
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: self.sdkBundle!)
                         view.loadPopup(title: "", message: "\n\(orderResponse[0].message ?? "Your order has been successfully placed.")\n", image: "", action: "")
                         view.proceedAction = {
                             SwiftMessages.hide()
@@ -333,11 +333,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     
                     let restaurantName = self.selectedRestaurant?.restaurantName ?? ""
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                     view.loadPopup(title: "", message: "\n\(MESSAGE)\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()
-                        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
+                        if let viewController = UIStoryboard(name: "UMI", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
                            if let navigator = self.navigationController {
                                navigator.pushViewController(viewController, animated: true)
                            }
@@ -683,7 +683,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         } else {
             am.saveAmount(data: "")
         }
-        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
+        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -754,7 +754,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             cell.imgMenu.layoutIfNeeded()
             
             SDWebImageManager.shared.imageCache.removeImage(forKey: menuItem.foodImage ?? "", cacheType: .all)
-            cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage:  getImage(named: "default_food", bundle: nil))
+            cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage:  getImage(named: "default_food", bundle: sdkBundle!))
             cell.imgMenu.alpha = 1
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblDescription.text = "\(menuItem.foodDescription ?? "")"

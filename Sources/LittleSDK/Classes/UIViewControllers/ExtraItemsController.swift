@@ -29,7 +29,7 @@ public class ExtraItemsController: UIViewController {
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var selectedRestaurant: Restaurant?
     var selectedFood: FoodMenu?
@@ -49,13 +49,18 @@ public class ExtraItemsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
-        let nib = UINib.init(nibName: "ExtraItemsCell", bundle: nil)
+        let nib = UINib.init(nibName: "ExtraItemsCell", bundle: sdkBundle!)
         tableView.register(nib, forCellReuseIdentifier: "cell")
         
         tableView.reloadData()
         view.layoutIfNeeded()
+        
+        tableView.es.addPullToRefresh {
+            [unowned self] in
+            self.getMenuAddons()
+        }
         
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
         
@@ -181,6 +186,7 @@ extension ExtraItemsController {
     
     @objc func loadMenuAddons(_ notification: NSNotification) {
         
+        tableView.es.stopPullToRefresh()
         self.view.setTemplateWithSubviews(false)
         
         let data = notification.userInfo?["data"] as? Data
@@ -289,15 +295,15 @@ extension ExtraItemsController: UITableViewDelegate, UITableViewDataSource {
         }
         if section.typeOfSelection == "ONE" {
             if selectedExtraItems.contains(where: { $0.extraItemID == item?.extraItemID }) {
-                cell.imgExtra.image = getImage(named: "deliver_check", bundle: nil)
+                cell.imgExtra.image = getImage(named: "deliver_check", bundle: sdkBundle!)
             } else {
-                cell.imgExtra.image = getImage(named: "deliver_uncheck", bundle: nil)
+                cell.imgExtra.image = getImage(named: "deliver_uncheck", bundle: sdkBundle!)
             }
         } else {
             if selectedExtraItems.contains(where: { $0.extraItemID == item?.extraItemID }) {
-                cell.imgExtra.image = getImage(named: "deliver_checkbox", bundle: nil)
+                cell.imgExtra.image = getImage(named: "deliver_checkbox", bundle: sdkBundle!)
             } else {
-                cell.imgExtra.image = getImage(named: "deliver_uncheckbox", bundle: nil)
+                cell.imgExtra.image = getImage(named: "deliver_uncheckbox", bundle: sdkBundle!)
             }
         }
         cell.selectionStyle = .none

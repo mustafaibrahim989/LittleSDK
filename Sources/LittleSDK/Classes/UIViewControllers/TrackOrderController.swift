@@ -8,7 +8,6 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
 import UIView_Shimmer
 import SwiftMessages
 
@@ -18,7 +17,7 @@ public class TrackOrderController: UIViewController {
     let hc = SDKHandleCalls()
     let cn = SDKConstants()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var originMarker: GMSMarker!
     var destinationMarker: GMSMarker!
@@ -63,7 +62,7 @@ public class TrackOrderController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
         // Setup Map
         
@@ -190,7 +189,7 @@ public class TrackOrderController: UIViewController {
     
     func showDriverDetails() {
         
-        imgDriverImage.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: nil))
+        imgDriverImage.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         
         let amount = Double(am.getRATING()!)
         if amount != nil {
@@ -214,7 +213,7 @@ public class TrackOrderController: UIViewController {
     
     func tripEnded(message: String) {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "", message: "\n\(message)\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -250,7 +249,7 @@ public class TrackOrderController: UIViewController {
                 originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
             }
             let imageName = "PARCELTOP"
-            let image = getImage(named: imageName, bundle: nil)
+            let image = getImage(named: imageName, bundle: sdkBundle!)
             originMarker.icon = scaleImage(image: image!,size: 0.25)
             originMarker.title = "My Ride"
             originMarker.map = gmsMapView
@@ -262,7 +261,7 @@ public class TrackOrderController: UIViewController {
                 originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
             }
             let imageName = "PARCELTOP"
-            let image = getImage(named: imageName, bundle: nil)
+            let image = getImage(named: imageName, bundle: sdkBundle!)
             originMarker.icon = scaleImage(image: image!,size: 0.25)
             originMarker.position =  coordinates
             CATransaction.commit()
@@ -510,7 +509,7 @@ public class TrackOrderController: UIViewController {
     }
     
     func allowLocationAccessMessage() {
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by keep track of your current order.\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()

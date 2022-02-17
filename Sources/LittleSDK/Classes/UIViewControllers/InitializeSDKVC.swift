@@ -7,8 +7,8 @@
 
 import UIKit
 import Alamofire
-import NVActivityIndicatorView
 import SwiftMessages
+import NVActivityIndicatorView
 
 public class InitializeSDKVC: UIViewController {
 
@@ -115,9 +115,9 @@ public class InitializeSDKVC: UIViewController {
     
     func showMissingParameter(param: String) {
         
-//        let bundle = Bundle(for: Self.self)
+        let bundle = Bundle.module
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
         view.loadPopup(title: "", message: "\nError encountered accessing Little SDK. You are missing a required parameter '\(param)'\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -173,11 +173,17 @@ public class InitializeSDKVC: UIViewController {
                     am.saveMyPlatform(data: theData.platform ?? "")
                     am.saveMyCodeBase(data: theData.codeBase ?? "")
                     
-//                    let sdkBundle = Bundle(for: Self.self)
+                    let sdkBundle = Bundle.module
+                    
+                    let bundleURL = sdkBundle.resourceURL?.appendingPathComponent("LittleSDK.bundle")
+                    var resourceBundle: Bundle? = nil
+                    if let bundleURL = bundleURL {
+                        resourceBundle = Bundle(url: bundleURL)
+                    }
                     
                     switch self.toWhere {
                     case .rides:
-                        if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
+                        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
                             viewController.isUAT = self.isUAT
                             viewController.popToRestorationID = self.popToRestorationID
                             viewController.navShown = self.navShown
@@ -187,7 +193,7 @@ public class InitializeSDKVC: UIViewController {
                             }
                         }
                     case .umi:
-                        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
+                        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
                             viewController.popToRestorationID = self.popToRestorationID
                             viewController.navShown = self.navShown
                             viewController.paymentVC = self.paymentVC
@@ -196,7 +202,7 @@ public class InitializeSDKVC: UIViewController {
                             }
                         }
                     case .deliveries:
-                        if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
+                        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
                             viewController.popToRestorationID = self.popToRestorationID
                             viewController.navShown = self.navShown
                             viewController.paymentVC = self.paymentVC
@@ -212,9 +218,9 @@ public class InitializeSDKVC: UIViewController {
                     
                 } catch {
                     
-//                    let bundle = Bundle(for: Self.self)
+                    let bundle = Bundle.module
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
                     view.loadPopup(title: "", message: "\nError encountered accessing Little SDK\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()

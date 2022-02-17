@@ -14,7 +14,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var historyData: Data?
     
@@ -28,10 +28,15 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
-        let nib = UINib.init(nibName: "OrderHistoryCell", bundle: nil)
+        let nib = UINib.init(nibName: "OrderHistoryCell", bundle: sdkBundle!)
         histTable.register(nib, forCellReuseIdentifier: "cell")
+        
+        histTable.es.addPullToRefresh {
+            [unowned self] in
+            self.getOrderHistory()
+        }
         
         histTable.reloadData()
         histTable.layoutIfNeeded()
@@ -69,6 +74,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     
     @objc func loadOrderHistory(_ notification: NSNotification) {
         
+        histTable.es.stopPullToRefresh()
         view.setTemplateWithSubviews(false)
         
         let data = notification.userInfo?["data"] as? Data
@@ -134,7 +140,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "OrderSummaryController") as? OrderSummaryController {
+        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderSummaryController") as? OrderSummaryController {
             viewController.deliveryID = historyArr[indexPath.item].deliveryTripID ?? ""
             viewController.orderAmount = historyArr[indexPath.item].orderAmount ?? 0.0
             viewController.tripStatus = historyArr[indexPath.item].tripStatus ?? ""

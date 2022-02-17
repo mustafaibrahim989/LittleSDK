@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import ESPullToRefresh
 import SwiftMessages
 import SDWebImage
 import UIView_Shimmer
@@ -24,7 +25,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     var popToRestorationID: UIViewController?
     var navShown: Bool?
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var deliveryData: Data?
     
@@ -74,15 +75,15 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
 
-        let nib = UINib.init(nibName: "RestaurantCell", bundle: nil)
+        let nib = UINib.init(nibName: "RestaurantCell", bundle: sdkBundle!)
         shopTable.register(nib, forCellReuseIdentifier: "cell")
         
-        let nib1 = UINib.init(nibName: "OffersCell", bundle: nil)
+        let nib1 = UINib.init(nibName: "OffersCell", bundle: sdkBundle!)
         offersCollection.register(nib1, forCellWithReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "MenuCategoryCell", bundle: nil)
+        let nib2 = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle!)
         self.categoryCollection.register(nib2, forCellWithReuseIdentifier: "cell")
         
         adjustOffersView()
@@ -97,11 +98,16 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             btnLocation.setTitle(am.getPICKUPADDRESS(), for: UIControl.State())
         }
         
+        scrollView.es.addPullToRefresh {
+            [unowned self] in
+            self.getRestaurants()
+        }
+        
         btnSearch.isEnabled = false
         
         currentPlaceCoordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[0] ?? "0.0")! , longitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[1] ?? "0.0")!)
 
-        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: nil)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
+        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
         
         
@@ -114,9 +120,9 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     public override func viewWillAppear(_ animated: Bool) {
         
         lblNoShops.text = "We unfortunately couldn't find a \(self.title?.lowercased() ?? "") provider within your area. We are however working hard to ensure all areas have \(self.title?.lowercased() ?? "") providers within your reach."
-        imgNoShops.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: nil)
+        imgNoShops.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: sdkBundle!)
         if imgNoShops.image == nil {
-            imgNoShops.image = getImage(named: "no_products", bundle: nil)
+            imgNoShops.image = getImage(named: "no_products", bundle: sdkBundle!)
         }
         
         if fromSearch {
@@ -130,7 +136,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         if am.getFromConfirmOrder() {
             am.saveFromConfirmOrder(data: false)
-            if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "OrderHistoryController") as? OrderHistoryController {
+            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderHistoryController") as? OrderHistoryController {
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
@@ -230,6 +236,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     @objc func loadRestaurants(_ notification: NSNotification) {
         
+        scrollView.es.stopPullToRefresh()
         self.view.setTemplateWithSubviews(false)
         
         btnSearch.isEnabled = true
@@ -285,7 +292,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                             selectedRestaurant = sortedArr[index!]
                             myRestaurantID = ""
                             
-                            let popOverVC = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "NewPopoverController") as! NewPopoverController
+                            let popOverVC = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "NewPopoverController") as! NewPopoverController
                             self.addChild(popOverVC)
                             popOverVC.popLink = sortedArr[index!].image ?? ""
                             popOverVC.popTitle = "\(sortedArr[index!].restaurantName ?? "")"
@@ -295,11 +302,11 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                             self.view.addSubview(popOverVC.view)
                             popOverVC.didMove(toParent: self)
                             
-                            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                             view.loadPopup(title: "\(sortedArr[index!].restaurantName ?? "")", message: "\nTap proceed to redirect you to \(sortedArr[index!].restaurantName ?? "") to receive the desired offer.\n", image: sortedArr[index!].image ?? "", action: "")
                             view.proceedAction = {
                                 SwiftMessages.hide()
-                                if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
+                                if let viewController = UIStoryboard(name: "Deliveries", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
                                     viewController.selectedRestaurant = self.selectedRestaurant
                                     viewController.paymentSourceArr = self.paymentSourceArr
                                     viewController.myMenuID = self.myMenuID
@@ -535,7 +542,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         closeSearch()
         
-        let popOverVC = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as! SearchController
+        let popOverVC = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "SearchController") as! SearchController
         self.addChild(popOverVC)
         popOverVC.view.frame = UIScreen.main.bounds
         self.view.addSubview(popOverVC.view)
@@ -552,7 +559,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         am.saveFromPickupLoc(data: true)
         fromSearch = true
-        if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
+        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
             viewController.restaurantLoc = true
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
@@ -561,7 +568,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     }
     
     @IBAction func btnHistoryPressed(_ sender: UIButton) {
-        if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "OrderHistoryController") as? OrderHistoryController {
+        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderHistoryController") as? OrderHistoryController {
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -618,7 +625,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     func allowLocationAccessMessage() {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
          view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.\n", image: "", action: "")
          view.proceedAction = {
             SwiftMessages.hide()
@@ -704,7 +711,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             cell.lblClosed.isHidden = false
             
             SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
-            cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: nil)) { _,_,_,_  in
+            cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                 
             }
             cell.layoutIfNeeded()
@@ -712,7 +719,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             cell.closedView.isHidden = true
             cell.lblClosed.isHidden = true
             SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
-            cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: nil)) { _,_,_,_  in
+            cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                 
             }
         }
@@ -724,7 +731,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         printVal(object: sortedArr[indexPath.item])
         selectedRestaurant = sortedArr[indexPath.item]
-        if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
+        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
             viewController.selectedRestaurant = selectedRestaurant
             viewController.paymentSourceArr = paymentSourceArr
             viewController.paymentVC = paymentVC
@@ -833,7 +840,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                 // cell.isUserInteractionEnabled = false
                 SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
 
-                cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: nil)) { _,_,_,_  in
+                cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                     
                 }
                 cell.layoutIfNeeded()
@@ -842,7 +849,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                 cell.lblClosed.isHidden = true
                 // cell.isUserInteractionEnabled = true
                 SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
-                cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: nil))
+                cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!))
             }
             
             cell.imgShopImage.alpha = 1
@@ -888,7 +895,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         if collectionView.tag == 0 {
             printVal(object: offersSortedArr[indexPath.item])
             selectedRestaurant = offersSortedArr[indexPath.item]
-            if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
+            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
                 viewController.selectedRestaurant = selectedRestaurant
                 viewController.paymentSourceArr = paymentSourceArr
                 viewController.myMenuID = selectedRestaurant?.menuOnOffer ?? ""

@@ -42,9 +42,9 @@ class SDKHandleCalls {
             
             topController?.dismissSwiftAlert()
             
-//            let bundle = Bundle(for: Self.self)
+            let bundle = Bundle.module
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
             view.loadPopup(title: "", message: "\nYou appear to be offline. Kindly check your Internet connection and try again.\n", image: "", action: "")
             view.proceedAction = {
                 SwiftMessages.hide()

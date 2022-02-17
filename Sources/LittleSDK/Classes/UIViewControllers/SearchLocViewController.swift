@@ -14,7 +14,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
     
     let am = SDKAllMethods()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var locationTitleArr: [String] = ["Add Home","Add Work"]
     var locationSubTitleArr: [String] = ["",""]
@@ -44,7 +44,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
         btnPickupLoc.titleLabel?.numberOfLines = 0
         btnPickupLoc.titleLabel?.textAlignment = .center
@@ -93,9 +93,9 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         }
         
         if buttpressed == "pickup" {
-            imgIcon.image = getImage(named: "dropoff_location", bundle: nil)
+            imgIcon.image = getImage(named: "dropoff_location", bundle: sdkBundle!)
         } else {
-            imgIcon.image = getImage(named: "pickup_location", bundle: nil)
+            imgIcon.image = getImage(named: "pickup_location", bundle: sdkBundle!)
         }
         
         if buttpressed == "addhome" || buttpressed == "addwork" {
@@ -289,7 +289,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
             cell.locationSubTitle.text = locationSubTitleArr[indexPath.item]
         }
         
-        cell.locationImage.image = getImage(named: imageString, bundle: nil)
+        cell.locationImage.image = getImage(named: imageString, bundle: sdkBundle!)
         cell.selectionStyle = .none
         
         return cell

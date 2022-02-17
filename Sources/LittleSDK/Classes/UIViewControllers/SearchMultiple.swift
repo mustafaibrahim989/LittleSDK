@@ -16,7 +16,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
     
     let am = SDKAllMethods()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var locationsEstimateSet: LocationsEstimateSetSDK?
     var locationStopsArr: [LocationSetSDK] = []
@@ -48,9 +48,9 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
-        let nib = UINib.init(nibName: "LocationCell", bundle: nil)
+        let nib = UINib.init(nibName: "LocationCell", bundle: sdkBundle!)
         self.stopsTable.register(nib, forCellReuseIdentifier: "cell")
         
     }
@@ -159,7 +159,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
     @objc func btnEditInstructionsPressed(_ sender: UIButton) {
         let stop = locationStopsArr[sender.tag]
         
-        let view: PopoverPlaceInfo = try! SwiftMessages.viewFromNib(named: "PopoverPlaceInfo", bundle: nil)
+        let view: PopoverPlaceInfo = try! SwiftMessages.viewFromNib(named: "PopoverPlaceInfo", bundle: sdkBundle!)
         view.loadPopup(placeName: stop.name, image: "")
         if stop.instructions != "" {
             view.txtAddInstructions.text = stop.instructions
@@ -331,7 +331,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
                 cell.locationSubTitle.text = locationSubTitleArr[indexPath.item]
             }
             
-            cell.locationImage.image = getImage(named: imageString, bundle: nil)
+            cell.locationImage.image = getImage(named: imageString, bundle: sdkBundle!)
             cell.selectionStyle = .none
             
             return cell
@@ -362,7 +362,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
                 cell.imgView.isHidden = false
                 cell.bottomView.isHidden = true
                 cell.btnAddRemove.isHidden = false
-                cell.btnAddRemove.setImage(getImage(named: "add_icon", bundle: nil), for: .normal)
+                cell.btnAddRemove.setImage(getImage(named: "add_icon", bundle: sdkBundle!), for: .normal)
                 cell.btnAddRemove.isUserInteractionEnabled = true
                 cell.btnAddRemove.addTarget(self, action: #selector(btnAddPressed(_:)), for: .touchUpInside)
             } else {
@@ -370,7 +370,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
                 cell.imgView.isHidden = false
                 cell.bottomView.isHidden = false
                 cell.btnAddRemove.isHidden = false
-                cell.btnAddRemove.setImage(getImage(named: "remove_icon", bundle: nil), for: .normal)
+                cell.btnAddRemove.setImage(getImage(named: "remove_icon", bundle: sdkBundle!), for: .normal)
                 cell.btnAddRemove.isUserInteractionEnabled = true
                 cell.btnAddRemove.addTarget(self, action: #selector(btnRemovePressed(_:)), for: .touchUpInside)
             }

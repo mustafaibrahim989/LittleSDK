@@ -14,7 +14,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     let hc = SDKHandleCalls()
     
-//    var sdkBundle: Bundle?
+    var sdkBundle: Bundle?
     
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
@@ -24,7 +24,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sdkBundle = Bundle(for: Self.self)
+        sdkBundle = Bundle.module
         
         view.backgroundColor = .white
         checkCameraSettings()
@@ -118,7 +118,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         let url = URL(string: UIApplication.openSettingsURLString)!
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "Camera access denied/restricted", message: "\nYou won't be able to scan QR Codes on Little unless you allow access to the Camera. Click settings to turn on camera access.\n", image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
@@ -140,7 +140,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     func failed() {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "Scanning not supported", message: "\nYour device does not support scanning Little QR Codes. Please use a device with a camera.\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -205,7 +205,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "QRLISTENING"), object: nil, userInfo: dic)
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                     view.loadPopup(title: "QR Code Error", message: "\n\(qRData.message ?? "Kindly ensure the QR being scanned is a Little Merchants QR Code.")\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()
@@ -222,7 +222,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 
             } catch {
                 
-                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
+                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
                 view.loadPopup(title: "Invalid QR Code", message: "\nKindly ensure the QR being scanned is a Little Merchants QR Code.\n", image: "", action: "")
                 view.proceedAction = {
                    SwiftMessages.hide()
