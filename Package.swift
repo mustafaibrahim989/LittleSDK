@@ -21,7 +21,6 @@ let package = Package(
         .package(name: "NVActivityIndicatorView", url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
         .package(name: "UIView-Shimmer", url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
         .package(name: "EasyNotificationBadge", url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),
-        .package(name: "MessageKit", url: "https://github.com/MessageKit/MessageKit", from: "3.0.0"),
         .package(name: "GoogleMaps", url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", from: "6.0.0"),
         .package(name: "Alamofire", url: "https://github.com/Alamofire/Alamofire.git", from: "5.0.0"),
         .package(name: "SDWebImage", url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.0.0"),
@@ -32,7 +31,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge","MessageKit","GoogleMaps","Alamofire","SDWebImage","IQKeyboardManagerSwift"],
+            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge","GoogleMaps","Alamofire","SDWebImage","IQKeyboardManagerSwift"],
             path: "Sources/LittleSDK"),
         .testTarget(
             name: "LittleSDKTests",
