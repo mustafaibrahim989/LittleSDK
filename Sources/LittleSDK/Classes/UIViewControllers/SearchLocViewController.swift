@@ -7,7 +7,6 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
 
 public class SearchLocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     

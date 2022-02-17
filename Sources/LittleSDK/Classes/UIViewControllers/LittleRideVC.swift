@@ -8,7 +8,6 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
 import MessageUI
 import UserNotifications
 import LocalAuthentication

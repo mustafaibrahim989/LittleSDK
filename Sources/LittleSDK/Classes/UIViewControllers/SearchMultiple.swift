@@ -8,7 +8,6 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
 import SwiftMessages
 
 public class SearchMultiple: UIViewController, UITableViewDataSource, UITableViewDelegate {

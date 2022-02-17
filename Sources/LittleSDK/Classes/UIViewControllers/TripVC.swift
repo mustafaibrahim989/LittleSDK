@@ -9,7 +9,6 @@
 import UIKit
 import AVFoundation
 import GoogleMaps
-import GooglePlaces
 import UserNotifications
 import MessageUI
 import SwiftMessages
