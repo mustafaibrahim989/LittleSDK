@@ -53,7 +53,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -75,7 +75,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
         if restaurantName?.last?.lowercased() == "s" {
             lblTitle.text = "\(restaurantName ?? "")' Order Summary"
@@ -347,7 +347,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - TableView DataSource & Delegates
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.tag == 0 {
             return UITableView.automaticDimension
         } else {
@@ -361,7 +361,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 0 {
             return cartItems.count
         } else {
@@ -369,7 +369,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView.tag == 0 {
             let menuItem = cartItems[indexPath.item]

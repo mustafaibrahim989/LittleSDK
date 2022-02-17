@@ -34,7 +34,7 @@ public class NewPopoverController: UIViewController {
     @IBOutlet weak var btnDismiss: UIButton!
     @IBOutlet weak var btnClose: UIButton!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white.withAlphaComponent(0.6)
@@ -160,7 +160,7 @@ public class NewPopoverController: UIViewController {
         CATransaction.commit()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMaps
+import GooglePlaces
 import SwiftMessages
 
 public class SearchMultiple: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -44,7 +45,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
     @IBOutlet weak var lblTitle: UILabel!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -54,7 +55,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         
         if !fromSearch {
             if am.getFromPickupLoc() {
@@ -283,11 +284,11 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 0 {
             return locationTitleArr.count
         } else {
@@ -296,7 +297,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView.tag == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! LocationTableViewCell
             
@@ -395,7 +396,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.tag == 0 {
             if locationTitleArr[indexPath.item] == "Add Home" {
                 buttpressed = "addhome"
@@ -445,7 +446,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         

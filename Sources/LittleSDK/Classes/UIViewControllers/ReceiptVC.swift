@@ -60,7 +60,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     @IBOutlet weak var paymentBtn: UIButton!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -113,7 +113,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -187,12 +187,12 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // MARK: - Table Delegates & Data Sources
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return payDescArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! BreakdownTableViewCell
         if payCostArr[indexPath.item].contains("-") {
@@ -207,7 +207,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         

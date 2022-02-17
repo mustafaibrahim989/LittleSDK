@@ -72,7 +72,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var btnWallet: UIButton!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         sdkBundle = Bundle(for: Self.self)
@@ -101,7 +101,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         if !isFromQR {
             getNearbyMerchants()
         } else {
@@ -750,11 +750,11 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - TableView Delegates and Datasources
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var arr: [Field] = []
         for each in extraFields {
             if each.fieldType != "H" {
@@ -764,7 +764,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         return arr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let field = extraFields[indexPath.item]
         
@@ -804,7 +804,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - CollectionView DataSource & Delegates
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
         
         let font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15.0)!
         
@@ -816,11 +816,11 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return merchantsArr.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
         if selectedMerchant != nil {
@@ -841,7 +841,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedMerchant = indexPath.item
         nearMerchCollection.reloadData()
         txtMerchantCode.text = merchantsArr[indexPath.item].paymentCode ?? ""

@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMaps
+import GooglePlaces
 import MessageUI
 import UserNotifications
 import LocalAuthentication
@@ -265,7 +266,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -282,11 +283,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.default
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
         reloadLocations()
         
@@ -301,13 +302,13 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         gmsMapView.isUserInteractionEnabled = true
         forwardSkipDrivers = ""
         getUserImage(userImage: profilePic, bundle: sdkBundle!)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         if providertimer != nil {
             providertimer.invalidate()
         }
@@ -319,7 +320,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if !yPositionsSet {
             yPositionsSet = true
@@ -380,7 +381,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if #available(iOS 13.0, *) {
             let hasUserInterfaceStyleChanged = previousTraitCollection?.hasDifferentColorAppearance(comparedTo: traitCollection) ?? false
@@ -625,16 +626,16 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
     }
     
-    @objc func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    @objc public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
     
-    @objc func textFieldDidBeginEditing(_ textField: UITextField) {
+    @objc public func textFieldDidBeginEditing(_ textField: UITextField) {
         let textfieldOffset = CGPoint(x: 0, y: textField.bounds.maxY + 180)
         cardViewController.parcelScrollView.setContentOffset(textfieldOffset, animated: true)
     }
     
-    @objc func textFieldDidEndEditing(_ textField: UITextField) {
+    @objc public func textFieldDidEndEditing(_ textField: UITextField) {
         print("textFieldDidEndEditing")
         
     }
@@ -2015,7 +2016,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     // MARK: - TableView Delegates & DataSource
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.tag == 0 {
             return 50
         } else if tableView.tag == 1 {
@@ -2027,7 +2028,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 0 {
             return DestinationsArr?.count ?? 0
         } else if tableView.tag == 1 {
@@ -2039,7 +2040,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView.tag == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! DestinationCell
             
@@ -2183,7 +2184,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.tag == 0 {
             
             loadDestinationAsSelected(indexPath: indexPath, source: "Table")
@@ -2436,7 +2437,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     // MARK: - CollectionView Delegates & DataSource
     
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
         
         if collectionView.tag == 0 {
             let font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15.0)!
@@ -2466,7 +2467,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
             return SuggestionsArr?.count ?? 0
         } else {
@@ -2475,7 +2476,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! PlaceSuggestionCell
@@ -2525,7 +2526,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView.tag == 0 {
             func getLocationActionDesired() {

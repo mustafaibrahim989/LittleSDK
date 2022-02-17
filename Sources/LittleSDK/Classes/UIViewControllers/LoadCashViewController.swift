@@ -60,7 +60,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var transactionsHeight: NSLayoutConstraint!
     @IBOutlet weak var totalHeight: NSLayoutConstraint!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -88,7 +88,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         couponView.isHidden = true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         adjustViewHeight()
@@ -610,7 +610,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         })
     }
     
-    @objc func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    @objc public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         var index = 0
         for i in (0..<self.kycFieldsArr.count) {
             let field = self.kycFieldsArr[i]
@@ -677,11 +677,11 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - TableView DataSource & Delegates
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 0 {
             return recentTRxs.count
         } else {
@@ -689,7 +689,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView.tag == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! RecentsCell
@@ -728,7 +728,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.tag == 0 {
             let index = walletArr.firstIndex(where: {($0.walletName?.contains(recentTRxs[indexPath.item].paymentSource ?? "") ?? false)})
             if index != nil {

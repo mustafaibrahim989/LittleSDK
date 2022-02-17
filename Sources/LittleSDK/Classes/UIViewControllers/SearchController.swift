@@ -19,7 +19,7 @@ public class SearchController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var txtSearch: UITextField!
     @IBOutlet weak var mainView: UIView!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         txtSearch.becomeFirstResponder()
@@ -32,7 +32,7 @@ public class SearchController: UIViewController, UITextFieldDelegate {
         showAnimate()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
         if selectedRestaurant != nil {
             if selectedRestaurant?.restaurantName?.last == "s" {
@@ -86,7 +86,7 @@ public class SearchController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
        removeAnimate()
        return true
     }

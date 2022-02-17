@@ -71,7 +71,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var offersConstraint: NSLayoutConstraint!
     @IBOutlet weak var restaurantConstraint: NSLayoutConstraint!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -111,7 +111,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         
         lblNoShops.text = "We unfortunately couldn't find a \(self.title?.lowercased() ?? "") provider within your area. We are however working hard to ensure all areas have \(self.title?.lowercased() ?? "") providers within your reach."
         imgNoShops.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: sdkBundle!)
@@ -646,15 +646,15 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     // MARK: - TableView Delegates and Datasources
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 320
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let product = sortedArr[indexPath.item]
         
@@ -721,7 +721,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         printVal(object: sortedArr[indexPath.item])
         selectedRestaurant = sortedArr[indexPath.item]
         if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ProductController") as? ProductController {
@@ -735,7 +735,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         
@@ -766,7 +766,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     // MARK: - CollectionView Delegates and Datasources
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView.tag == 0 {
             return CGSize(width: 300, height: 240)
         } else {
@@ -780,7 +780,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
             return offersSortedArr.count
         } else {
@@ -789,7 +789,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        
         if collectionView.tag == 0 {
             let product = offersSortedArr[indexPath.item]
@@ -884,7 +884,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.tag == 0 {
             printVal(object: offersSortedArr[indexPath.item])
             selectedRestaurant = offersSortedArr[indexPath.item]
@@ -910,7 +910,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
 
 extension DeliveriesController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         
         locationManager.stopUpdatingLocation()
@@ -929,7 +929,7 @@ extension DeliveriesController: CLLocationManagerDelegate {
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
         removeLoadingPage()
         // printVal(object: error.localizedDescription)
@@ -937,7 +937,7 @@ extension DeliveriesController: CLLocationManagerDelegate {
         checkLocation()
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         checkLocation()
     }
     

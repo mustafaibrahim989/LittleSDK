@@ -66,7 +66,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var btnNext: UIButton!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -93,7 +93,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -660,11 +660,11 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - TableView DataSource & Delegates
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let menuItem = sortedArr[indexPath.item]
         let color = cn.littleSDKThemeColor
@@ -793,7 +793,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if !(selectedRestaurant?.offline ?? true) {
             let menuItem = sortedArr[indexPath.item]
@@ -819,7 +819,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         
@@ -851,7 +851,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: - CollectionView DataSource & Delegates
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
         
         let font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15.0)!
         
@@ -863,11 +863,11 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryArr.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
         if selectedCategory != nil {
@@ -894,7 +894,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         lblSearchResults.text = ""
         btnCancelSearch.isHidden = true
         searchButtonView.isHidden = false

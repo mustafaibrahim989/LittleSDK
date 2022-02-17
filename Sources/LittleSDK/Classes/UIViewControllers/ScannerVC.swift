@@ -21,7 +21,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     var validate: Bool = true
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -30,7 +30,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         checkCameraSettings()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
         if (captureSession?.isRunning == false) {
@@ -38,7 +38,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         if (captureSession?.isRunning == true) {
@@ -157,7 +157,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
     }
 
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+    public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         captureSession.stopRunning()
 
         if let metadataObject = metadataObjects.first {
@@ -252,11 +252,11 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
     }
 
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
         return true
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
 }

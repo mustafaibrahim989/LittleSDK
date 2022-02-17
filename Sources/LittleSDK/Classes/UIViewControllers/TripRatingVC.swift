@@ -35,7 +35,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
     @IBOutlet weak var feedbackConst: NSLayoutConstraint!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -60,7 +60,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
@@ -124,12 +124,12 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
     // MARK: FloatRatingViewDelegate
     
-    func floatRatingView(_ ratingView: SDKRatingView, isUpdating rating:Float) {
+    public func floatRatingView(_ ratingView: SDKRatingView, isUpdating rating:Float) {
         // printVal(object: NSString(format: "%.1f", self.floatRatingView.rating) as String)
         self.ratingNoLbl.text = NSString(format: "%.1f", self.floatRatingView.rating) as String
     }
     
-    func floatRatingView(_ ratingView: SDKRatingView, didUpdate rating: Float) {
+    public func floatRatingView(_ ratingView: SDKRatingView, didUpdate rating: Float) {
         // printVal(object: NSString(format: "%.1f", self.floatRatingView.rating) as String)
         self.ratingNoLbl.text = NSString(format: "%.1f", self.floatRatingView.rating) as String
         rate = Double(floatRatingView.rating)

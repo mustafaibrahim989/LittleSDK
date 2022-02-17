@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleMaps
+import GooglePlaces
 
 public class SearchLocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -40,7 +41,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
     
     @IBOutlet weak var locationTable: UITableView!
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -103,13 +104,13 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         if restaurantLoc {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         if restaurantLoc {
             self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
@@ -244,17 +245,17 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return locationTitleArr.count
     }
     
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! LocationTableViewCell
         
@@ -297,7 +298,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if locationTitleArr[indexPath.item] == "Add Home" {
             buttpressed = "addhome"
             searchLocs()
@@ -323,7 +324,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         

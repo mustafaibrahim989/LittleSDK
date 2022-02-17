@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import GoogleMaps
+import GooglePlaces
 import UserNotifications
 import MessageUI
 import SwiftMessages
@@ -28,7 +29,6 @@ public class TripVC: UIViewController {
     var navShown: Bool?
     
     var observersArray: [String] = []
-    var messagesArr: [ChatMessage] = []
     var tripDropOffDetails: [TripDropOffDetail] = []
     
     var arrived = false
@@ -154,7 +154,7 @@ public class TripVC: UIViewController {
     
     @IBOutlet weak var btnChat: UIButton!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -201,11 +201,11 @@ public class TripVC: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         if animatetimer != nil {
             animatetimer.invalidate()
         }
@@ -1487,7 +1487,7 @@ public class TripVC: UIViewController {
 }
 
 extension TripVC: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         
         if CLLocationManager.locationServicesEnabled() {
             
@@ -1526,7 +1526,7 @@ extension TripVC: CLLocationManagerDelegate {
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         locationManager.stopUpdatingLocation()
         locationManager.delegate = nil
@@ -1572,7 +1572,7 @@ extension TripVC: UNUserNotificationCenterDelegate {
     
     //for displaying notification when app is in foreground
     @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         //If you don't want to show notification when app is open, do something here else and make a return here.
         //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
@@ -1582,7 +1582,7 @@ extension TripVC: UNUserNotificationCenterDelegate {
     
     // For handling tap and user actions
     @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         switch response.actionIdentifier {
         case "action1":
             printVal(object: "Action First Tapped")

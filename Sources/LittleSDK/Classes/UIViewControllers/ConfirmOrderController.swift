@@ -74,7 +74,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblExtra: UILabel!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -153,7 +153,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -692,11 +692,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - TableView DataSource & Delegates
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let menuItem = menuArr[indexPath.item]
         let color = cn.littleSDKThemeColor

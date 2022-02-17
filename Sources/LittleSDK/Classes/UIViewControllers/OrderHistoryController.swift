@@ -25,7 +25,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var histTable: UITableView!
     @IBOutlet weak var noOrdersView: UIView!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle(for: Self.self)
@@ -37,7 +37,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
         histTable.layoutIfNeeded()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
         getOrderHistory()
     }
@@ -108,15 +108,15 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - TableView DataSource & Delegates
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyArr.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let histItem = historyArr[indexPath.item]
         
@@ -133,7 +133,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderSummaryController") as? OrderSummaryController {
             viewController.deliveryID = historyArr[indexPath.item].deliveryTripID ?? ""
             viewController.orderAmount = historyArr[indexPath.item].orderAmount ?? 0.0
@@ -150,7 +150,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         var lastInitialDisplayableCell = false
         

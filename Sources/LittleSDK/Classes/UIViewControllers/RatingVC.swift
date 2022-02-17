@@ -25,7 +25,7 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
     
     @IBOutlet weak var floatRatingView: SDKRatingView!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white.withAlphaComponent(0.75)
@@ -71,11 +71,11 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         removeAnimate()
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    public func textViewDidBeginEditing(_ textView: UITextView) {
         lblPlaceHolder.isHidden = true
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
+    public func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text != "" {
             lblPlaceHolder.isHidden = true
         } else {
@@ -83,7 +83,7 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         }
     }
     
-    func floatRatingView(_ ratingView: SDKRatingView, didUpdate rating: Float) {
+    public func floatRatingView(_ ratingView: SDKRatingView, didUpdate rating: Float) {
         printVal(object: NSString(format: "%.1f", self.floatRatingView.rating) as String)
     }
     

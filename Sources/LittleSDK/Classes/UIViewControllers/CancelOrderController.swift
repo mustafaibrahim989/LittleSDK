@@ -19,7 +19,7 @@ public class CancelOrderController: UIViewController {
     
     @IBOutlet weak var txtReason: UITextField!
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white.withAlphaComponent(0.6)
         showAnimate()
