@@ -15,7 +15,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var menuData: Data?
     
@@ -69,15 +69,15 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
-        let nib = UINib.init(nibName: "MenuCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "MenuCell", bundle: nil)
         menuTable.register(nib, forCellReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "MenuAddonsCell", bundle: sdkBundle!)
+        let nib2 = UINib.init(nibName: "MenuAddonsCell", bundle: nil)
         menuTable.register(nib2, forCellReuseIdentifier: "addonsCell")
         
-        let nib1 = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle!)
+        let nib1 = UINib.init(nibName: "MenuCategoryCell", bundle: nil)
         self.categoryCollection.register(nib1, forCellWithReuseIdentifier: "cell")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(btnSortPressed(_:)))
@@ -106,9 +106,9 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         }
         
         lblNoProducts.text = "\(restaurantName) is working on revamping its menu. Check back soon. You can also check out other restaurants while in here."
-        imgNoProducts.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: sdkBundle!)
+        imgNoProducts.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: nil)
         if imgNoProducts.image == nil {
-            imgNoProducts.image = getImage(named: "no_products", bundle: sdkBundle!)
+            imgNoProducts.image = getImage(named: "no_products", bundle: nil)
         }
         
         hideCart(total: 0.00)
@@ -190,7 +190,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                                     changeCartValues()
                                     printVal(object: cartItems)
                             
-                                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                                     view.loadPopup(title: "\(sortedArr[index!].foodName ?? "")", message: "\nTap proceed to add \(sortedArr[index!].foodName ?? "") to cart and proceed to checkout.\n", image: sortedArr[index!].foodImage ?? "", action: "")
                                     view.proceedAction = {
                                         SwiftMessages.hide()
@@ -274,18 +274,18 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         switch sortParam {
         case "None":
             lblSortBy.text = "Sort by?"
-            btnSortBy.setImage(getImage(named: "sort", bundle: sdkBundle!), for: UIControl.State())
+            btnSortBy.setImage(getImage(named: "sort", bundle: nil), for: UIControl.State())
             let indexPath = IndexPath(item: selectedCategory ?? 0, section: 0)
             filterByCategory(indexPath: indexPath)
         case "Price Ascending":
             lblSortBy.text = "\(sortParam.lowercased())"
-            btnSortBy.setImage(getImage(named: "sort_ascending", bundle: sdkBundle!), for: UIControl.State())
+            btnSortBy.setImage(getImage(named: "sort_ascending", bundle: nil), for: UIControl.State())
             sortedArr = sortedArr.sorted { $0.specialPrice ?? 0 < $1.specialPrice  ?? 0}
             finishedLoadingInitialTableCells = false
             menuTable.reloadData()
         case "Price Descending":
             lblSortBy.text = "\(sortParam.lowercased())"
-            btnSortBy.setImage(getImage(named: "sort-descending", bundle: sdkBundle!), for: UIControl.State())
+            btnSortBy.setImage(getImage(named: "sort-descending", bundle: nil), for: UIControl.State())
             sortedArr = sortedArr.sorted { $0.specialPrice ?? 0 > $1.specialPrice  ?? 0}
             finishedLoadingInitialTableCells = false
             menuTable.reloadData()
@@ -302,7 +302,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadFromExtra(_:)),name:NSNotification.Name(rawValue: observerName), object: nil)
         
-        let popOverVC = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ExtraItemsController") as! ExtraItemsController
+        let popOverVC = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "ExtraItemsController") as! ExtraItemsController
         self.addChild(popOverVC)
         popOverVC.selectedRestaurant = selectedRestaurant
         popOverVC.selectedFood = sortedArr[index]
@@ -478,7 +478,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         }
         dismissSwiftAlert()
         if proceed == "PROCEED" || goAhead {
-            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ConfirmOrderController") as? ConfirmOrderController {
+            if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "ConfirmOrderController") as? ConfirmOrderController {
                 viewController.selectedRestaurant = selectedRestaurant
                 viewController.paymentSourceArr = paymentSourceArr
                 viewController.cartItems = cartItems
@@ -563,7 +563,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                 
                 if myMenuID != "" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "\(menuArr[menuIDindex].foodName ?? "")", message: "\nTap proceed to add \(menuArr[menuIDindex].foodName ?? "") to cart and proceed to checkout.\n", image: menuArr[menuIDindex].foodImage ?? "", action: "")
                     view.proceedAction = {
                         SwiftMessages.hide()
@@ -650,7 +650,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         btnCancelSearch.isHidden = true
         filterByCategory(indexPath: IndexPath(row: selectedCategory!, section: 0))
         
-        let popOverVC = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "SearchController") as! SearchController
+        let popOverVC = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as! SearchController
         popOverVC.selectedRestaurant = selectedRestaurant
         self.addChild(popOverVC)
         popOverVC.view.frame = UIScreen.main.bounds
@@ -722,7 +722,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
             cell.imgMenu.layoutIfNeeded()
             
             SDWebImageManager.shared.imageCache.removeImage(forKey: menuItem.foodImage ?? "", cacheType: .all)
-            cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage: getImage(named: "default_food", bundle: sdkBundle!))
+            cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage: getImage(named: "default_food", bundle: nil))
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblDescription.text = "\(menuItem.foodDescription ?? "")"
             cell.lblMenuAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.specialPrice ?? 0.00)"
@@ -801,7 +801,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                 popoverExtraItems(index: indexPath.item)
             }
         } else {
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
             view.loadPopup(title: selectedRestaurant?.restaurantName ?? "", message: "\nYou cannot add \(sortedArr[indexPath.item].foodName ?? "the selected item") to cart as \(selectedRestaurant?.restaurantName ?? "this restaurant/shop") is closed. Kindly try again later or check out other Restaurants/Shops\n", image: sortedArr[indexPath.item].foodImage ?? "", action: "")
             view.proceedAction = {
                 SwiftMessages.hide()

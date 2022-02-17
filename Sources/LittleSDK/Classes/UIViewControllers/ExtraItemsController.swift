@@ -29,7 +29,7 @@ public class ExtraItemsController: UIViewController {
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var selectedRestaurant: Restaurant?
     var selectedFood: FoodMenu?
@@ -49,9 +49,9 @@ public class ExtraItemsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
-        let nib = UINib.init(nibName: "ExtraItemsCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "ExtraItemsCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
         
         tableView.reloadData()
@@ -289,15 +289,15 @@ extension ExtraItemsController: UITableViewDelegate, UITableViewDataSource {
         }
         if section.typeOfSelection == "ONE" {
             if selectedExtraItems.contains(where: { $0.extraItemID == item?.extraItemID }) {
-                cell.imgExtra.image = getImage(named: "deliver_check", bundle: sdkBundle!)
+                cell.imgExtra.image = getImage(named: "deliver_check", bundle: nil)
             } else {
-                cell.imgExtra.image = getImage(named: "deliver_uncheck", bundle: sdkBundle!)
+                cell.imgExtra.image = getImage(named: "deliver_uncheck", bundle: nil)
             }
         } else {
             if selectedExtraItems.contains(where: { $0.extraItemID == item?.extraItemID }) {
-                cell.imgExtra.image = getImage(named: "deliver_checkbox", bundle: sdkBundle!)
+                cell.imgExtra.image = getImage(named: "deliver_checkbox", bundle: nil)
             } else {
-                cell.imgExtra.image = getImage(named: "deliver_uncheckbox", bundle: sdkBundle!)
+                cell.imgExtra.image = getImage(named: "deliver_uncheckbox", bundle: nil)
             }
         }
         cell.selectionStyle = .none

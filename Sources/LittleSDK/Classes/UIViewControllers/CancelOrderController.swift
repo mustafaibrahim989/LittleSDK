@@ -59,9 +59,9 @@ public class CancelOrderController: UIViewController {
                 DispatchQueue.main.async(execute: {
                     if defaultMessage[0].status == "000" {
                         
-                        let bundle = Bundle(for: Self.self)
+//                        let bundle = Bundle(for: Self.self)
                         
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
+                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                         view.loadPopup(title: "", message: "\n\(defaultMessage[0].message ?? "Your \(self.restaurantName ?? "") order has been cancelled successfully.")\n", image: "", action: "")
                         view.proceedAction = {
                             SwiftMessages.hide()

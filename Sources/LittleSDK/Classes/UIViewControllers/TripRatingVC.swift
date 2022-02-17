@@ -10,7 +10,7 @@ import UIKit
 
 public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var popToRestorationID: UIViewController?
     var navShown: Bool?
@@ -38,11 +38,11 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         // Required float rating view params
-        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
-        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
+        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: nil)
+        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: nil)
         // Optional params
         self.floatRatingView.delegate = self
         self.floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
@@ -54,7 +54,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         self.floatRatingView.floatRatings = false
         
         
-        driverIm.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
+        driverIm.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: nil))
         driverNameLbl.text = "Rate \(am.getDRIVERNAME()!.capitalized)"
         vehicle = am.getVEHICLETYPE().capitalized
         

@@ -115,9 +115,9 @@ public class InitializeSDKVC: UIViewController {
     
     func showMissingParameter(param: String) {
         
-        let bundle = Bundle(for: Self.self)
+//        let bundle = Bundle(for: Self.self)
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nError encountered accessing Little SDK. You are missing a required parameter '\(param)'\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -173,13 +173,7 @@ public class InitializeSDKVC: UIViewController {
                     am.saveMyPlatform(data: theData.platform ?? "")
                     am.saveMyCodeBase(data: theData.codeBase ?? "")
                     
-                    let sdkBundle = Bundle(for: Self.self)
-                    
-                    let bundleURL = sdkBundle.resourceURL?.appendingPathComponent("LittleSDK.bundle")
-                    var resourceBundle: Bundle? = nil
-                    if let bundleURL = bundleURL {
-                        resourceBundle = Bundle(url: bundleURL)
-                    }
+//                    let sdkBundle = Bundle(for: Self.self)
                     
                     switch self.toWhere {
                     case .rides:
@@ -193,7 +187,7 @@ public class InitializeSDKVC: UIViewController {
                             }
                         }
                     case .umi:
-                        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
+                        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
                             viewController.popToRestorationID = self.popToRestorationID
                             viewController.navShown = self.navShown
                             viewController.paymentVC = self.paymentVC
@@ -202,7 +196,7 @@ public class InitializeSDKVC: UIViewController {
                             }
                         }
                     case .deliveries:
-                        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
+                        if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
                             viewController.popToRestorationID = self.popToRestorationID
                             viewController.navShown = self.navShown
                             viewController.paymentVC = self.paymentVC
@@ -218,9 +212,9 @@ public class InitializeSDKVC: UIViewController {
                     
                 } catch {
                     
-                    let bundle = Bundle(for: Self.self)
+//                    let bundle = Bundle(for: Self.self)
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "", message: "\nError encountered accessing Little SDK\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()

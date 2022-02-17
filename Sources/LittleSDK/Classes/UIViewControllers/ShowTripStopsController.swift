@@ -14,7 +14,7 @@ public class ShowTripStopsController: UIViewController {
 
     // MARK: - Properties
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var tableView: UITableView!
     
@@ -25,7 +25,7 @@ public class ShowTripStopsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         let doneStopsArr = tripDropOffDetails.filter({ $0.endedOn == "Y"})
         
@@ -48,7 +48,7 @@ public class ShowTripStopsController: UIViewController {
         view.backgroundColor = .white
         
         navigationItem.title = pageTitle
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: nil)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
     }
     
     func configureTableView() {
@@ -57,7 +57,7 @@ public class ShowTripStopsController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        let nib = UINib.init(nibName: "StopsCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "StopsCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: reuseId)
         
         tableView.separatorStyle = .none
@@ -118,7 +118,7 @@ extension ShowTripStopsController: UITableViewDelegate, UITableViewDataSource {
         }
         if stop.endedOn == "Y" {
             cell.overView.backgroundColor = color
-            cell.imgSelected.image = getImage(named: "deliver_check", bundle: sdkBundle!)
+            cell.imgSelected.image = getImage(named: "deliver_check", bundle: nil)
             if indexPath.item < tripDropOffDetails.count-1 {
                 let nextStop = tripDropOffDetails[indexPath.item+1]
                 if nextStop.endedOn == "Y" {
@@ -130,7 +130,7 @@ extension ShowTripStopsController: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.overView.backgroundColor = .lightGray
             cell.underView.backgroundColor = .lightGray
-            cell.imgSelected.image = getImage(named: "deliver_uncheck", bundle: sdkBundle!)
+            cell.imgSelected.image = getImage(named: "deliver_uncheck", bundle: nil)
         }
         
         cell.btnCall1.isHidden = true

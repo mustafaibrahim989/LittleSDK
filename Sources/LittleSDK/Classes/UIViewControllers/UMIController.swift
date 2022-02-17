@@ -14,7 +14,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var popToRestorationID: UIViewController?
     var navShown: Bool?
@@ -75,17 +75,17 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         reference = NSUUID().uuidString
         
-        let nib = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "MenuCategoryCell", bundle: nil)
         self.nearMerchCollection.register(nib, forCellWithReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "ExtraFieldsCell", bundle: sdkBundle!)
+        let nib2 = UINib.init(nibName: "ExtraFieldsCell", bundle: nil)
         extraTableview.register(nib2, forCellReuseIdentifier: "cell")
         
-        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
+        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: nil)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
         
         
@@ -161,7 +161,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadQRListening(_:)),name:NSNotification.Name(rawValue: "QRLISTENING"), object: nil)
         
-        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ScannerVC") as? ScannerVC {
+        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "ScannerVC") as? ScannerVC {
             if let navigator = navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -255,7 +255,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         if am.getPROMOTITLE() != "Invalid"  {
             promoValid()
             
-            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+            let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
             view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
             view.proceedAction = {
                 SwiftMessages.hide()
@@ -423,13 +423,13 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         leMessage = response.message ?? ""
                     }
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "", message: "\n\(leMessage)\n", image: "", action: "")
                     view.proceedAction = {
                         SwiftMessages.hide()
                         NotificationCenter.default.addObserver(self, selector: #selector(self.loadCancelRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
                         
-                        let popOverVC = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+                        let popOverVC = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
                         self.addChild(popOverVC)
                         popOverVC.driverName = self.merchantName
                         popOverVC.driverImage = self.merchantImage
@@ -459,11 +459,11 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         MESSAGE = response.message ?? ""
                     }
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "", message: "\n\(MESSAGE)\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()
-                        if let viewController = UIStoryboard(name: "UMI", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
+                        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
                            if let navigator = self.navigationController {
                                navigator.pushViewController(viewController, animated: true)
                            }
@@ -529,7 +529,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if response[0].status == "000" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "", message: "\n\(response[0].message ?? "")\n", image: "", action: "")
                     view.proceedAction = {
                         SwiftMessages.hide()
@@ -741,7 +741,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             am.saveAmount(data: "")
         }
-        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle!).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
+        if let viewController = UIStoryboard(name: "UMI", bundle: nil).instantiateViewController(withIdentifier: "LoadCashViewController") as? LoadCashViewController {
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }

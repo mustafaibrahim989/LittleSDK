@@ -56,7 +56,7 @@ class LocationsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        bundle = Bundle(for: Self.self)
+//        bundle = Bundle(for: Self.self)
         
         backgroundColor = .clear
         selectionStyle = .none
@@ -71,7 +71,7 @@ class LocationsCell: UITableViewCell {
         mainView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         
         mainView.addSubview(locationIconView)
-        locationIconView.image = getImage(named: "dropoff_location", bundle: bundle!)
+        locationIconView.image = getImage(named: "dropoff_location", bundle: nil)
         locationIconView.translatesAutoresizingMaskIntoConstraints = false
         locationIconView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor).isActive = true
         locationIconView.leftAnchor.constraint(equalTo: mainView.leftAnchor, constant: 10).isActive = true

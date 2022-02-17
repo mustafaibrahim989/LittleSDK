@@ -14,7 +14,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     var cartItems: [DeliveryTripDetail] = []
     var deliveryLogsArr: [DeliveryLog] = []
@@ -56,12 +56,12 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
-        let nib = UINib.init(nibName: "OrderSummaryCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "OrderSummaryCell", bundle: nil)
         menuTable.register(nib, forCellReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "DeliveryCell", bundle: sdkBundle!)
+        let nib2 = UINib.init(nibName: "DeliveryCell", bundle: nil)
         trackTable.register(nib2, forCellReuseIdentifier: "deliveryCell")
         
         if serviceTripID == "" || serviceTripID == nil {
@@ -162,7 +162,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         if serviceTripID == "" || serviceTripID == nil {
             showAlerts(title: "", message: "Your order will be picked by our rider shortly. Sit tight.")
         } else {
-            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TrackOrderController") as? TrackOrderController {
+            if let viewController = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "TrackOrderController") as? TrackOrderController {
                 viewController.trackID = serviceTripID!
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
@@ -173,7 +173,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     
     @IBAction func btnCancelOrder(_ sender: UIButton) {
         
-        let popOverVC = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "CancelOrderController") as! CancelOrderController
+        let popOverVC = UIStoryboard(name: "Deliveries", bundle: nil).instantiateViewController(withIdentifier: "CancelOrderController") as! CancelOrderController
         self.addChild(popOverVC)
         popOverVC.deliveryID = deliveryID ?? ""
         popOverVC.restaurantName = restaurantName ?? ""
@@ -201,7 +201,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadMerchantToRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
         
-        let popOverVC = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+        let popOverVC = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
         self.addChild(popOverVC)
         popOverVC.driverName = deliveryItem.name ?? ""
         popOverVC.view.frame = UIScreen.main.bounds
@@ -218,7 +218,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadDriverRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
         
-        let popOverVC = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+        let popOverVC = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
         self.addChild(popOverVC)
         popOverVC.driverName = deliveryItem.name ?? ""
         popOverVC.view.frame = UIScreen.main.bounds
@@ -278,7 +278,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 
                 if response[0].status == "000" {
                     
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                     view.loadPopup(title: "", message: "\n\(response[0].message ?? "")\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()
@@ -320,7 +320,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         self.view.removeAnimation()
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\n\(data ?? "Your delivery guy has been rated successfully.")\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -376,7 +376,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! OrderSummaryCell
             
-            cell.imgMenuImage.image = getImage(named: "default_food", bundle: sdkBundle!)
+            cell.imgMenuImage.image = getImage(named: "default_food", bundle: nil)
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblMenuAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.price1 ?? 0)"
             cell.lblMenuNumber.text = "x \(menuItem.quantity ?? 0)"
@@ -403,7 +403,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             if deliveryItem.eventTime != nil && deliveryItem.eventTime != "" {
                 let color = cn.littleSDKThemeColor
                 cell.overView.backgroundColor = color
-                cell.imgSelected.image = getImage(named: "deliver_check", bundle: sdkBundle!)
+                cell.imgSelected.image = getImage(named: "deliver_check", bundle: nil)
                 if indexPath.item < deliveryLogsArr.count-1 {
                     let item = deliveryLogsArr[indexPath.item+1].eventTime
                     if item != nil && item != "" {
@@ -417,7 +417,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             } else {
                 cell.overView.backgroundColor = .lightGray
                 cell.underView.backgroundColor = .lightGray
-                cell.imgSelected.image = getImage(named: "deliver_uncheck", bundle: sdkBundle!)
+                cell.imgSelected.image = getImage(named: "deliver_uncheck", bundle: nil)
             }
             if deliveryItem.mobileNumber != nil && deliveryItem.mobileNumber != "" {
                 cell.btnCall1.isHidden = true

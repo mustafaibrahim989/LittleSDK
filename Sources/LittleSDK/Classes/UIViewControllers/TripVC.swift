@@ -157,9 +157,9 @@ public class TripVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
-        path = sdkBundle!.path(forResource: "sparkle.wav", ofType:nil)!
+        path = Bundle.main.path(forResource: "sparkle.wav", ofType: nil)!
         
         let loadBackGround = createLoadingScreen()
         self.view.addSubview(loadBackGround)
@@ -167,14 +167,14 @@ public class TripVC: UIViewController {
         self.profPic.isHidden = true
         self.menuBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
         self.menuBtn.addTarget(self, action: #selector(postBackHome), for: .touchUpInside)
-        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle!), for: UIControl.State())
+        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: nil), for: UIControl.State())
         
         observersArray = ["HidePanic","ShowPanic"]
         NotificationCenter.default.addObserver(self, selector: #selector(hidePanicBtn),name:NSNotification.Name(rawValue: "HidePanic"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPanicBtn),name:NSNotification.Name(rawValue: "ShowPanic"), object: nil)
         
         progressSlider.isUserInteractionEnabled = false
-        progressSlider.setThumbImage(getImage(named: "sliderpoint", bundle: sdkBundle!), for: .normal)
+        progressSlider.setThumbImage(getImage(named: "sliderpoint", bundle: nil), for: .normal)
         
         am.saveFromTrip(data: true)
         am.saveOnTrip(data: true)
@@ -291,7 +291,7 @@ public class TripVC: UIViewController {
     
     func allowLocationAccessMessage() {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by emergency responders if the SOS button is pressed.\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -669,9 +669,9 @@ public class TripVC: UIViewController {
                 drawPath()
             }
             if doIRing == false {
-                btnMuteAudio.setImage(getImage(named: "volume_off", bundle: sdkBundle!), for: .normal)
+                btnMuteAudio.setImage(getImage(named: "volume_off", bundle: nil), for: .normal)
             } else {
-                btnMuteAudio.setImage(getImage(named: "volume_on", bundle: sdkBundle!), for: .normal)
+                btnMuteAudio.setImage(getImage(named: "volume_on", bundle: nil), for: .normal)
                 DispatchQueue.main.async {
                     self.playsound()
                 }
@@ -705,7 +705,7 @@ public class TripVC: UIViewController {
                     if am.getSOSMESSAGE() != "" {
                         panicBtnTxt.text = am.getSOSMESSAGE()
                         showPanicBtn()
-                        panicBtnInfoBtn.setImage(getImage(named: "info", bundle: sdkBundle!), for: .normal)
+                        panicBtnInfoBtn.setImage(getImage(named: "info", bundle: nil), for: .normal)
                     }
                 }
                 
@@ -748,7 +748,7 @@ public class TripVC: UIViewController {
             scheduleNotifications()
             am.saveOnTrip(data: false)
            
-            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "ReceiptVC") as? ReceiptVC {
+            if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "ReceiptVC") as? ReceiptVC {
                 if let navigator = self.navigationController {
                     viewController.popToRestorationID = popToRestorationID
                     viewController.navShown = navShown
@@ -764,7 +764,7 @@ public class TripVC: UIViewController {
             UNUserNotificationCenter.current().delegate = self
             scheduleNotifications()
             am.saveOnTrip(data: false)
-            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
+            if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
                 if let navigator = self.navigationController {
                     viewController.popToRestorationID = popToRestorationID
                     viewController.navShown = navShown
@@ -796,7 +796,7 @@ public class TripVC: UIViewController {
             
             NotificationCenter.default.addObserver(self, selector: #selector(loadCancelRate(_:)),name:NSNotification.Name(rawValue: "RATECANCEL"), object: nil)
             
-            let popOverVC = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
+            let popOverVC = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
             self.addChild(popOverVC)
             popOverVC.driverName = am.getDRIVERNAME()!
             popOverVC.driverImage = am.getDRIVERPICTURE()
@@ -968,8 +968,8 @@ public class TripVC: UIViewController {
     
     func showDriverDetails() {
         
-        imgDriverPic.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
-        imgCarType.sd_setImage(with: URL(string: am.getVEHICLEIMAGE()), placeholderImage: getImage(named: am.getVEHICLETYPE(), bundle: sdkBundle!))
+        imgDriverPic.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: nil))
+        imgCarType.sd_setImage(with: URL(string: am.getVEHICLEIMAGE()), placeholderImage: getImage(named: am.getVEHICLETYPE(), bundle: nil))
         let amount = Double(am.getRATING()!)
         if amount != nil {
             lblRating.text = String(format: "%.1f", amount!)
@@ -1045,11 +1045,11 @@ public class TripVC: UIViewController {
                     imageName = "ComfortNew1"
                 }
                 
-                let image = getImage(named: imageName, bundle: sdkBundle!)
+                let image = getImage(named: imageName, bundle: nil)
                 originMarker.icon = scaleImage(image: image!,size: 0.08)
             } else {
                 originMarker.rotation = CLLocationDegrees(0.0)
-                let image = getImage(named: "Map_Car", bundle: sdkBundle!)
+                let image = getImage(named: "Map_Car", bundle: nil)
                 originMarker.appearAnimation = .pop
                 originMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
                 originMarker.tracksViewChanges = true
@@ -1088,7 +1088,7 @@ public class TripVC: UIViewController {
                     }
                 }
                 
-                let image = getImage(named: imageName, bundle: sdkBundle!)
+                let image = getImage(named: imageName, bundle: nil)
                 originMarker.rotation = CLLocationDegrees(0.0)
                 originMarker.icon = scaleImage(image: image!,size: 0.7)
             }
@@ -1119,10 +1119,10 @@ public class TripVC: UIViewController {
     func muteAudio() {
         if doIRing {
             doIRing=false
-            btnMuteAudio.setImage(getImage(named: "volume_off", bundle: sdkBundle!), for: .normal)
+            btnMuteAudio.setImage(getImage(named: "volume_off", bundle: nil), for: .normal)
         }else{
             doIRing=true
-            btnMuteAudio.setImage(getImage(named: "volume_on", bundle: sdkBundle!), for: .normal)
+            btnMuteAudio.setImage(getImage(named: "volume_on", bundle: nil), for: .normal)
         }
     }
     
@@ -1159,7 +1159,7 @@ public class TripVC: UIViewController {
     
     func enterOtherReason() {
         
-        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nType reason for cancelling trip.\n", image: "", placeholderText: "Type Reason", type: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -1396,17 +1396,17 @@ public class TripVC: UIViewController {
     @IBAction func panicBtnInfoPressed(_ sender: UIButton) {
         if panicBtnInfoView.isHidden == true {
             panicBtnInfoView.isHidden = false
-            panicBtnInfoBtn.setImage(getImage(named: "cancel", bundle: sdkBundle!), for: .normal)
+            panicBtnInfoBtn.setImage(getImage(named: "cancel", bundle: nil), for: .normal)
         } else {
             panicBtnInfoView.isHidden = true
-            panicBtnInfoBtn.setImage(getImage(named: "info", bundle: sdkBundle!), for: .normal)
+            panicBtnInfoBtn.setImage(getImage(named: "info", bundle: nil), for: .normal)
         }
     }
     
     
     @IBAction func panicButtonPressed(_ sender: UIButton) {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nWould you like to send a distress call to authorities near you?\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -1470,7 +1470,7 @@ public class TripVC: UIViewController {
     }
     
     func showMessageOTP(title: String, message: String) {
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: title, message: "\n\(message)\n", image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()

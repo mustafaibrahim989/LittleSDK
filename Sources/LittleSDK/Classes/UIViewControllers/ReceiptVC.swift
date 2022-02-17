@@ -17,7 +17,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Variables
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     var popToRestorationID: UIViewController?
     var navShown: Bool?
     
@@ -63,7 +63,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         var amount = Double(am.getLIVEFARE())
         lblAmountToPay.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
@@ -153,7 +153,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         if success != nil {
             if success! {
-                if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
+                if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
                     if let navigator = self.navigationController {
                         viewController.popToRestorationID = self.popToRestorationID
                         viewController.navShown = self.navShown
@@ -196,9 +196,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! BreakdownTableViewCell
         if payCostArr[indexPath.item].contains("-") {
-            cell.plusMinusImage.image = getImage(named: "minus", bundle: sdkBundle!)
+            cell.plusMinusImage.image = getImage(named: "minus", bundle: nil)
         } else {
-            cell.plusMinusImage.image = getImage(named: "add", bundle: sdkBundle!)
+            cell.plusMinusImage.image = getImage(named: "add", bundle: nil)
         }
         let amount = Double(payCostArr[indexPath.item].replacingOccurrences(of: "-", with: ""))
         cell.payAmountLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)

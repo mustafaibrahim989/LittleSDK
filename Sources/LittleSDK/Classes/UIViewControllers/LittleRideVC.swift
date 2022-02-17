@@ -30,7 +30,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     var popToRestorationID: UIViewController?
     var navShown: Bool?
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     // yPositions
     
@@ -224,7 +224,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     var littleGreen: UIColor?
     var littleRed: UIColor?
     
-    
     var paymentVC: UIViewController?
     
     // IBOutlets
@@ -269,7 +268,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         setupCard()
         setupObservers()
@@ -305,7 +304,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     public override func viewDidAppear(_ animated: Bool) {
         gmsMapView.isUserInteractionEnabled = true
         forwardSkipDrivers = ""
-        getUserImage(userImage: profilePic, bundle: sdkBundle!)
+        getUserImage(userImage: profilePic, bundle: nil)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -456,7 +455,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         self.profilePic.isHidden = true
         self.menuBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
         self.menuBtn.addTarget(self, action: #selector(postBackHome), for: .touchUpInside)
-        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle!), for: UIControl.State())
+        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: nil), for: UIControl.State())
         
         
         approxDestinationTimeView.isHidden = true
@@ -607,7 +606,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         am.savePreferredDriverName(data: "")
         
         cardViewController.lblPreferredDriver.text = "Preferred Driver"
-        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
         cardViewController.imgPreferred.image = UIImage()
         cardViewController.btnPreferredDriver.alpha = 0.6
         cardViewController.btnPreferredDriver.layer.cornerRadius = 0
@@ -732,7 +731,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         stopMakeRequestStatusUpdate()
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nAre you sure you want to cancel ride?\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -960,7 +959,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func allowLocationAccessMessage() {
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help find the nearest cab to you. You can also type your location in pick-up location.\n", image: "", action: "")
         view.proceedAction = {
            SwiftMessages.hide()
@@ -989,7 +988,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             self.beforeSearchSetup()
             
-            if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
+            if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
                 if let navigator = self.navigationController {
                     // viewController.locationStopsArr = self.locationStopsArr
                     navigator.pushViewController(viewController, animated: true)
@@ -1011,7 +1010,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         self.removeLoadingPage()
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: "", message: "\nYou appear to be offline. Kindly check your Internet connection and try again.\n", image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
@@ -1294,11 +1293,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if open {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet_blue", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet_blue", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 0.6
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1316,11 +1315,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
         } else {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 0.6
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1356,11 +1355,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if open {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo_blue", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo_blue", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 0.6
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1378,11 +1377,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
         } else {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 0.6
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1406,11 +1405,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if open {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 1.0
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1428,11 +1427,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
         } else {
             
-            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+            cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+            cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
             if !preferredDriver {
                 cardViewController.imgPreferred.image = UIImage()
-                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: nil), for: UIControl.State())
                 cardViewController.btnPreferredDriver.alpha = 0.6
             } else {
                 cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1581,11 +1580,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         if confirmBtn == "Payments" {
             if open {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet_blue", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet_blue", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 0.6
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1607,11 +1606,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
             } else {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 0.6
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1639,11 +1638,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         } else if confirmBtn == "Promo" {
             if open {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo_blue", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo_blue", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 0.6
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1664,11 +1663,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
             } else {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 0.6
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1690,11 +1689,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         } else if confirmBtn == "Preferred" {
             if open {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred_blue", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 1.0
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1715,11 +1714,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
             } else {
                 
-                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: sdkBundle!), for: UIControl.State())
-                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: sdkBundle!), for: UIControl.State())
+                cardViewController.btnPayment.setImage(getImage(named: "new_wallet", bundle: nil), for: UIControl.State())
+                cardViewController.btnPromoCode.setImage(getImage(named: "new_promo", bundle: nil), for: UIControl.State())
                 if !preferredDriver {
                     cardViewController.imgPreferred.image = UIImage()
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.btnPreferredDriver.alpha = 0.6
                 } else {
                     cardViewController.btnPreferredDriver.alpha = 1.0
@@ -1917,7 +1916,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             originMarker = GMSMarker(position: startLoc)
             originMarker.map = self.gmsMapView
-            let image1 = scaleImage(image: getImage(named: "dropoff_location", bundle: sdkBundle!) ?? UIImage(), size: 0.1) // UIImage(contentsOfFile: "dropoff_location") ?? UIImage()
+            let image1 = scaleImage(image: getImage(named: "dropoff_location", bundle: nil) ?? UIImage(), size: 0.1) // UIImage(contentsOfFile: "dropoff_location") ?? UIImage()
             originMarker.icon = image1
             originMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
             originMarker.appearAnimation = GMSMarkerAnimation.pop
@@ -1937,7 +1936,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     
                     
                     
-                    let image2 = scaleImage(image: getImage(named: "pickup_location", bundle: sdkBundle!) ?? UIImage(), size: 0.1)
+                    let image2 = scaleImage(image: getImage(named: "pickup_location", bundle: nil) ?? UIImage(), size: 0.1)
                     destinationMarker.icon = image2
                     destinationMarker.groundAnchor = CGPoint(x: 0.5, y: 0.75)
                     destinationMarker.appearAnimation = GMSMarkerAnimation.pop
@@ -1946,7 +1945,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     var onTheWayMarker: GMSMarker!
                     onTheWayMarker = GMSMarker(position: eachLoc)
                     onTheWayMarker.map = self.gmsMapView
-                    let image2 = scaleImage(image: getImage(named: "dropoff_location", bundle: sdkBundle!) ?? UIImage(), size: 0.08)
+                    let image2 = scaleImage(image: getImage(named: "dropoff_location", bundle: nil) ?? UIImage(), size: 0.08)
                     onTheWayMarker.icon = image2
                     onTheWayMarker.groundAnchor = CGPoint(x: 0.5, y: 0.75)
                     onTheWayMarker.appearAnimation = GMSMarkerAnimation.pop
@@ -2119,15 +2118,15 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             let image = PaymentModes[indexPath.item].lowercased().replacingOccurrences(of: "", with: "")
             
             if image.contains("cash") {
-                cell.imgMenuItem.image = getImage(named: "new_cash", bundle: sdkBundle!) ?? UIImage()
+                cell.imgMenuItem.image = getImage(named: "new_cash", bundle: nil) ?? UIImage()
             } else if image.contains("bank") {
-                cell.imgMenuItem.image = getImage(named: "new_bank", bundle: sdkBundle!) ?? UIImage()
+                cell.imgMenuItem.image = getImage(named: "new_bank", bundle: nil) ?? UIImage()
             } else if image.contains("coins") {
-                cell.imgMenuItem.image = getImage(named: "new_little coins", bundle: sdkBundle!) ?? UIImage()
+                cell.imgMenuItem.image = getImage(named: "new_little coins", bundle: nil) ?? UIImage()
             } else if image.contains("mpesa") || image.contains("mtnmoney") || image.contains("mobilmoney") || image.contains("airtelmoney") {
-                cell.imgMenuItem.image = getImage(named: "new_mpesa", bundle: sdkBundle!) ?? UIImage()
+                cell.imgMenuItem.image = getImage(named: "new_mpesa", bundle: nil) ?? UIImage()
             } else {
-                cell.imgMenuItem.image = getImage(named: "new_card", bundle: sdkBundle!) ?? UIImage()
+                cell.imgMenuItem.image = getImage(named: "new_card", bundle: nil) ?? UIImage()
             }
             
             if selectedPaymentMode == indexPath.item {
@@ -2137,7 +2136,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     cell.imgCheckedItem.alpha = 0.3
                     cell.imgCheckedItem.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 }, completion: { finished in
-                    cell.imgMenuItem.image = getImage(named: "new_checked_blue", bundle: self.sdkBundle!) ?? UIImage()
+                    cell.imgMenuItem.image = getImage(named: "new_checked_blue", bundle: nil) ?? UIImage()
                     UIView.animate(withDuration: 0.2, animations: {
                         cell.imgCheckedItem.alpha = 1.0
                         cell.imgCheckedItem.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -2179,7 +2178,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 cell.driverNameConst.constant = 15
                 cell.layoutIfNeeded()
             }
-            cell.imgDriverPic.sd_setImage(with: URL(string: preferredDriversArr[indexPath.item].driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
+            cell.imgDriverPic.sd_setImage(with: URL(string: preferredDriversArr[indexPath.item].driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: nil))
             return cell
         }
     }
@@ -2337,7 +2336,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     am.savePreferredDriverName(data: "")
                     
                     cardViewController.lblPreferredDriver.text = "Preferred Driver"
-                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                    cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                     cardViewController.imgPreferred.image = UIImage()
                     cardViewController.btnPreferredDriver.alpha = 0.6
                     cardViewController.btnPreferredDriver.layer.cornerRadius = 0
@@ -2420,7 +2419,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             am.savePreferredDriverName(data: preferredDriversArr[indexPath.item].driverName ?? "")
             
             cardViewController.lblPreferredDriver.text = (preferredDriversArr[indexPath.item].driverName ?? "").capitalized
-            cardViewController.imgPreferred.sd_setImage(with: URL(string: preferredDriversArr[indexPath.item].driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
+            cardViewController.imgPreferred.sd_setImage(with: URL(string: preferredDriversArr[indexPath.item].driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: nil))
             
             let height = cardViewController.imgPreferred.frame.height/2
             cardViewController.btnPreferredDriver.setImage(UIImage(), for: UIControl.State())
@@ -2545,7 +2544,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     
                     self.beforeSearchSetup()
                     
-                    if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
+                    if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
                         if let navigator = self.navigationController {
                             navigator.pushViewController(viewController, animated: true)
                         }
@@ -2614,7 +2613,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if !promoVerified {
             
-            let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopoverEnterText", bundle: sdkBundle!)
+            let view: PopoverEnterText = try! SwiftMessages.viewFromNib(named: "PopoverEnterText", bundle: nil)
             view.loadPopup(title: "Add Promo", message: "\nType the promocode you want to use below and verify.\n", image: "", placeholderText: "Type Promo Code", type: "")
             view.proceedAction = {
                SwiftMessages.hide()
@@ -2808,7 +2807,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     @objc func btnShowCarDetailsPressed(_ sender: UIButton) {
         let index = sender.tag
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
         view.loadPopup(title: CarTypes[index], message: "\n\(carBannerText[index])\n", image: carBannerImage[index], action: "")
         view.proceedAction = {
             SwiftMessages.hide()
@@ -2892,7 +2891,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         cardViewController.lblPreferredDriver.text = "Preferred Driver"
         cardViewController.imgPreferred.image = UIImage()
-        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
         cardViewController.btnPreferredDriver.alpha = 0.6
         cardViewController.btnPreferredDriver.layer.cornerRadius = 0
         cardViewController.btnPreferredDriver.clipsToBounds = false
@@ -3147,7 +3146,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         beforeSearchSetup()
         
-        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
+        if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "SearchLocViewController") as? SearchLocViewController {
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -3166,7 +3165,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         beforeSearchSetup()
         
-        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "SearchMultiple") as? SearchMultiple {
+        if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "SearchMultiple") as? SearchMultiple {
             if let navigator = self.navigationController {
                 viewController.locationStopsArr = locationStopsArr
                 viewController.locationsEstimateSet = locationsEstimateSet
@@ -3529,7 +3528,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                             }
                         }
                         
-                        cardViewController.imgCarToRequest.image = getImage(named: CarTypes[selectedCarIndex].uppercased(), bundle: sdkBundle!)
+                        cardViewController.imgCarToRequest.image = getImage(named: CarTypes[selectedCarIndex].uppercased(), bundle: nil)
                         if CarTypes[selectedCarIndex] == "GOODS" {
                             cardViewController.lblCarToRequest.text = "Parcel: Medium"
                         } else if CarTypes[selectedCarIndex] == "PARCELS" {
@@ -3545,7 +3544,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         am.savePreferredDriverName(data: "")
                         
                         cardViewController.lblPreferredDriver.text = "Preferred Driver"
-                        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: sdkBundle!), for: UIControl.State())
+                        cardViewController.btnPreferredDriver.setImage(getImage(named: "new_preferred", bundle: nil), for: UIControl.State())
                         cardViewController.imgPreferred.image = UIImage()
                         cardViewController.btnPreferredDriver.alpha = 0.6
                         cardViewController.btnPreferredDriver.layer.cornerRadius = 0
@@ -3572,7 +3571,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     cardViewController.requestingLoadingView.removeAnimation()
                     cardViewController.requestingLoadingView.isHidden = true
                     
-                    cardViewController.imgCarToRequest.image = getImage(named: CarTypes[selectedCarIndex].uppercased(), bundle: sdkBundle!)
+                    cardViewController.imgCarToRequest.image = getImage(named: CarTypes[selectedCarIndex].uppercased(), bundle: nil)
                     cardViewController.lblCarToRequest.text = CarTypes[selectedCarIndex]
                     cardViewController.lblFareToPay.text = "\(carCostEstimate[selectedCarIndex])"
                     cardViewController.lblMinutesToWait.text = "\(carVTypeTimes[selectedCarIndex])"
@@ -3769,7 +3768,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             if am.getPROMOIMAGEURL() != "" {
                 
-                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
+                let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: nil)
                 view.loadPopup(title: am.getPROMOTITLE() ?? "", message: "\n\(am.getPROMOTEXT() ?? "")\n", image: am.getPROMOIMAGEURL() ?? "", action: "")
                 view.proceedAction = {
                     SwiftMessages.hide()
@@ -4261,7 +4260,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func removeAllKeysAndLogout() {
         let _ = LittleSDKKCWrapper.standard.removeAllKeys()
-        let domain = sdkBundle!.bundleIdentifier!
+        let domain = nil.bundleIdentifier!
         UserDefaults.standard.removePersistentDomain(forName: domain)
         UserDefaults.standard.synchronize()
     }
@@ -4808,7 +4807,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         am.savePaymentMode(data: PaymentMode)
                         am.savePaymentModeID(data: PaymentModeID)
                         
-                        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
+                        if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
                             if let navigator = self.navigationController {
                                 viewController.popToRestorationID = popToRestorationID
                                 viewController.navShown = navShown
@@ -4876,7 +4875,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             am.savePaymentMode(data: PaymentMode)
             am.savePaymentModeID(data: PaymentModeID)
             
-            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
+            if let viewController = UIStoryboard(name: "Trip", bundle: nil).instantiateViewController(withIdentifier: "TripVC") as? TripVC {
                 if let navigator = self.navigationController {
                     viewController.popToRestorationID = popToRestorationID
                     viewController.navShown = navShown
@@ -4984,9 +4983,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             marker.groundAnchor=CGPoint(x: 0.5, y: 0.5)
             marker.map = gmsMapView
             marker.rotation=list[i].getBearing()
-            let imv = UIImageView(image: scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle!)!, size: 0.08))
+            let imv = UIImageView(image: scaleImage(image: getImage(named: "ComfortNew1", bundle: nil)!, size: 0.08))
             if imv.image == nil {
-                imv.image = scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle!)!, size: 0.08)
+                imv.image = scaleImage(image: getImage(named: "ComfortNew1", bundle: nil)!, size: 0.08)
             }
             marker.iconView = imv
             marker.position = CLLocationCoordinate2DMake(list[i].getLatitude(),list[i].getLongitude())

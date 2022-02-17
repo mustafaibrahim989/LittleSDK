@@ -15,7 +15,7 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
     
     var isMerchant: Bool = false
     
-    var sdkBundle: Bundle?
+//    var sdkBundle: Bundle?
     
     @IBOutlet weak var lblDriverName: UILabel!
     @IBOutlet weak var imgDriverImage: UIImageView!
@@ -30,17 +30,17 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         
         self.view.backgroundColor = UIColor.white.withAlphaComponent(0.75)
         
-        sdkBundle = Bundle(for: Self.self)
+//        sdkBundle = Bundle(for: Self.self)
         
         let color = UIColor(hex: "#FFCC01")
         
         lblDriverName.text = "Rate \((driverName ?? "").capitalized)"
-        imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
+        imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: nil))
         lblPlaceHolder.text = "Share your experience you had with \((driverName ?? "").capitalized) to help us serve you better and improve our services (Optional)"
         
         // Required float rating view params
-        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
-        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
+        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: nil)
+        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: nil)
         // Optional params
         self.floatRatingView.tintColor = color
         self.floatRatingView.delegate = self
