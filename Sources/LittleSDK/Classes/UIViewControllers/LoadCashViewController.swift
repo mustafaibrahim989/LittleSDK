@@ -9,7 +9,7 @@
 import UIKit
 import SwiftMessages
 
-class LoadCashViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+public class LoadCashViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

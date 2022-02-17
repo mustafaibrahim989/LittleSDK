@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Constants
     

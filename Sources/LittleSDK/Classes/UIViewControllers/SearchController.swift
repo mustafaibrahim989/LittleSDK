@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchController: UIViewController, UITextFieldDelegate {
+public class SearchController: UIViewController, UITextFieldDelegate {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

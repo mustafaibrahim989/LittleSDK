@@ -10,7 +10,7 @@ import UIKit
 import SwiftMessages
 import SDWebImage
 
-class ProductController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+public class ProductController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

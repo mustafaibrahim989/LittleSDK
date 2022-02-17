@@ -9,7 +9,7 @@
 import UIKit
 import SwiftMessages
 
-class UMIController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+public class UMIController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

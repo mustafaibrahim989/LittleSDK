@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewPopoverController: UIViewController {
+public class NewPopoverController: UIViewController {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

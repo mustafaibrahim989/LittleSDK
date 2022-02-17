@@ -17,7 +17,7 @@ extension UIImageView: ShimmeringViewProtocol { }
 extension UITextView: ShimmeringViewProtocol { }
 extension UIStepper: ShimmeringViewProtocol { }
 
-class DeliveriesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+public class DeliveriesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

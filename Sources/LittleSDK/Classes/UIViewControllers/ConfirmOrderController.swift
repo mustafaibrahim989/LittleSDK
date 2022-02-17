@@ -10,7 +10,7 @@ import UIKit
 import SwiftMessages
 import SDWebImage
 
-class ConfirmOrderController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
+public class ConfirmOrderController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

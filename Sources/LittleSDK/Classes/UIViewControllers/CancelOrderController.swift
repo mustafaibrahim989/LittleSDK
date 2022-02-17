@@ -9,7 +9,7 @@
 import UIKit
 import SwiftMessages
 
-class CancelOrderController: UIViewController {
+public class CancelOrderController: UIViewController {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

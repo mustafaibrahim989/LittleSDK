@@ -7,7 +7,8 @@
 //
 
 import UIKit
-class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelegate {
+
+public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelegate {
     
     var driverImage: String?
     var driverName: String?

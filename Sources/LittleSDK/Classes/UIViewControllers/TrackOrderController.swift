@@ -11,7 +11,7 @@ import GoogleMaps
 import UIView_Shimmer
 import SwiftMessages
 
-class TrackOrderController: UIViewController {
+public class TrackOrderController: UIViewController {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

@@ -11,7 +11,7 @@ import GoogleMaps
 import GooglePlaces
 import SwiftMessages
 
-class SearchMultiple: UIViewController, UITableViewDataSource, UITableViewDelegate {
+public class SearchMultiple: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     let am = SDKAllMethods()

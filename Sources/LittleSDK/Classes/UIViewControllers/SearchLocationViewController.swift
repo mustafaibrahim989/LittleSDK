@@ -12,7 +12,7 @@ import CoreLocation
 
 private let reuseIdentifier = "locationCell"
 
-class SearchLocationViewController: UIViewController {
+public class SearchLocationViewController: UIViewController {
 
     // MARK: - Properties
     

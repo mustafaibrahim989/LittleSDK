@@ -24,7 +24,7 @@ class ExtraItemsCell: UITableViewCell {
     }
 }
 
-class ExtraItemsController: UIViewController {
+public class ExtraItemsController: UIViewController {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

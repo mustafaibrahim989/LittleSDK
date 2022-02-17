@@ -10,7 +10,7 @@ import Alamofire
 import NVActivityIndicatorView
 import SwiftMessages
 
-class InitializeSDKVC: UIViewController {
+public class InitializeSDKVC: UIViewController {
 
     // MARK: - Properties
     

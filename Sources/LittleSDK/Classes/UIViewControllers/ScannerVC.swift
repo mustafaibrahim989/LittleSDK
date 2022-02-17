@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 import SwiftMessages
 
-class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     let hc = SDKHandleCalls()
     

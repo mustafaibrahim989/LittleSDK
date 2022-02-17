@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CardViewController: UIViewController {
+public class CardViewController: UIViewController {
 
     @IBOutlet weak var handleArea: UIView!
     @IBOutlet weak var popularDropOffView: UIView!

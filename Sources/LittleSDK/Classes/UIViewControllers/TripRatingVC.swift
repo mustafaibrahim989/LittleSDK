@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TripRatingVC: UIViewController, SDKRatingViewDelegate {
+public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
     var sdkBundle: Bundle?
     

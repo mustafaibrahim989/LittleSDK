@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseId = "stopsCell"
 
-class ShowTripStopsController: UIViewController {
+public class ShowTripStopsController: UIViewController {
 
     // MARK: - Properties
     

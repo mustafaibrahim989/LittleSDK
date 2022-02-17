@@ -9,7 +9,7 @@
 import UIKit
 import UIView_Shimmer
 
-class OrderHistoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+public class OrderHistoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

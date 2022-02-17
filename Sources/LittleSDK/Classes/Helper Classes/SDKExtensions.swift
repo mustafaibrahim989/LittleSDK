@@ -515,7 +515,7 @@ extension UIViewController {
     }
 }
 
-extension UIApplication {
+public extension UIApplication {
     
     class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         

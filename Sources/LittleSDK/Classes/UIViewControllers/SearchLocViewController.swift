@@ -9,7 +9,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-class SearchLocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+public class SearchLocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     let am = SDKAllMethods()

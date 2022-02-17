@@ -16,7 +16,7 @@ import SwiftMessages
 import Alamofire
 import EasyNotificationBadge
 
-class TripVC: UIViewController {
+public class TripVC: UIViewController {
 
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()

@@ -9,7 +9,7 @@
 import UIKit
 import SwiftMessages
 
-class OrderSummaryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+public class OrderSummaryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let am = SDKAllMethods()
     let hc = SDKHandleCalls()
