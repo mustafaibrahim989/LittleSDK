@@ -414,9 +414,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         visualEffectView.frame = self.view.frame
         self.view.addSubview(visualEffectView)
         
-        let cardViewBundle = Bundle(for: LittleRideVC.self)
-        
-        cardViewController = CardViewController(nibName:"CardViewController", bundle: cardViewBundle)
+        cardViewController = CardViewController(nibName: "CardViewController", bundle: sdkBundle!)
         self.addChild(cardViewController)
         self.view.addSubview(cardViewController.view)
         
@@ -487,24 +485,22 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         cardViewController.driveMeCarsCollectionView.dataSource = self
         cardViewController.popularDropOffTable.dataSource = self
         
-        let cellBundle = Bundle(for: LittleRideVC.self)
-        
-        let nib = UINib.init(nibName: "NewCartypeTableViewCell", bundle: cellBundle)
+        let nib = UINib.init(nibName: "NewCartypeTableViewCell", bundle: sdkBundle!)
         cardViewController.carTypeTableView.register(nib, forCellReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "NewImgLblTableViewCell", bundle: cellBundle)
+        let nib2 = UINib.init(nibName: "NewImgLblTableViewCell", bundle: sdkBundle!)
         cardViewController.paymentOptionsTableView.register(nib2, forCellReuseIdentifier: "cell")
         
-        let nib3 = UINib.init(nibName: "NewPreferredTableViewCell", bundle: cellBundle)
+        let nib3 = UINib.init(nibName: "NewPreferredTableViewCell", bundle: sdkBundle!)
         cardViewController.preferredDriverTableView.register(nib3, forCellReuseIdentifier: "cell")
         
-        let nib4 = UINib.init(nibName: "PlaceSuggestionCell", bundle: cellBundle)
+        let nib4 = UINib.init(nibName: "PlaceSuggestionCell", bundle: sdkBundle!)
         cardViewController.suggestedPlacesCollectionView.register(nib4, forCellWithReuseIdentifier: "cell")
         
-        let nib5 = UINib.init(nibName: "DestinationCell", bundle: cellBundle)
+        let nib5 = UINib.init(nibName: "DestinationCell", bundle: sdkBundle!)
         cardViewController.popularDropOffTable.register(nib5, forCellReuseIdentifier: "cell")
         
-        let nib6 = UINib.init(nibName: "DriveMeCell", bundle: cellBundle)
+        let nib6 = UINib.init(nibName: "DriveMeCell", bundle: sdkBundle!)
         cardViewController.driveMeCarsCollectionView.register(nib6, forCellWithReuseIdentifier: "cell")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(backToCarTypes))
