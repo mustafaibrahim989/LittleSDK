@@ -29,7 +29,6 @@ public class TripVC: UIViewController {
     var navShown: Bool?
     
     var observersArray: [String] = []
-    var messagesArr: [ChatMessage] = []
     var tripDropOffDetails: [TripDropOffDetail] = []
     
     var arrived = false

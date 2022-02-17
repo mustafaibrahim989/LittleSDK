@@ -60,7 +60,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     

@@ -497,7 +497,7 @@ extension SearchLocationViewController: UITableViewDelegate, UITableViewDataSour
 }
 
 extension SearchLocationViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
+    public func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         if searchBar.text != "" && locationSearch != searchBar.text && (searchBar.text?.count ?? 0) > 2 {
             startLoadingResults()
