@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,7 +13,7 @@
         <!--UMI-->
         <scene sceneID="auo-Nh-vbd">
             <objects>
-                <viewController storyboardIdentifier="UMIController" title="UMI" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a4d-eg-q6A" customClass="UMIController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UMIController" title="UMI" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a4d-eg-q6A" customClass="UMIController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dq8-HE-oLC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -476,7 +477,7 @@
         <!--Scan QR-->
         <scene sceneID="uqd-My-wnw">
             <objects>
-                <viewController storyboardIdentifier="ScannerVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TWu-Bf-jCB" customClass="ScannerVC" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScannerVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TWu-Bf-jCB" customClass="ScannerVC" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="peW-uy-7SU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -495,7 +496,7 @@
         <!--Load Cash-->
         <scene sceneID="qi8-oP-OE4">
             <objects>
-                <viewController storyboardIdentifier="LoadCashViewController" title="Load Cash" useStoryboardIdentifierAsRestorationIdentifier="YES" id="R8X-XQ-R5T" customClass="LoadCashViewController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoadCashViewController" title="Load Cash" useStoryboardIdentifierAsRestorationIdentifier="YES" id="R8X-XQ-R5T" customClass="LoadCashViewController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wPz-pJ-1Pm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -939,7 +940,7 @@
         <image name="gift_promo_sent" width="25" height="25"/>
         <image name="umi_logo" width="995" height="256"/>
         <namedColor name="littleBlue">
-            <color red="0.53333333333333333" green="0.10980392156862745" blue="0.33725490196078434" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleElevatedViews">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

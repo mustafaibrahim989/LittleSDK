@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -17,7 +18,7 @@
         <!--Delivery-->
         <scene sceneID="NUb-ho-dNs">
             <objects>
-                <viewController storyboardIdentifier="DeliveriesController" title="Delivery" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bU5-Vh-H7x" customClass="DeliveriesController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DeliveriesController" title="Delivery" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bU5-Vh-H7x" customClass="DeliveriesController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rib-V0-MG9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -296,7 +297,7 @@
         <!--Order History-->
         <scene sceneID="9ZA-s4-xa1">
             <objects>
-                <viewController storyboardIdentifier="OrderHistoryController" title="Order History" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MnU-WY-oKZ" customClass="OrderHistoryController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OrderHistoryController" title="Order History" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MnU-WY-oKZ" customClass="OrderHistoryController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kB0-IZ-e1I">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -365,7 +366,7 @@
         <!--Order Summary-->
         <scene sceneID="ylj-sc-70w">
             <objects>
-                <viewController storyboardIdentifier="OrderSummaryController" title="Order Summary" useStoryboardIdentifierAsRestorationIdentifier="YES" id="k0p-AJ-Xbc" customClass="OrderSummaryController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OrderSummaryController" title="Order Summary" useStoryboardIdentifierAsRestorationIdentifier="YES" id="k0p-AJ-Xbc" customClass="OrderSummaryController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bic-7I-cDe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -618,7 +619,7 @@
         <!--Menu-->
         <scene sceneID="WR6-dP-Drf">
             <objects>
-                <viewController storyboardIdentifier="ProductController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PS3-m7-GVo" customClass="ProductController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProductController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PS3-m7-GVo" customClass="ProductController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TPD-U7-jJq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -936,7 +937,7 @@
         <!--Confirm Order-->
         <scene sceneID="jhD-Xj-jYF">
             <objects>
-                <viewController storyboardIdentifier="ConfirmOrderController" title="Confirm Order" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yQ2-Dh-Oru" customClass="ConfirmOrderController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConfirmOrderController" title="Confirm Order" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yQ2-Dh-Oru" customClass="ConfirmOrderController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BXa-I6-f19">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1499,7 +1500,7 @@
         <!--  -->
         <scene sceneID="1bx-Oh-VNx">
             <objects>
-                <viewController storyboardIdentifier="SearchController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="aNI-iM-257" customClass="SearchController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="aNI-iM-257" customClass="SearchController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yBb-rn-OGj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1613,7 +1614,7 @@
         <!--  -->
         <scene sceneID="FlK-tk-fFT">
             <objects>
-                <viewController storyboardIdentifier="ExtraItemsController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sgd-I8-xO7" customClass="ExtraItemsController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExtraItemsController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sgd-I8-xO7" customClass="ExtraItemsController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3St-is-n1e">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1727,7 +1728,7 @@
         <!--  -->
         <scene sceneID="6xV-kG-28y">
             <objects>
-                <viewController storyboardIdentifier="TrackOrderController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="LEP-JD-6zr" customClass="TrackOrderController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TrackOrderController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="LEP-JD-6zr" customClass="TrackOrderController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MSR-7t-Mmj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1991,7 +1992,7 @@
         <!--  -->
         <scene sceneID="2UW-e3-TOi">
             <objects>
-                <viewController storyboardIdentifier="CancelOrderController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="Azd-bw-iLj" customClass="CancelOrderController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CancelOrderController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="Azd-bw-iLj" customClass="CancelOrderController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="A5r-RV-QZz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2130,7 +2131,7 @@
         <!--  -->
         <scene sceneID="Yr6-Ud-kDz">
             <objects>
-                <viewController storyboardIdentifier="NewPopoverController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="BLM-pI-cNo" customClass="NewPopoverController" customModule="little" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewPopoverController" title="  " useStoryboardIdentifierAsRestorationIdentifier="YES" id="BLM-pI-cNo" customClass="NewPopoverController" customModule="LittleSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oJt-S5-16d">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2289,13 +2290,13 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="littleBlue">
-            <color red="0.53333333333333333" green="0.10980392156862745" blue="0.33725490196078434" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleBlueInverse">
-            <color red="0.24705882352941178" green="0.039215686274509803" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.016000000759959221" green="0.067000001668930054" blue="0.16500000655651093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleCellBackgrounds">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="littleElevatedViews">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2304,7 +2305,7 @@
             <color red="0.25099998712539673" green="0.25099998712539673" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littlePink">
-            <color red="0.49803921568627452" green="0.73725490196078436" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.95300000905990601" green="0.17599999904632568" blue="0.33700001239776611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleWhite">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
