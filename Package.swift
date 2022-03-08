@@ -22,7 +22,7 @@ let package = Package(
         .package(name: "UIView-Shimmer", url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
         .package(name: "EasyNotificationBadge", url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),
         .package(name: "GoogleMaps", url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", from: "6.0.0"),
-        .package(name: "Alamofire", url: "https://github.com/Alamofire/Alamofire.git", from: "5.0.0"),
+        .package(name: "Alamofire", url: "https://github.com/Alamofire/Alamofire.git", .exact("5.4.4")),
         .package(name: "SDWebImage", url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.0.0"),
         .package(name: "IQKeyboardManagerSwift", url: "https://github.com/hackiftekhar/IQKeyboardManager", from: "6.0.5"),
     ],
