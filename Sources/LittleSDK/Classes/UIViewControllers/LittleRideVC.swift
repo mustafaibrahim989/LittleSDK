@@ -305,7 +305,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     public override func viewDidAppear(_ animated: Bool) {
         gmsMapView.isUserInteractionEnabled = true
         forwardSkipDrivers = ""
-        getUserImage(userImage: profilePic, bundle: sdkBundle!)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
