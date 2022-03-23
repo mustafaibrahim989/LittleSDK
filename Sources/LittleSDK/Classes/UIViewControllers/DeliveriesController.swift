@@ -119,21 +119,21 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             imgNoShops.image = getImage(named: "no_products", bundle: sdkBundle!)
         }
         
-        if fromSearch {
-            fromSearch = false
-            getRestaurants()
-        } else {
-            
-            btnSearch.isEnabled = false
-            checkLocation()
-        }
-        
         if am.getFromConfirmOrder() {
             am.saveFromConfirmOrder(data: false)
             if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderHistoryController") as? OrderHistoryController {
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
+            }
+        } else {
+            if fromSearch {
+                fromSearch = false
+                getRestaurants()
+            } else {
+                
+                btnSearch.isEnabled = false
+                checkLocation()
             }
         }
         
