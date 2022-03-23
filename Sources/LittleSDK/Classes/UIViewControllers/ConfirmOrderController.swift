@@ -487,14 +487,14 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         } else if total < 0.00 {
             lblTotalCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) 0.00"
         } else {
-            let color = cn.littleSDKThemeColor
-            btnConfirmOrder.backgroundColor = cn.littleSDKThemeColor
+            let color = SDKConstants.littleSDKThemeColor
+            btnConfirmOrder.backgroundColor = SDKConstants.littleSDKThemeColor
         }
     }
     
     func promoValid() {
         promoIsValid = true
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = false
         promoIs = txtPromoCode.text!
@@ -504,7 +504,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     func promoInvalid() {
         promoIsValid = false
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = true
         promoIs = ""
@@ -567,7 +567,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBAction func cashSourcePressed(_ sender: UIButton) {
         let paymentOptions = UIAlertController(title: nil, message: "Choose Payment Mode", preferredStyle: .actionSheet)
         
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         
         for i in (0..<paymentSourceArr.count) {
             let source = paymentSourceArr[i]
@@ -595,7 +595,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBAction func btnDeliveryModePressed(_ sender: UIButton) {
         let options = UIAlertController(title: nil, message: "Choose Delivery Mode", preferredStyle: .actionSheet)
         
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         
         for i in (0..<(selectedRestaurant?.deliveryModes?.count ?? 0)) {
             let source = selectedRestaurant?.deliveryModes?[i]
@@ -699,7 +699,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let menuItem = menuArr[indexPath.item]
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         if menuItem.extraItems?.count ?? 0 > 0 {
             

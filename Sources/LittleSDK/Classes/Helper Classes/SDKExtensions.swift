@@ -189,7 +189,7 @@ extension UIView {
         backView.alpha = 0.0
         backView.backgroundColor = .white
         
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         let activityView: NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect(origin: CGPoint(x: backView.bounds.minX, y: backView.bounds.minY),size: CGSize(width: 40, height: 40)), type: NVActivityIndicatorType.circleStrokeSpin, color:  color)
         activityView.center = CGPoint(x: CGFloat(self.bounds.midX), y: CGFloat(self.bounds.midY))
@@ -207,7 +207,7 @@ extension UIView {
         
         self.removeAnimation()
         
-        let color = cn.littleSDKDarkThemeColor
+        let color = SDKConstants.littleSDKDarkThemeColor
         
         let backView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0),size: CGSize(width: self.bounds.width, height: self.bounds.height)))
         backView.tag = 1030
@@ -230,7 +230,7 @@ extension UIView {
         
         self.removeAnimation()
         
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         let backView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0),size: CGSize(width: self.bounds.width, height: self.bounds.height)))
         backView.tag = 1030
@@ -312,7 +312,7 @@ extension UIViewController {
         
         endEditSDK()
         
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         func alertConfig() -> SwiftMessages.Config {
             var config = SwiftMessages.defaultConfig
@@ -382,7 +382,7 @@ extension UIViewController {
         
         endEditSDK()
         
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         func alertConfig() -> SwiftMessages.Config {
             var config = SwiftMessages.defaultConfig
@@ -455,7 +455,7 @@ extension UIViewController {
         
         let loadBackGround = UIView(frame: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(UIScreen.main.bounds.size.width), height: CGFloat(UIScreen.main.bounds.size.height)))
         loadBackGround.tag = 1010
-        loadBackGround.backgroundColor = cn.littleSDKThemeColor
+        loadBackGround.backgroundColor = SDKConstants.littleSDKThemeColor
         
         let activityView: NVActivityIndicatorView = NVActivityIndicatorView(frame: CGRect(origin: CGPoint(x: 0, y: 0),size: CGSize(width: 40, height: 40)), type: NVActivityIndicatorType.ballPulse, color: .white)
         let superCenter = CGPoint(x: CGFloat(UIScreen.main.bounds.midX), y: CGFloat(UIScreen.main.bounds.midY))
@@ -667,7 +667,7 @@ extension Date {
 
 public func typingStatus(text: String) {
    let message = text
-    let color = cn.littleSDKThemeColor
+    let color = SDKConstants.littleSDKThemeColor
     func alertConfig() -> SwiftMessages.Config {
         var config = SwiftMessages.defaultConfig
         config.duration = .forever

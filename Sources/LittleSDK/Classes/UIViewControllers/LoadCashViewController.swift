@@ -493,7 +493,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     @IBAction func cashSourcePressed(_ sender: UIButton) {
         let cashSourceOptions = UIAlertController(title: nil, message: "Select cash source", preferredStyle: .actionSheet)
         
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         
         for source in walletArr {
             let reasonBtn = UIAlertAction(title: source.walletName ?? "", style: .default, handler: {
@@ -536,7 +536,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
     @IBAction func btnToWalletPressed(_ sender: UIButton) {
         let cashSourceOptions = UIAlertController(title: nil, message: "Select wallet to load", preferredStyle: .actionSheet)
         
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         
         for source in toWalletArr {
             let reasonBtn = UIAlertAction(title: source.toWalletName ?? "", style: .default, handler: {

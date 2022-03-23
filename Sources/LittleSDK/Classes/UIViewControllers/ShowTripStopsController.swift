@@ -99,7 +99,7 @@ extension ShowTripStopsController: UITableViewDelegate, UITableViewDataSource {
         
         let stop = tripDropOffDetails[indexPath.item]
         
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseId) as! StopsCell
         

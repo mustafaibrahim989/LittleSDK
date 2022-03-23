@@ -432,7 +432,7 @@ public class TrackOrderController: UIViewController {
         if (self.i < animatePath.count()) {
             self.animationPath.add(animatePath.coordinate(at: self.i))
             self.animationPolyline.path = self.animationPath
-            self.animationPolyline.strokeColor = cn.littleSDKThemeColor
+            self.animationPolyline.strokeColor = SDKConstants.littleSDKThemeColor
             self.animationPolyline.strokeWidth = 4
             self.animationPolyline.map = self.gmsMapView
             self.i += 1
@@ -538,7 +538,7 @@ public class TrackOrderController: UIViewController {
 extension TrackOrderController: GMSMapViewDelegate{
     
     func placeMarkerOnCenter(centerMapCoordinate:CLLocationCoordinate2D) {
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         if marker == nil {
             marker = GMSMarker()
             marker.icon = GMSMarker.markerImage(with: color)

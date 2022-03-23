@@ -65,9 +65,9 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         trackTable.register(nib2, forCellReuseIdentifier: "deliveryCell")
         
         if serviceTripID == "" || serviceTripID == nil {
-            btnTrackOrder.backgroundColor = cn.littleSDKLabelColor
+            btnTrackOrder.backgroundColor = SDKConstants.littleSDKLabelColor
         } else {
-            btnTrackOrder.backgroundColor = cn.littleSDKThemeColor
+            btnTrackOrder.backgroundColor = SDKConstants.littleSDKThemeColor
         }
         
         self.menuTable.estimatedRowHeight = 80
@@ -401,7 +401,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             }
             cell.lblTime.text = deliveryItem.eventTime ?? ""
             if deliveryItem.eventTime != nil && deliveryItem.eventTime != "" {
-                let color = cn.littleSDKThemeColor
+                let color = SDKConstants.littleSDKThemeColor
                 cell.overView.backgroundColor = color
                 cell.imgSelected.image = getImage(named: "deliver_check", bundle: sdkBundle!)
                 if indexPath.item < deliveryLogsArr.count-1 {

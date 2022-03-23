@@ -1128,7 +1128,7 @@ public class TripVC: UIViewController {
     
     func cancelRide() {
         let cancelOptions = UIAlertController(title: nil, message: "Reason for cancelling", preferredStyle: .actionSheet)
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         for reason in reasonsArr {
             let reasonBtn = UIAlertAction(title: reason, style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
@@ -1351,7 +1351,7 @@ public class TripVC: UIViewController {
         if (self.i < animatePath.count()) {
             self.animationPath.add(animatePath.coordinate(at: self.i))
             self.animationPolyline.path = self.animationPath
-            self.animationPolyline.strokeColor = cn.littleSDKThemeColor
+            self.animationPolyline.strokeColor = SDKConstants.littleSDKThemeColor
             self.animationPolyline.strokeWidth = 4
             self.animationPolyline.map = self.gmsMapView
             self.i += 1
@@ -1556,7 +1556,7 @@ extension TripVC: CLLocationManagerDelegate {
 
 extension TripVC: GMSMapViewDelegate{
     func placeMarkerOnCenter(centerMapCoordinate:CLLocationCoordinate2D) {
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         if marker == nil {
             marker = GMSMarker()
             marker.icon = GMSMarker.markerImage(with: color)

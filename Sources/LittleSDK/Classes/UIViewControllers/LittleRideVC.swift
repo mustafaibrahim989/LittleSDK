@@ -540,7 +540,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         //
         
-        littleBlue = cn.littleSDKThemeColor
+        littleBlue = SDKConstants.littleSDKThemeColor
        
     }
     
@@ -1892,7 +1892,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 let text = (approxMinsLbl.text)!
                 let underlineAttriString = NSMutableAttributedString(string: text)
                 let range1 = (text as NSString).range(of: totalTime)
-                let color = cn.littleSDKThemeColor
+                let color = SDKConstants.littleSDKThemeColor
                 underlineAttriString.addAttribute(.font, value: boldFont, range: range1)
                 underlineAttriString.addAttribute(.foregroundColor, value: color, range: range1)
                 approxMinsLbl.attributedText = underlineAttriString
@@ -1997,7 +1997,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         if (self.i < path.count()) {
             self.animationPath.add(path.coordinate(at: self.i))
             self.animationPolyline.path = self.animationPath
-            self.animationPolyline.strokeColor = cn.littleSDKThemeColor
+            self.animationPolyline.strokeColor = SDKConstants.littleSDKThemeColor
             self.animationPolyline.strokeWidth = 4
             self.animationPolyline.map = self.gmsMapView
             self.i += 1
@@ -2480,9 +2480,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             if SuggestionsArr?[indexPath.item] == "View Approved" {
                 cell.lblPlaceSuggested.textColor = .white
-                cell.backGround.backgroundColor = cn.littleSDKThemeColor
+                cell.backGround.backgroundColor = SDKConstants.littleSDKThemeColor
             } else {
-                cell.lblPlaceSuggested.textColor = cn.littleSDKLabelColor
+                cell.lblPlaceSuggested.textColor = SDKConstants.littleSDKLabelColor
                 cell.backGround.backgroundColor = .white
             }
             
@@ -3010,7 +3010,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
                 }
                 cardViewController.lblPaymentMode.textColor = littleBlue
-                cardViewController.btnRequest.backgroundColor = cn.littleSDKThemeColor
+                cardViewController.btnRequest.backgroundColor = SDKConstants.littleSDKThemeColor
                 
                 if CarTypes.count > 0 && selectedCarIndex <= CarTypes.count {
                     cardViewController.btnRequest.setTitle("Request \(CarTypes[selectedCarIndex].capitalized)", for: UIControl.State())
@@ -5007,7 +5007,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
 
 extension LittleRideVC: GMSMapViewDelegate {
     func placeMarkerOnCenter(centerMapCoordinate:CLLocationCoordinate2D) {
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         if marker == nil {
             marker = GMSMarker()
             marker.icon = GMSMarker.markerImage(with: color)

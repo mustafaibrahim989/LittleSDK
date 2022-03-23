@@ -862,15 +862,15 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
                 if selectedCategory != nil {
                     if selectedCategory == indexPath.item {
-                        cell.categoryView.backgroundColor = cn.littleSDKThemeColor
+                        cell.categoryView.backgroundColor = SDKConstants.littleSDKThemeColor
                         cell.lblCategory.textColor = .white
                     } else {
-                        cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-                        cell.lblCategory.textColor = cn.littleSDKLabelColor
+                        cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+                        cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
                     }
                 } else {
-                    cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-                    cell.lblCategory.textColor = cn.littleSDKLabelColor
+                    cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+                    cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
                 }
                 cell.lblCategory.text = categoryArr[indexPath.item]
             

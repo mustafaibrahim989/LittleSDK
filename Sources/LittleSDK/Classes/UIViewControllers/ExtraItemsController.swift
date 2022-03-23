@@ -105,7 +105,7 @@ public class ExtraItemsController: UIViewController {
                         for item in selectedExtraItems {
                             if each.groupDetails?.contains(where: { $0.extraItemID == item.extraItemID}) ?? false {
                                 self.btnProceed.isEnabled = true
-                                self.btnProceed.backgroundColor = cn.littleSDKThemeColor
+                                self.btnProceed.backgroundColor = SDKConstants.littleSDKThemeColor
                                 self.proceed = "PROCEED"
                                 break
                             } else {
@@ -124,7 +124,7 @@ public class ExtraItemsController: UIViewController {
         } else {
             self.proceed = "PROCEED"
             self.btnProceed.isEnabled = true
-            self.btnProceed.backgroundColor = cn.littleSDKThemeColor
+            self.btnProceed.backgroundColor = SDKConstants.littleSDKThemeColor
         }
     }
     
@@ -227,7 +227,7 @@ extension ExtraItemsController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         let view = UIView(frame: CGRect.zero)
         view.backgroundColor = .white

@@ -622,7 +622,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     @IBAction func btnSortPressed(_ sender: UIButton) {
         let options = UIAlertController(title: nil, message: "Sort by", preferredStyle: .actionSheet)
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         for i in (0..<sortByArr.count) {
             let sourceBtn = UIAlertAction(title: sortByArr[i], style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
@@ -667,7 +667,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let menuItem = sortedArr[indexPath.item]
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         
         if menuItem.extraItems?.count ?? 0 > 0 {
             
@@ -872,15 +872,15 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
         if selectedCategory != nil {
             if selectedCategory == indexPath.item {
-                cell.categoryView.backgroundColor = cn.littleSDKThemeColor
+                cell.categoryView.backgroundColor = SDKConstants.littleSDKThemeColor
                 cell.lblCategory.textColor = .white
             } else {
-                cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-                cell.lblCategory.textColor = cn.littleSDKLabelColor
+                cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+                cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
             }
         } else {
-            cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-            cell.lblCategory.textColor = cn.littleSDKLabelColor
+            cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+            cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
         }
         cell.lblCategory.text = categoryArr[indexPath.item]
     

@@ -579,7 +579,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func promoValid() {
         promoIsValid = true
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = false
         promoIs = txtPromoCode.text!
@@ -587,7 +587,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func promoInvalid() {
         promoIsValid = false
-        let color = cn.littleSDKThemeColor
+        let color = SDKConstants.littleSDKThemeColor
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = true
         promoIs = ""
@@ -712,7 +712,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func btnWalletPressed(_ sender: UIButton) {
         let cashSourceOptions = UIAlertController(title: nil, message: "Select wallet", preferredStyle: .actionSheet)
-        let normalColor = cn.littleSDKThemeColor
+        let normalColor = SDKConstants.littleSDKThemeColor
         for source in walletArr {
             let btn = UIAlertAction(title: "\(source.walletName ?? "")", style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
@@ -825,15 +825,15 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! MenuCategoryCell
         if selectedMerchant != nil {
             if selectedMerchant == indexPath.item {
-                cell.categoryView.backgroundColor = cn.littleSDKThemeColor
+                cell.categoryView.backgroundColor = SDKConstants.littleSDKThemeColor
                 cell.lblCategory.textColor = .white
             } else {
-                cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-                cell.lblCategory.textColor = cn.littleSDKLabelColor
+                cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+                cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
             }
         } else {
-            cell.categoryView.backgroundColor = cn.littleSDKCellBackgroundColor
-            cell.lblCategory.textColor = cn.littleSDKLabelColor
+            cell.categoryView.backgroundColor = SDKConstants.littleSDKCellBackgroundColor
+            cell.lblCategory.textColor = SDKConstants.littleSDKLabelColor
         }
         cell.lblCategory.text = merchantsArr[indexPath.item].name ?? ""
         

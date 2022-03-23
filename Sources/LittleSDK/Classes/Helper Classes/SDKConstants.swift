@@ -34,10 +34,10 @@ class SDKConstants {
     
     // Colors
     
-    let littleSDKThemeColor = UIColor(hex: "#3E82FE")
-    let littleSDKDarkThemeColor = UIColor(hex: "#061B42")
-    let littleSDKLabelColor = UIColor(hex: "#404040")
-    let littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
-    let littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
+    static var littleSDKThemeColor = UIColor(hex: "#3E82FE")
+    static var littleSDKDarkThemeColor = UIColor(hex: "#061B42")
+    static var littleSDKLabelColor = UIColor(hex: "#404040")
+    static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
+    static var littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
     
 }

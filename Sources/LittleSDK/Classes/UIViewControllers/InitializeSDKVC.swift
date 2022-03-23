@@ -43,7 +43,7 @@ public class InitializeSDKVC: UIViewController {
     
     func configureUI() {
         
-        view.backgroundColor = cn.littleSDKThemeColor
+        view.backgroundColor = SDKConstants.littleSDKThemeColor
         
         let bottomView = UIView()
         
@@ -102,8 +102,8 @@ public class InitializeSDKVC: UIViewController {
     }
     
     func setGradientBackground(view: UIView) {
-        let colorTop =  cn.littleSDKThemeColor.cgColor
-        let colorBottom = cn.littleSDKDarkThemeColor.cgColor
+        let colorTop =  SDKConstants.littleSDKThemeColor.cgColor
+        let colorBottom = SDKConstants.littleSDKDarkThemeColor.cgColor
                     
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [colorTop, colorBottom]
