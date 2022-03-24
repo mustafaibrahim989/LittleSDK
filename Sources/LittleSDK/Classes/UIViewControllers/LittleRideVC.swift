@@ -3352,24 +3352,24 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         
                         let unique_id = NSUUID().uuidString
                         self.locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: LocationSetSDK(id: unique_id, name: defaultMessage.message?.cleanLocationNames() ?? "", subname: defaultMessage.message?.cleanLocationNames() ?? "", latitude: "\(self.currentPlaceCoordinates.latitude)", longitude: "\(self.currentPlaceCoordinates.longitude)", phonenumber: "", instructions: ""), dropoffLocations: self.locationsEstimateSet?.dropoffLocations ?? [])
-                    }
-                    
-                    printVal(object: "Location KB")
-                    
-                    DispatchQueue.main.async {
+                        
                         self.getPendingRequests()
+                        
                     }
                     
                 } else {
-                    self.removeLoadingPage()
+                    DispatchQueue.main.async {
+                        self.getPendingRequests()
+                    }
                 }
-                
             } catch {
-                self.removeLoadingPage()
+                DispatchQueue.main.async {
+                    self.getPendingRequests()
+                }
             }
         } else {
-            if self.originCoordinate != nil {
-                self.getLocationName(currentCoordinate: self.originCoordinate)
+            DispatchQueue.main.async {
+                self.getPendingRequests()
             }
         }
         
