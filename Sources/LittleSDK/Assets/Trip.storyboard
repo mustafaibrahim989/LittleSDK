@@ -1014,27 +1014,13 @@
                                             <constraint firstAttribute="width" constant="20" id="cPS-Lm-UAU"/>
                                         </constraints>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-nH-tfF" customClass="SDKRatingView" customModule="LittleSDK">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-nH-tfF">
                                         <rect key="frame" x="20" y="105" width="280" height="50"/>
                                         <color key="tintColor" red="1" green="0.80000000000000004" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="32D-8m-tHf"/>
                                             <constraint firstAttribute="width" constant="280" id="7xo-Ea-OZt"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="fullImage" value="star_full"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="minRating">
-                                                <integer key="value" value="0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="maxRating">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="rating">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="halfRatings" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TXr-QL-nZS">
                                         <rect key="frame" x="20" y="175" width="280" height="150"/>
@@ -1161,8 +1147,8 @@
                         <outlet property="driverNameLbl" destination="1ze-eh-1Dt" id="4Z9-bl-iyo"/>
                         <outlet property="driverRateLbl" destination="goB-kS-w1W" id="ync-aG-tNf"/>
                         <outlet property="feedbackConst" destination="DEa-EA-fUw" id="Afu-rc-jtx"/>
-                        <outlet property="floatRatingView" destination="5uy-nH-tfF" id="tjB-9n-wme"/>
                         <outlet property="impressionFeedBackLbl" destination="GWs-K2-Xpq" id="hKP-Nu-3wK"/>
+                        <outlet property="rateViewHolder" destination="5uy-nH-tfF" id="H1M-az-NtU"/>
                         <outlet property="ratingNoLbl" destination="x7l-Cf-ceg" id="RJF-pQ-q8p"/>
                     </connections>
                 </viewController>

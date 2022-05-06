@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreGraphics
 
 public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
@@ -31,7 +32,10 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     @IBOutlet weak var impressionFeedBackLbl: UILabel!
     @IBOutlet weak var ratingNoLbl: UILabel!
     @IBOutlet weak var commentsTxt: UITextField!
-    @IBOutlet var floatRatingView: SDKRatingView!
+    
+    @IBOutlet weak var rateViewHolder: UIView!
+    
+    var floatRatingView: SDKRatingView!
     
     @IBOutlet weak var feedbackConst: NSLayoutConstraint!
     
@@ -59,6 +63,8 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
         // Required float rating view params
         
+        floatRatingView = SDKRatingView(frame: CGRect(x: 0, y: 0, width: rateViewHolder.bounds.width, height: rateViewHolder.bounds.height))
+        floatRatingView.center = rateViewHolder.center
         floatRatingView.emptyImage = image_empty
         floatRatingView.fullImage = image_full
         
