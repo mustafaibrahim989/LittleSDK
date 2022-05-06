@@ -795,23 +795,13 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ow3-KR-2Z7" customClass="SDKRatingView" customModule="LittleSDK">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ow3-KR-2Z7">
                                         <rect key="frame" x="15" y="108" width="250" height="50"/>
                                         <color key="tintColor" red="1" green="0.80000000000000004" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="B1x-oB-inR"/>
                                             <constraint firstAttribute="width" constant="250" id="miB-TF-4eY"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="fullImage" value="star_full"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="minRating">
-                                                <integer key="value" value="0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="maxRating">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="COp-La-fQa">
                                         <rect key="frame" x="10" y="166" width="260" height="144"/>
@@ -943,10 +933,10 @@
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="floatRatingView" destination="ow3-KR-2Z7" id="uva-hS-VN6"/>
                         <outlet property="imgDriverImage" destination="yau-6v-WVb" id="UUx-Lo-Udf"/>
                         <outlet property="lblDriverName" destination="0rR-g0-BLp" id="jGs-cP-O99"/>
                         <outlet property="lblPlaceHolder" destination="NgC-8N-MIb" id="Xx8-HP-OjB"/>
+                        <outlet property="rateViewHolder" destination="ow3-KR-2Z7" id="2I9-8D-VaE"/>
                         <outlet property="txtCommentsShared" destination="wPL-OK-Oqf" id="wSb-o1-1pE"/>
                     </connections>
                 </viewController>
@@ -2919,8 +2909,6 @@
         <image name="locwhite_icon" width="25" height="25"/>
         <image name="minus" width="256" height="256"/>
         <image name="share_action" width="35" height="35"/>
-        <image name="star_empty" width="40" height="40"/>
-        <image name="star_full" width="40" height="40"/>
         <image name="time_machine" width="25" height="25"/>
         <image name="volume_on" width="35" height="35"/>
         <image name="white_star" width="35" height="35"/>

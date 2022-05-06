@@ -23,7 +23,9 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
     @IBOutlet weak var lblPlaceHolder: UILabel!
     @IBOutlet weak var txtCommentsShared: UITextView!
     
-    @IBOutlet weak var floatRatingView: SDKRatingView!
+    @IBOutlet weak var rateViewHolder: UIView!
+    
+    var floatRatingView: SDKRatingView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +50,8 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         
         // Required float rating view params
         
+        floatRatingView = SDKRatingView()
+        
         floatRatingView.emptyImage = image_empty
         floatRatingView.fullImage = image_full
         
@@ -55,11 +59,18 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         floatRatingView.delegate = self
         floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
         floatRatingView.maxRating = 5
-        floatRatingView.minRating = 1
+        floatRatingView.minRating = 0
         floatRatingView.rating = 0
         floatRatingView.editable = true
         floatRatingView.halfRatings = true
         floatRatingView.floatRatings = false
+        
+        rateViewHolder.addSubview(floatRatingView)
+        floatRatingView.translatesAutoresizingMaskIntoConstraints = false
+        floatRatingView.leftAnchor.constraint(equalTo: rateViewHolder.leftAnchor).isActive = true
+        floatRatingView.rightAnchor.constraint(equalTo: rateViewHolder.rightAnchor).isActive = true
+        floatRatingView.topAnchor.constraint(equalTo: rateViewHolder.topAnchor).isActive = true
+        floatRatingView.bottomAnchor.constraint(equalTo: rateViewHolder.bottomAnchor).isActive = true
         
     }
     
