@@ -65,6 +65,9 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
         floatRatingView = SDKRatingView(frame: CGRect(x: 0, y: 0, width: rateViewHolder.bounds.width, height: rateViewHolder.bounds.height))
         floatRatingView.center = rateViewHolder.center
+        
+        rateViewHolder.addSubview(floatRatingView)
+        
         floatRatingView.emptyImage = image_empty
         floatRatingView.fullImage = image_full
         
