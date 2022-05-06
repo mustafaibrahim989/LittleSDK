@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i2u-F4-ncL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i2u-F4-ncL">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1007,7 +1007,7 @@
                                         <color key="textColor" red="1" green="0.80000000000000004" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star_Full" translatesAutoresizingMaskIntoConstraints="NO" id="KFa-04-Oyo">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_full" translatesAutoresizingMaskIntoConstraints="NO" id="KFa-04-Oyo">
                                         <rect key="frame" x="20" y="50" width="20" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="7bk-EG-ueB"/>
@@ -2934,6 +2934,7 @@
         <image name="locwhite_icon" width="25" height="25"/>
         <image name="minus" width="256" height="256"/>
         <image name="share_action" width="35" height="35"/>
+        <image name="star_full" width="40" height="40"/>
         <image name="time_machine" width="25" height="25"/>
         <image name="volume_on" width="35" height="35"/>
         <image name="white_star" width="35" height="35"/>

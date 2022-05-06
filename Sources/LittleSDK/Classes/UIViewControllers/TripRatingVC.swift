@@ -55,8 +55,8 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     public func setupFloatRatingView() {
         
         // Required float rating view params
-        floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
-        floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
+        floatRatingView.emptyImage = getImage(named: "star_empty", bundle: sdkBundle!)
+        floatRatingView.fullImage = getImage(named: "star_full", bundle: sdkBundle!)
         
         // Optional params
         floatRatingView.delegate = self

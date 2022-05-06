@@ -38,21 +38,29 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         lblPlaceHolder.text = "Share your experience you had with \((driverName ?? "").capitalized) to help us serve you better and improve our services (Optional)"
         
-        // Required float rating view params
-        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
-        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
-        // Optional params
-        self.floatRatingView.tintColor = color
-        self.floatRatingView.delegate = self
-        self.floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
-        self.floatRatingView.maxRating = 5
-        self.floatRatingView.minRating = 1
-        self.floatRatingView.rating = 0
-        self.floatRatingView.editable = true
-        self.floatRatingView.halfRatings = true
-        self.floatRatingView.floatRatings = false
+        setupFloatRatingView()
         
         showAnimate()
+    }
+    
+    public func setupFloatRatingView() {
+        
+        // Required float rating view params
+        
+        floatRatingView.emptyImage = getImage(named: "star_empty", bundle: sdkBundle!)
+        floatRatingView.fullImage = getImage(named: "star_full", bundle: sdkBundle!)
+        
+        // Optional params
+        floatRatingView.tintColor = color
+        floatRatingView.delegate = self
+        floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
+        floatRatingView.maxRating = 5
+        floatRatingView.minRating = 1
+        floatRatingView.rating = 0
+        floatRatingView.editable = true
+        floatRatingView.halfRatings = true
+        floatRatingView.floatRatings = false
+        
     }
     
     @IBAction func btnSubmitRating(_ sender: UIButton) {
