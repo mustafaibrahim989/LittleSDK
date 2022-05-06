@@ -31,7 +31,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     @IBOutlet weak var impressionFeedBackLbl: UILabel!
     @IBOutlet weak var ratingNoLbl: UILabel!
     @IBOutlet weak var commentsTxt: UITextField!
-    @IBOutlet weak var floatRatingView: SDKRatingView!
+    @IBOutlet var floatRatingView: SDKRatingView!
     
     @IBOutlet weak var feedbackConst: NSLayoutConstraint!
     
