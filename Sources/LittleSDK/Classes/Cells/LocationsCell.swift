@@ -92,7 +92,7 @@ class LocationsCell: UITableViewCell {
         locationSubLabel.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -10).isActive = true
         
         mainView.addSubview(btnFavorite)
-        btnFavorite.setImage(getImage(named: "star_empty", bundle: bundle!), for: .normal)
+        btnFavorite.setImage(getImage(named: "Star_Empty", bundle: bundle!), for: .normal)
         btnFavorite.translatesAutoresizingMaskIntoConstraints = false
         btnFavorite.centerYAnchor.constraint(equalTo: locationNameLabel.centerYAnchor).isActive = true
         btnFavorite.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -15).isActive = true

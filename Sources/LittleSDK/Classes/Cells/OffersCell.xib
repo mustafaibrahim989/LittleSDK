@@ -164,7 +164,7 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_full" translatesAutoresizingMaskIntoConstraints="NO" id="q0s-0r-J4B">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star_Full" translatesAutoresizingMaskIntoConstraints="NO" id="q0s-0r-J4B">
                                 <rect key="frame" x="252" y="128" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="PYA-Sq-f05"/>
@@ -253,8 +253,8 @@
     </objects>
     <resources>
         <image name="Deliver" width="326" height="326"/>
+        <image name="Star_Full" width="40" height="40"/>
         <image name="location_pin" width="96" height="96"/>
-        <image name="star_full" width="40" height="40"/>
         <namedColor name="littleCellBackgrounds">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>

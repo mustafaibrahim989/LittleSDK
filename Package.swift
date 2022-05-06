@@ -35,7 +35,6 @@ let package = Package(
             path: "Sources/LittleSDK",
             resources: [
                 .process("Assets/sparkle.wav"),
-                .process("Assets/delivery_truck.png"),
                 .process("Assets/style.json")
             ]),
         .testTarget(
