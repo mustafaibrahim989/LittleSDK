@@ -40,19 +40,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
         sdkBundle = Bundle.module
         
-        // Required float rating view params
-        self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
-        self.floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
-        // Optional params
-        self.floatRatingView.delegate = self
-        self.floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
-        self.floatRatingView.maxRating = 5
-        self.floatRatingView.minRating = 0
-        self.floatRatingView.rating = 0
-        self.floatRatingView.editable = true
-        self.floatRatingView.halfRatings = true
-        self.floatRatingView.floatRatings = false
-        
+        setupFloatRatingView()
         
         driverIm.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         driverNameLbl.text = "Rate \(am.getDRIVERNAME()!.capitalized)"
@@ -62,6 +50,24 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
     
     public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    public func setupFloatRatingView() {
+        
+        // Required float rating view params
+        floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: sdkBundle!)
+        floatRatingView.fullImage = getImage(named: "Star_Full", bundle: sdkBundle!)
+        
+        // Optional params
+        floatRatingView.delegate = self
+        floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
+        floatRatingView.maxRating = 5
+        floatRatingView.minRating = 0
+        floatRatingView.rating = 0
+        floatRatingView.editable = true
+        floatRatingView.halfRatings = true
+        floatRatingView.floatRatings = false
+        
     }
     
     @objc func postBackHome() {
