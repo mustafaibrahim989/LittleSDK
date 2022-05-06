@@ -63,10 +63,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
         // Required float rating view params
         
-        floatRatingView = SDKRatingView(frame: CGRect(x: 0, y: 0, width: rateViewHolder.bounds.width, height: rateViewHolder.bounds.height))
-        floatRatingView.center = rateViewHolder.center
-        
-        rateViewHolder.addSubview(floatRatingView)
+        floatRatingView = SDKRatingView()
         
         floatRatingView.emptyImage = image_empty
         floatRatingView.fullImage = image_full
@@ -80,6 +77,13 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         floatRatingView.editable = true
         floatRatingView.halfRatings = true
         floatRatingView.floatRatings = false
+        
+        rateViewHolder.addSubview(floatRatingView)
+        floatRatingView.translatesAutoresizingMaskIntoConstraints = false
+        floatRatingView.leftAnchor.constraint(equalTo: rateViewHolder.leftAnchor).isActive = true
+        floatRatingView.rightAnchor.constraint(equalTo: rateViewHolder.rightAnchor).isActive = true
+        floatRatingView.topAnchor.constraint(equalTo: rateViewHolder.topAnchor).isActive = true
+        floatRatingView.bottomAnchor.constraint(equalTo: rateViewHolder.bottomAnchor).isActive = true
         
     }
     
