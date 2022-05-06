@@ -32,8 +32,6 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         
         sdkBundle = Bundle.module
         
-        let color = UIColor(hex: "#FFCC01")
-        
         lblDriverName.text = "Rate \((driverName ?? "").capitalized)"
         imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         lblPlaceHolder.text = "Share your experience you had with \((driverName ?? "").capitalized) to help us serve you better and improve our services (Optional)"
@@ -51,7 +49,6 @@ public class RatingVC: UIViewController, UITextViewDelegate, SDKRatingViewDelega
         floatRatingView.fullImage = getImage(named: "star_full", bundle: sdkBundle!)
         
         // Optional params
-        floatRatingView.tintColor = color
         floatRatingView.delegate = self
         floatRatingView.contentMode = UIView.ContentMode.scaleAspectFit
         floatRatingView.maxRating = 5
