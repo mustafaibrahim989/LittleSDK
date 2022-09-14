@@ -34,7 +34,7 @@ class SDKHandleCalls {
         callTypeName = method
         
         if SDKReachability.isConnectedToNetwork() || method == "VERIFYUSSDCODEJSONData" {
-             connectToServer(switchnum: switchnum)
+             connectToServer(switchnum: switchnum, method: method)
         } else {
             
             topController?.removeLoadingPage()
@@ -70,7 +70,7 @@ class SDKHandleCalls {
         
     }
     
-    func connectToServer(switchnum: Int){
+    func connectToServer(switchnum: Int, method: String){
         
         count += 1
         
@@ -100,6 +100,8 @@ class SDKHandleCalls {
                         
                         let stringVal = self.am.DecryptDataAES(DataToSend: sDKData.data ?? "") as String
                         
+                        printVal(object: "\(method): \(stringVal)")
+                        
                         let strData = Data(stringVal.utf8)
                         
                         let dataDict:[String: Data] = ["data": strData]
@@ -117,7 +119,7 @@ class SDKHandleCalls {
     func handleTimeouts(switchnum: Int) {
         let topController = UIApplication.topViewController()
         if count < 2 {
-            connectToServer(switchnum: switchnum)
+            connectToServer(switchnum: switchnum, method: "")
         } else {
             topController?.removeLoadingPage()
             topController?.view.removeAnimation()
