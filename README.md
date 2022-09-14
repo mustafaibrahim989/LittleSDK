@@ -26,7 +26,7 @@ let accounts = \[\[
     "AccountName": "Account Name"
 \]\] \/\/ Array of Dictionary\<String, String\>
 
-littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
+littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "Bundle Identifier", isUAT: true)
 
 littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
 
