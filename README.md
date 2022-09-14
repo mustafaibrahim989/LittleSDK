@@ -21,12 +21,10 @@ Alternatively, in Xcode and search for "LittleSDK". If multiple results are foun
 
 let littleFramework = LittleFramework()
 
-var accounts = [[String: String]]()
-
-accounts.append([
+let accounts = \[\[
     "AccountID": "123456",
-    "AccountName": "Primary Account"
-])
+    "AccountName": "Account A"
+\]\]
 
 littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
 
