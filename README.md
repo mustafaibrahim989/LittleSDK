@@ -18,7 +18,9 @@ Alternatively, in Xcode and search for "LittleSDK". If multiple results are foun
 ## Usage
 
 - Initialize SDK
+
 let littleFramework = LittleFramework()
+
 var accounts = [[String: String]]()
 
 accounts.append([
@@ -27,10 +29,13 @@ accounts.append([
 ])
 
 guard let accountsArr = try? LittleSDK.SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
+
 littleFramework.initializeSDKParameters(accountsArr: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
+
 littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
 
 - Navigate to ride request
+
 littleFramework.initializeToRides(UIViewController)
 
 
