@@ -28,9 +28,7 @@ accounts.append([
     "AccountName": "Primary Account"
 ])
 
-guard let accountsArr = try? LittleSDK.SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
-
-littleFramework.initializeSDKParameters(accountsArr: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
+littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
 
 littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
 

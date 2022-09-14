@@ -48,8 +48,9 @@ public class LittleFramework {
         paymentVC = vc
     }
     
-    public func initializeSDKParameters(accountsArr: String, mobileNumber: String, packageName: String, isUAT: Bool) {
+    public func initializeSDKParameters(accounts: [[String: String]], mobileNumber: String, packageName: String, isUAT: Bool) {
         self.isUAT = isUAT
+        guard let accountsArr = try? SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
         SDKAllMethods().saveSDKMobileNumber(data: mobileNumber)
         SDKAllMethods().saveSDKPackageName(data: packageName)
         SDKAllMethods().saveSDKAccounts(data: accountsArr)
@@ -90,11 +91,6 @@ public class LittleFramework {
             viewController.paymentVC = paymentVC
             navigator.pushViewController(viewController, animated: true)
         }
-    }
-    
-    public static func dictionaryArrayToJson(from object: [[String: String]]) throws -> String {
-        let data = try JSONSerialization.data(withJSONObject: object)
-        return String(data: data, encoding: .utf8)!
     }
         
 }
