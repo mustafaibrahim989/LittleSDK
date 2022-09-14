@@ -34,16 +34,8 @@ littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePl
 
 littleFramework.initializeToRides(UIViewController)
 
-    case food = "FOOD"
-    case supermarket = "SUPERMARKET"
-    case groceries = "GROCERIES"
-    case gas = "GAS"
-    case drinks = "DRINKS"
-    case medicine = "MEDICINE"
-    case cakes = "CAKES"
-
 ### Navigate to delivery
-littleFramework.initializeToDeliveries(self, deliveryType: .food) \/\/ delivery types - food, supermarket, groceries, drinks, medicine or cakes
+littleFramework.initializeToDeliveries(self, deliveryType: .food)  \/\/ Delivery Types - food, supermarket, groceries, drinks, medicine or cakes
 
 
 ## Acknowledgements
