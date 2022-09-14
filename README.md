@@ -17,20 +17,20 @@ Alternatively, in Xcode and search for "LittleSDK". If multiple results are foun
 
 ## Usage
 
-- Initialize SDK
+### Initialize SDK
 
 let littleFramework = LittleFramework()
 
 let accounts = \[\[
     "AccountID": "123456",
-    "AccountName": "Account A"
-\]\]
+    "AccountName": "Account Name"
+\]\] \/\/ Array of Dictionary\<String, String\>
 
 littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
 
 littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
 
-- Navigate to ride request
+### Navigate to ride request
 
 littleFramework.initializeToRides(UIViewController)
 
