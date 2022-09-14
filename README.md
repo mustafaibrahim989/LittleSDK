@@ -15,6 +15,25 @@ LittleSDK Author & Maintainer: [@littleappdevs](https://github.com/littleappdevs
 
 Alternatively, in Xcode and search for "LittleSDK". If multiple results are found, select the one owned by [@littleappdevs](https://github.com/littleappdevs).
 
+## Usage
+
+- Initialize SDK
+let littleFramework = LittleFramework()
+var accounts = [[String: String]]()
+
+accounts.append([
+    "AccountID": "123456",
+    "AccountName": "Primary Account"
+])
+
+guard let accountsArr = try? LittleSDK.SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
+littleFramework.initializeSDKParameters(accountsArr: accountsArr, mobileNumber: "254700123123", packageName: "africa.little", isUAT: true)
+littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
+
+- Navigate to ride request
+littleFramework.initializeToRides(UIViewController)
+
+
 ## Acknowledgements
 
 Built at **[Little Limited](https://little.africa)**

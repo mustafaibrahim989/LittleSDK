@@ -183,6 +183,14 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let userInfo = ["amount":Double(am.getLIVEFARE()!)!,"reference":reference] as [String : Any]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
         
+        if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
+            if let navigator = self.navigationController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+        
     }
     
     // MARK: - Table Delegates & Data Sources

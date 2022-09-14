@@ -146,10 +146,19 @@ public class InitializeSDKVC: UIViewController {
             HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKPackageName()!))")
         ]
         
+        printVal(object: "initializeMySDK decryption keyID: \(am.DecryptDataHeaders(DataToSend: "JId0fJSseUYhBHK/srhv5LvARIKhBZApTj8YaYzNPNqs1mH/T5hUrNTxZi+rk4Tm")) , Accounts: \(am.DecryptDataHeaders(DataToSend: "DxiLCNIs5MX2x+JotLUuHBmiaboyMUVX3Z9FUP52QUi8LJlDEQKJ4H1+HA1m3kUnFo627j71DmFDcRk3XRJxeQ==")), Mobile: \(am.DecryptDataHeaders(DataToSend: "dH2NNHAF8AGegPKXTBycfg==")), Package: \(am.DecryptDataHeaders(DataToSend: "APQQx2rI/CnUnBdUU3CWQmtDF/7Kqx7BcB73Ay9B3DmTwJOZr4DgFqQGxTmryvJU"))")
+//        let headers: HTTPHeaders = [
+//            HTTPHeader(name: "Content-Type", value: "application/json"),
+//            HTTPHeader(name: "KeyID", value: "JId0fJSseUYhBHK/srhv5LvARIKhBZApTj8YaYzNPNqs1mH/T5hUrNTxZi+rk4Tm"),
+//            HTTPHeader(name: "Accounts", value: "DxiLCNIs5MX2x+JotLUuHBmiaboyMUVX3Z9FUP52QUi8LJlDEQKJ4H1+HA1m3kUnFo627j71DmFDcRk3XRJxeQ=="),
+//            HTTPHeader(name: "MobileNumber", value: "dH2NNHAF8AGegPKXTBycfg=="),
+//            HTTPHeader(name: "PackageName", value: "APQQx2rI/CnUnBdUU3CWQmtDF/7Kqx7BcB73Ay9B3DmTwJOZr4DgFqQGxTmryvJU")
+//        ]
+//
         let parameters = [
             "":""
         ]
-        
+                
         AF.request("\(string)",
                method: .post,
                parameters: parameters,
@@ -157,9 +166,13 @@ public class InitializeSDKVC: UIViewController {
                 
             let data = response.data
             
+            printVal(object: "initializeMySDK response: \(data == nil) heders: \(headers)")
+            
             if data != nil {
                 
                 do {
+                    
+                    printVal(object: "initializeMySDK response: \(data)")
                     
                     let sDKConfirm = try JSONDecoder().decode(SDKConfirm.self, from: data!)
                     
@@ -216,7 +229,9 @@ public class InitializeSDKVC: UIViewController {
                         self.backHome()
                     }
                     
-                } catch {
+                } catch let error {
+                    
+                    printVal(object: "initializeMySDK error: \(error.localizedDescription)")
                     
                     let bundle = Bundle.module
                     

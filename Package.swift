@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(name: "SwiftMessages", url: "https://github.com/SwiftKickMobile/SwiftMessages", from: "9.0.0"),
+        .package(name: "SwiftMessages", url: "https://github.com/SwiftKickMobile/SwiftMessages", from: "9.0.6"),
         .package(name: "NVActivityIndicatorView", url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", from: "5.0.0"),
         .package(name: "UIView-Shimmer", url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
         .package(name: "EasyNotificationBadge", url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),

@@ -556,6 +556,8 @@ public class TripVC: UIViewController {
                 PARKOTP = response.parkingOTP ?? ""
                 CHAT = response.tripChat ?? ""
                 
+                printVal(object: "ET: \(ET)")
+                
                 am.saveTRIPSTATUS(data: TRIPSTATUS)
                 am.saveWIFIPASS(data: WIFIPASS)
                 am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
@@ -928,6 +930,7 @@ public class TripVC: UIViewController {
             offsetComponents.minute = Int("\(am.getET()!)") ?? 0
             let eta = gregorian!.date(byAdding: offsetComponents as DateComponents, to: now as Date, options: [])!
             let strTime = dateFormatter.string(from: eta as Date)
+            printVal(object: "myETA: \(am.getET())")
             
             lblETA.text = "ETA: \(strTime) Hrs"
         }
@@ -996,7 +999,16 @@ public class TripVC: UIViewController {
         lblPlateNumber.text = "\(am.getNUMBER()!.uppercased())"
         lblDriverName.text = "\(am.getDRIVERNAME()!.capitalized)"
         lblYouAreDrivenBy.text = "You are being driven by \(am.getDRIVERNAME()!.capitalized)"
-        lblArrivalTime.text = "ETA \(am.getET()!)mins."
+        printVal(object: "timeAr: \(am.getET())")
+        if let et = am.getET() {
+            if let min = Double(et), min >= 1 {
+                lblArrivalTime.text = "ETA \(String(format: "%.0f", et))mins."
+            } else {
+                lblArrivalTime.text = "ETA 0mins."
+            }
+        } else {
+            lblArrivalTime.text = "ETA 0mins."
+        }
         lblPaymentMode.text = "\(am.getPaymentMode()!)"
         lblPaymentModeTrip.text = "\(am.getPaymentMode()!.uppercased()) TRIP"
         
