@@ -11,7 +11,7 @@ import SwiftMessages
 import NVActivityIndicatorView
 
 public class InitializeSDKVC: UIViewController {
-
+    
     // MARK: - Properties
     
     var popToRestorationID: UIViewController?
@@ -104,12 +104,12 @@ public class InitializeSDKVC: UIViewController {
     func setGradientBackground(view: UIView) {
         let colorTop =  SDKConstants.littleSDKThemeColor.cgColor
         let colorBottom = SDKConstants.littleSDKDarkThemeColor.cgColor
-                    
+        
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [colorTop, colorBottom]
         gradientLayer.locations = [0.0, 1.0]
         gradientLayer.frame = view.bounds
-                
+        
         view.layer.insertSublayer(gradientLayer, at:0)
     }
     
@@ -120,7 +120,7 @@ public class InitializeSDKVC: UIViewController {
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
         view.loadPopup(title: "", message: "\nError encountered accessing Little SDK. You are missing a required parameter '\(param)'\n", image: "", action: "")
         view.proceedAction = {
-           SwiftMessages.hide()
+            SwiftMessages.hide()
             self.navigationController?.popViewController(animated: true)
         }
         view.btnDismiss.isHidden = true
@@ -145,115 +145,109 @@ public class InitializeSDKVC: UIViewController {
             HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKMobileNumber()!))"),
             HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKPackageName()!))")
         ]
-        
-        printVal(object: "initializeMySDK decryption keyID: \(am.DecryptDataHeaders(DataToSend: "JId0fJSseUYhBHK/srhv5LvARIKhBZApTj8YaYzNPNqs1mH/T5hUrNTxZi+rk4Tm")) , Accounts: \(am.DecryptDataHeaders(DataToSend: "DxiLCNIs5MX2x+JotLUuHBmiaboyMUVX3Z9FUP52QUi8LJlDEQKJ4H1+HA1m3kUnFo627j71DmFDcRk3XRJxeQ==")), Mobile: \(am.DecryptDataHeaders(DataToSend: "dH2NNHAF8AGegPKXTBycfg==")), Package: \(am.DecryptDataHeaders(DataToSend: "APQQx2rI/CnUnBdUU3CWQmtDF/7Kqx7BcB73Ay9B3DmTwJOZr4DgFqQGxTmryvJU"))")
-//        let headers: HTTPHeaders = [
-//            HTTPHeader(name: "Content-Type", value: "application/json"),
-//            HTTPHeader(name: "KeyID", value: "JId0fJSseUYhBHK/srhv5LvARIKhBZApTj8YaYzNPNqs1mH/T5hUrNTxZi+rk4Tm"),
-//            HTTPHeader(name: "Accounts", value: "DxiLCNIs5MX2x+JotLUuHBmiaboyMUVX3Z9FUP52QUi8LJlDEQKJ4H1+HA1m3kUnFo627j71DmFDcRk3XRJxeQ=="),
-//            HTTPHeader(name: "MobileNumber", value: "dH2NNHAF8AGegPKXTBycfg=="),
-//            HTTPHeader(name: "PackageName", value: "APQQx2rI/CnUnBdUU3CWQmtDF/7Kqx7BcB73Ay9B3DmTwJOZr4DgFqQGxTmryvJU")
-//        ]
-//
-        let parameters = [
-            "":""
-        ]
-                
+
+        let parameters = [String: String]()
+
         AF.request("\(string)",
-               method: .post,
-               parameters: parameters,
-               encoder: URLEncodedFormParameterEncoder.default, headers: headers).response { response in
-                
+                   method: .post,
+                   parameters: parameters,
+                   headers: headers
+        ).response { response in
+            
             let data = response.data
             
-            printVal(object: "initializeMySDK response: \(data == nil) heders: \(headers)")
             
             if data != nil {
-                
                 do {
+                                        
+                    let sdkData = try JSONDecoder().decode(SDKData.self, from: data!)
                     
-                    printVal(object: "initializeMySDK response: \(data)")
-                    
-                    let sDKConfirm = try JSONDecoder().decode(SDKConfirm.self, from: data!)
-                    
-                    let theData = sDKConfirm[0]
-                    
-                    am.saveMyUniqueID(data: theData.uniqueID ?? "")
-                    am.saveMyKeyID(data: theData.keyID ?? "")
-                    am.saveMyEncryptionKey(data: theData.encryptionKey ?? "")
-                    am.saveMyEncryptionIV(data: theData.encryptionIV ?? "")
-                    am.saveMyUserName(data: theData.userName ?? "")
-                    am.saveMyPlatform(data: theData.platform ?? "")
-                    am.saveMyCodeBase(data: theData.codeBase ?? "")
-                    
-                    let sdkBundle = Bundle.module
-                    
-                    let bundleURL = sdkBundle.resourceURL?.appendingPathComponent("LittleSDK.bundle")
-                    var resourceBundle: Bundle? = nil
-                    if let bundleURL = bundleURL {
-                        resourceBundle = Bundle(url: bundleURL)
+                    if let dataStr = sdkData.data, let data = am.DecryptDataHeaders(DataToSend: dataStr).data(using: .zero), let sDKConfirm = try? JSONDecoder().decode(SDKConfirm.self, from: data), let theData = sDKConfirm.first {
+                        
+                        am.saveMyUniqueID(data: theData.uniqueID ?? "")
+                        am.saveMyKeyID(data: theData.keyID ?? "")
+                        am.saveMyEncryptionKey(data: theData.encryptionKey ?? "")
+                        am.saveMyEncryptionIV(data: theData.encryptionIV ?? "")
+                        am.saveMyUserName(data: theData.userName ?? "")
+                        am.saveMyPlatform(data: theData.platform ?? "")
+                        am.saveMyCodeBase(data: theData.codeBase ?? "")
+                        
+                        let sdkBundle = Bundle.module
+                        
+                        let bundleURL = sdkBundle.resourceURL?.appendingPathComponent("LittleSDK.bundle")
+                        var resourceBundle: Bundle? = nil
+                        if let bundleURL = bundleURL {
+                            resourceBundle = Bundle(url: bundleURL)
+                        }
+                        
+                        switch self.toWhere {
+                        case .rides:
+                            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
+                                viewController.isUAT = self.isUAT
+                                viewController.popToRestorationID = self.popToRestorationID
+                                viewController.navShown = self.navShown
+                                viewController.paymentVC = self.paymentVC
+                                if let navigator = self.navigationController {
+                                    navigator.pushViewController(viewController, animated: true)
+                                }
+                            }
+                        case .umi:
+                            if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
+                                viewController.popToRestorationID = self.popToRestorationID
+                                viewController.navShown = self.navShown
+                                viewController.paymentVC = self.paymentVC
+                                if let navigator = self.navigationController {
+                                    navigator.pushViewController(viewController, animated: true)
+                                }
+                            }
+                        case .deliveries:
+                            if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
+                                viewController.popToRestorationID = self.popToRestorationID
+                                viewController.navShown = self.navShown
+                                viewController.paymentVC = self.paymentVC
+                                viewController.category = self.deliveryType?.rawValue ?? ""
+                                viewController.title = "\((self.deliveryType?.rawValue ?? "").replacingOccurrences(of: "ORDER", with: "").capitalized) Delivery"
+                                if let navigator = self.navigationController {
+                                    navigator.pushViewController(viewController, animated: true)
+                                }
+                            }
+                        default:
+                            self.backHome()
+                        }
+                    } else {
+                        self.showError()
                     }
                     
-                    switch self.toWhere {
-                    case .rides:
-                        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "LittleRideVC") as? LittleRideVC {
-                            viewController.isUAT = self.isUAT
-                            viewController.popToRestorationID = self.popToRestorationID
-                            viewController.navShown = self.navShown
-                            viewController.paymentVC = self.paymentVC
-                            if let navigator = self.navigationController {
-                                navigator.pushViewController(viewController, animated: true)
-                            }
-                        }
-                    case .umi:
-                        if let viewController = UIStoryboard(name: "UMI", bundle: sdkBundle).instantiateViewController(withIdentifier: "UMIController") as? UMIController {
-                            viewController.popToRestorationID = self.popToRestorationID
-                            viewController.navShown = self.navShown
-                            viewController.paymentVC = self.paymentVC
-                            if let navigator = self.navigationController {
-                                navigator.pushViewController(viewController, animated: true)
-                            }
-                        }
-                    case .deliveries:
-                        if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle).instantiateViewController(withIdentifier: "DeliveriesController") as? DeliveriesController {
-                            viewController.popToRestorationID = self.popToRestorationID
-                            viewController.navShown = self.navShown
-                            viewController.paymentVC = self.paymentVC
-                            viewController.category = self.deliveryType?.rawValue ?? ""
-                            viewController.title = "\((self.deliveryType?.rawValue ?? "").replacingOccurrences(of: "ORDER", with: "").capitalized) Delivery"
-                            if let navigator = self.navigationController {
-                                navigator.pushViewController(viewController, animated: true)
-                            }
-                        }
-                    default:
-                        self.backHome()
-                    }
                     
                 } catch let error {
                     
                     printVal(object: "initializeMySDK error: \(error.localizedDescription)")
                     
-                    let bundle = Bundle.module
-                    
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
-                    view.loadPopup(title: "", message: "\nError encountered accessing Little SDK\n", image: "", action: "")
-                    view.proceedAction = {
-                       SwiftMessages.hide()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    view.btnDismiss.isHidden = true
-                    view.btnProceed.setTitle("Exit SDK", for: .normal)
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
+                    self.showError()
                     
                 }
                 
             }
         }
+    }
+    
+    private func showError() {
+        let bundle = Bundle.module
+        
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: bundle)
+        view.loadPopup(title: "", message: "\nError encountered accessing Little SDK\n", image: "", action: "")
+        view.proceedAction = {
+            SwiftMessages.hide()
+            self.navigationController?.popViewController(animated: true)
+        }
+        view.btnDismiss.isHidden = true
+        view.btnProceed.setTitle("Exit SDK", for: .normal)
+        view.configureDropShadow()
+        var config = SwiftMessages.defaultConfig
+        config.duration = .forever
+        config.presentationStyle = .bottom
+        config.dimMode = .gray(interactive: false)
+        SwiftMessages.show(config: config, view: view)
     }
     
     @objc func backHome() {
@@ -281,5 +275,5 @@ public class InitializeSDKVC: UIViewController {
     }
     
     // MARK: - Server Calls
-
+    
 }
