@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "LittleSDK",
+    defaultLocalization: "en",
     platforms: [
         // Only add support for iOS 11 and up.
         .iOS(.v11)
@@ -34,8 +35,7 @@ let package = Package(
             dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift"],
             path: "Sources/LittleSDK",
             resources: [
-                .process("Assets/sparkle.wav"),
-                .process("Assets/style.json")
+                .process("Assets")
             ]),
         .testTarget(
             name: "LittleSDKTests",

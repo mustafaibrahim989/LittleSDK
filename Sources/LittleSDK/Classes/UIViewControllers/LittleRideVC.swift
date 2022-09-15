@@ -1328,7 +1328,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             cardViewController.lblPromoCode.textColor = UIColor.lightGray
             cardViewController.lblPreferredDriver.textColor = UIColor.lightGray
             
-            let payStr: String? = PaymentModes[selectedPaymentMode]
+            let payStr: String? = PaymentModes[safe: selectedPaymentMode]
             if let paymentStr = payStr {
                 if reasonTest == "" && !isCorporate {
                     if promoVerified {
@@ -1620,7 +1620,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 cardViewController.lblPreferredDriver.textColor = UIColor.lightGray
                 
                 if reasonTest == "" && !isCorporate {
-                    cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
+                    if PaymentModes.count > selectedPaymentMode {
+                        cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
+                    } else {
+                        cardViewController.lblPaymentMode.text = "no_payment_modes".localized
+                    }
                 }
                 
                 cardViewController.confirmRequestPayments.isHidden = true
@@ -3223,13 +3227,19 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             let results = getPendingResults[0]
             processGetPendingResults(results: results)
             
-        } catch {
+        } catch (let err) {
+            DispatchQueue.main.async {
+                self.am.saveTRIPID(data: "")
+                self.removeLoadingPage()
+            }
+            printVal(object: "error: \(err.localizedDescription)")
         }
         
         cardViewController.selectDestinationView.removeAnimation()
     }
     
     func processGetPendingResults(results: GetPendingResult) {
+        printVal(object: "processGetPendingResults: \(results)")
         PaymentModes.removeAll()
         PaymentModeIDs.removeAll()
         
@@ -3300,9 +3310,15 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 am.saveCity(data: results.city ?? "")
                 am.saveCountry(data: results.country ?? "")
                 
-                PaymentMode = "\(PaymentModes[selectedPaymentMode])"
-                PaymentModeID = "\(PaymentModeIDs[selectedPaymentMode])"
-                cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
+                if PaymentModes.count > selectedPaymentMode {
+                    PaymentMode = "\(PaymentModes[selectedPaymentMode])"
+                    PaymentModeID = "\(PaymentModeIDs[selectedPaymentMode])"
+                    cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
+                } else {
+                    PaymentMode = ""
+                    PaymentModeID = ""
+                    cardViewController.lblPaymentMode.text = "no_payment_modes".localized
+                }
 
             }
             DispatchQueue.main.async {
@@ -3758,7 +3774,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             cardViewController.requestingLoadingView.removeAnimation()
             
             promoVerified = true
-            cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode]) with '\(promoText)' Promo"
+            cardViewController.lblPaymentMode.text = PaymentModes.count > selectedPaymentMode ? "\(PaymentModes[selectedPaymentMode]) with '\(promoText)' Promo" :  "'\(promoText)' Promo"
             cardViewController.lblPromoVerified.text = "Promo code '\(promoText)' applied successfully."
             cardViewController.txtPromo.text = ""
             
@@ -4350,6 +4366,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func makeRideRequestNew() {
+        if PaymentModes.count <= selectedPaymentMode {
+            showAlerts(title: "", message: "select_payment_mode".localized)
+            return
+        }
         
         if cardViewController.requestingLoadingView.isHidden {
             cardViewController.requestingLoadingView.isUserInteractionEnabled = false

@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Little Developers on 15/09/2022.
+  
+*/
+
+"no_payment_modes" = "No payment modes";
+"select_payment_mode" = "Select payment mode";
