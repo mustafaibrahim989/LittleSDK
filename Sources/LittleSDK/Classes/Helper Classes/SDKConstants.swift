@@ -35,6 +35,7 @@ class SDKConstants {
     // Colors
     
     static var littleSDKThemeColor = UIColor(hex: "#3E82FE")
+    // static var littleSDKThemeColor = UIColor(hex: "#A22A29")
     static var littleSDKDarkThemeColor = UIColor(hex: "#061B42")
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")

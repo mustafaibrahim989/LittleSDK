@@ -923,6 +923,7 @@ public class TripVC: UIViewController {
             
             let now = NSDate()
             let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
             dateFormatter.dateFormat = "HH:mm"
             
             let gregorian = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)

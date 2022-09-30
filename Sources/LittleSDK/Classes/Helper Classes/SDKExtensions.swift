@@ -607,6 +607,7 @@ extension Date {
     func customFormatted() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, yyyy"
+        dateFormatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
         return dateFormatter.string(from: self)
     }
     
@@ -654,6 +655,7 @@ extension Date {
         } else if diff > 4 {
             
             let presentFormatter = DateFormatter()
+            presentFormatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
             presentFormatter.dateFormat = "MMMM dd"
             return presentFormatter.string(from: self)
             
@@ -725,8 +727,8 @@ func formatCurrency(_ str: String) -> String {
 
 func printVal(object: Any) {
     #if DEBUG
-//        print("______________________________________________________________________\n")
-//        print(object)
-//        print("\n______________________________________________________________________")
+        print("______________________________________________________________________\n")
+        print(object)
+        print("\n______________________________________________________________________")
     #endif
 }

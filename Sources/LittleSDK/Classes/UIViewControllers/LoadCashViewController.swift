@@ -597,6 +597,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         popupDatePickerView.display(defaultDate: Date(), doneHandler: { date in
             printVal(object: "Date: (\(date))")
             let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
             dateFormatter.dateFormat = "yyyy-MM-dd"
             for i in (0..<self.kycFieldsArr.count) {
                 let field = self.kycFieldsArr[i]
