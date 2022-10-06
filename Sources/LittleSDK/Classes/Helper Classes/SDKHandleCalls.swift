@@ -113,6 +113,8 @@ class SDKHandleCalls {
                     }
 
                 }
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
     }
     

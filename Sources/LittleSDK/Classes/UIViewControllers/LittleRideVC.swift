@@ -1253,6 +1253,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             cardHeight = view.frame.height - yPositionConfirmOpen!
             cardHandleAreaHeight = view.frame.height - yPositionConfirmOriginal!
+            printVal(object: "cardHeight: \(cardHeight) yPositionConfirmOpen: \(yPositionConfirmOpen)")
             
             if isMainTabUp {
                 
@@ -1265,10 +1266,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
                 if getPhoneFaceIdType() {
                     cardViewController.preferredTableConstraint.constant = cardHeight - 290
-                    cardViewController.paymentTableConstraint.constant = cardHeight - 290
+                    cardViewController.paymentTableConstraint.constant = CGFloat(PaymentModes.count > 3 ? 3 : PaymentModes.count) * 40
                 } else {
                     cardViewController.preferredTableConstraint.constant = cardHeight - 245
-                    cardViewController.paymentTableConstraint.constant = cardHeight - 245
+//                    cardViewController.paymentTableConstraint.constant = cardHeight - 245
+                    cardViewController.paymentTableConstraint.constant = CGFloat(PaymentModes.count > 3 ? 3 : PaymentModes.count) * 40
                 }
                 
                 UIView.animate(withDuration: 0.2, animations: {
@@ -2404,11 +2406,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             selectedPaymentMode = indexPath.item
             
-            cardViewController.paymentOptionsTableView.createLoadingNormal()
+//            cardViewController.paymentOptionsTableView.createLoadingNormal()
             
             cardViewController.paymentOptionsTableView.reloadData()
             
-            cardViewController.paymentOptionsTableView.removeAnimation()
+//            cardViewController.paymentOptionsTableView.removeAnimation()
             
             paymentsPageReveal(open: false)
             
@@ -2784,6 +2786,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             UIView.animate(withDuration: 0.3) {
                 self.cardViewController.paymentOptionsTableView.alpha = 1.0
             }
+            
         } else {
             promoVerified = false
             promoText = ""
@@ -2829,11 +2832,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         selectedPaymentMode = index
         
-        cardViewController.paymentOptionsTableView.createLoadingNormal()
+//        cardViewController.paymentOptionsTableView.createLoadingNormal()
         
         cardViewController.paymentOptionsTableView.reloadData()
         
-        cardViewController.paymentOptionsTableView.removeAnimation()
+//        cardViewController.paymentOptionsTableView.removeAnimation()
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             self.paymentsPageReveal(open: false)
@@ -4281,9 +4284,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         switch val {
         case 0:
             if getPhoneFaceIdType() {
-                yPositionConfirmOpen = view.frame.height - ((CGFloat(PaymentModes.count) * 40.0) + topSafeAreaConst + bottomSafeAreaConst + 325.0)
+                yPositionConfirmOpen = view.frame.height - ((CGFloat(PaymentModes.count > 3 ? 3 : PaymentModes.count) * 40.0) + topSafeAreaConst + bottomSafeAreaConst + 295.0)
             } else {
-                yPositionConfirmOpen = view.frame.height - ((CGFloat(PaymentModes.count) * 40.0) + topSafeAreaConst + bottomSafeAreaConst + 300.0)
+                yPositionConfirmOpen = view.frame.height - ((CGFloat(PaymentModes.count > 3 ? 3 : PaymentModes.count) * 40.0) + topSafeAreaConst + bottomSafeAreaConst + 270.0)
             }
         case 1:
             if getPhoneFaceIdType() {
