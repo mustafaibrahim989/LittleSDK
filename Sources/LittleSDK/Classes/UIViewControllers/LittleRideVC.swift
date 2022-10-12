@@ -281,6 +281,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         self.setNeedsStatusBarAppearanceUpdate()
         
+        printVal(object: "coordinates: \(am.getRecentPlacesCoords()), name: \(am.getRecentPlacesNames()), subtitle: \(am.getRecentPlacesFormattedAddress())")
+        
     }
     
     public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -761,50 +763,58 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     @objc func checkLocation() {
         
-        if CLLocationManager.locationServicesEnabled() {
-            
-            if SDKReachability.isConnectedToNetwork() {
-                switch(CLLocationManager.authorizationStatus()) {
-                    
-                case .restricted, .denied:
-                    
-                    // printVal(object: "No access: Restricted/Denied")
-                    
-                    removeLoadingPage()
-                    allowLocationAccessMessage()
-                    
-                case .notDetermined:
-                    
-                    // printVal(object: "No access: Not Determined")
-                    
-                    removeLoadingPage()
-                    locationManager.delegate = self
-                    locationManager.requestWhenInUseAuthorization()
-                    
-                case .authorizedAlways, .authorizedWhenInUse:
-                    
-                    // printVal(object: "Access")
-                    
-                    cardViewController.requestingLoadingView.alpha = 0.6
-                    cardViewController.requestingLoadingView.isHidden = false
-                    cardViewController.requestingLoadingView.createLoadingNormal()
-                    
-                    locationManager.delegate = self
-                    locationManager.distanceFilter = 100.0
-                    locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                    locationManager.startUpdatingLocation()
-                    
-                    // printVal(object: "Getting location")
-                @unknown default:
-                    removeLoadingPage()
-                    allowLocationAccessMessage()
+        DispatchQueue(label: "checkLocation").async {
+            if CLLocationManager.locationServicesEnabled() {
+                
+                if SDKReachability.isConnectedToNetwork() {
+                    DispatchQueue.main.async {
+                        switch(CLLocationManager.authorizationStatus()) {
+                            
+                        case .restricted, .denied:
+                            
+                            // printVal(object: "No access: Restricted/Denied")
+                            
+                            self.removeLoadingPage()
+                            self.allowLocationAccessMessage()
+                            
+                        case .notDetermined:
+                            
+                            // printVal(object: "No access: Not Determined")
+                            
+                            self.removeLoadingPage()
+                            self.locationManager.delegate = self
+                            self.locationManager.requestWhenInUseAuthorization()
+                            
+                        case .authorizedAlways, .authorizedWhenInUse:
+                            
+                            // printVal(object: "Access")
+                            
+                            self.cardViewController.requestingLoadingView.alpha = 0.6
+                            self.cardViewController.requestingLoadingView.isHidden = false
+                            self.cardViewController.requestingLoadingView.createLoadingNormal()
+                            
+                            self.locationManager.delegate = self
+                            self.locationManager.distanceFilter = 100.0
+                            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                            self.locationManager.startUpdatingLocation()
+                            
+                            // printVal(object: "Getting location")
+                        @unknown default:
+                            self.removeLoadingPage()
+                            self.allowLocationAccessMessage()
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.showOfflineMessage()
+                    }
                 }
             } else {
-                showOfflineMessage()
+                DispatchQueue.main.async {
+                    self.removeLoadingPage()
+                    self.allowLocationAccessMessage()
+                }
             }
-        } else {
-            removeLoadingPage()
-            allowLocationAccessMessage()
         }
         
     }
@@ -1032,15 +1042,11 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func reloadLocations() {
         if am.getRecentPlacesNames().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
         
         if am.getRecentPlacesFormattedAddress().count == 0 || am.getRecentPlacesCoords().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
         
         locationTitleArr = am.getRecentPlacesNames()
@@ -3268,9 +3274,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 }
             }
             
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
             
             reloadLocations()
         }
@@ -4070,6 +4074,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         printVal(object: am.getRecentPlacesFormattedAddress()[index])
         printVal(object: am.getRecentPlacesCoords()[index])
         
+        printVal(object: "coordinates: \(am.getRecentPlacesCoords()), index: \(index)")
+        guard !am.getRecentPlacesCoords()[index].trimmingCharacters(in: .whitespaces).isEmpty else { return }
         latitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[0])!
         longitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[1])!
         
@@ -5045,8 +5051,6 @@ extension LittleRideVC: GMSMapViewDelegate {
 extension LittleRideVC: CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        
         locationManager.stopUpdatingLocation()
         locationManager.delegate = nil
         

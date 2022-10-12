@@ -50,15 +50,11 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         btnPickupLoc.titleLabel?.textAlignment = .center
         
         if am.getRecentPlacesNames().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
         
         if am.getRecentPlacesFormattedAddress().count == 0 || am.getRecentPlacesCoords().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
         
         
@@ -117,6 +113,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
     }
     
     func insertAndSaveLocData(_ data: LocationSetSDK?) {
+        printVal(object: "insertAndSaveLocData: \(data)")
             
         if !(locationCoordsArr.contains(where: { $0 == originLL })) {
             if locationTitleArr.count < 8 {
@@ -140,9 +137,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
             }
         }
         
-        am.saveRecentPlacesNames(data: locationTitleArr)
-        am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-        am.saveRecentPlacesCoords(data: locationCoordsArr)
+        am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         
         locationTitleArr = am.getRecentPlacesNames()
         locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -206,9 +201,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     locationSubTitleArr[0] = data?.subname.cleanLocationNames() ?? ""
                     locationCoordsArr[0] = "\(String(data?.latitude ?? "")),\(String(data?.longitude ?? ""))"
                     
-                    am.saveRecentPlacesNames(data: locationTitleArr)
-                    am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                    am.saveRecentPlacesCoords(data: locationCoordsArr)
+                    am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                     
                     locationTitleArr = am.getRecentPlacesNames()
                     locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -225,9 +218,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     locationSubTitleArr[1] = data?.subname ?? ""
                     locationCoordsArr[1] = "\(String(data?.latitude ?? "")),\(String(data?.longitude ?? ""))"
                     
-                    am.saveRecentPlacesNames(data: locationTitleArr)
-                    am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                    am.saveRecentPlacesCoords(data: locationCoordsArr)
+                    am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                     
                     locationTitleArr = am.getRecentPlacesNames()
                     locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -260,6 +251,9 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! LocationTableViewCell
         
         var imageString: String = ""
+        
+        printVal(object: "coordinate: \(am.getRecentPlacesCoords()[indexPath.item])")
+        printVal(object: "locationTItle: \(locationTitleArr[indexPath.item])")
         
         if indexPath.item == 0 {
             imageString = "home_force"
@@ -308,6 +302,8 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
         } else {
             
             let index = locationTitleArr.firstIndex(of: locationTitleArr[indexPath.item])
+            printVal(object: "locationTitleArr: \(locationTitleArr), idx: \(index)")
+            printVal(object: "getRecentPlacesCoords: \(am.getRecentPlacesCoords())")
             am.saveSelectedLocIndex(data: index!)
             
             if self.am.getFromPickupLoc() {
@@ -369,6 +365,7 @@ extension SearchLocViewController {
     @objc func fromSearching(_ notification: Notification) {
         let data = notification.userInfo?["Location"] as? LocationSetSDK
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "LITTLESEARCH"), object: nil)
+        printVal(object: "fromSearching")
         if data != nil {
             if (buttpressed == "pickup"){
                 
@@ -391,9 +388,7 @@ extension SearchLocViewController {
                     locationCoordsArr.insert(originLL, at: 2)
                 }
                 
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                 
                 locationTitleArr = am.getRecentPlacesNames()
                 locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -401,6 +396,8 @@ extension SearchLocViewController {
                 
                 finishedLoadingInitialTableCells = false
                 locationTable.reloadData()
+                
+                printVal(object: "locationTitleArr: \(locationTitleArr), name: \(data?.name ?? "")")
                 
                 let index = locationTitleArr.firstIndex(of: data?.name ?? "")
                 am.saveSelectedLocIndex(data: index!)
@@ -434,9 +431,7 @@ extension SearchLocViewController {
                     locationCoordsArr.insert(destinationLL, at: 2)
                 }
                 
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                 
                 locationTitleArr = am.getRecentPlacesNames()
                 locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -459,9 +454,7 @@ extension SearchLocViewController {
                 locationSubTitleArr[0] = data?.subname.cleanLocationNames() ?? ""
                 locationCoordsArr[0] = "\(String(data?.latitude ?? "")),\(String(data?.longitude ?? ""))"
                 
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                 
                 locationTitleArr = am.getRecentPlacesNames()
                 locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -478,9 +471,7 @@ extension SearchLocViewController {
                 locationSubTitleArr[1] = data?.subname ?? ""
                 locationCoordsArr[1] = "\(String(data?.latitude ?? "")),\(String(data?.longitude ?? ""))"
                 
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                 
                 locationTitleArr = am.getRecentPlacesNames()
                 locationSubTitleArr = am.getRecentPlacesFormattedAddress()

@@ -81,6 +81,49 @@ class SDKAllMethods {
         prefs.setValue(data, forKey: "RecentPlacesCoords")
     }
     
+    func saveRecentPlaces(coordinates: [String], names: [String], subtitles: [String]) {
+        var myCoordinates = coordinates
+        var myNames = names
+        var mySubtitles = subtitles
+        
+        var removeCoordinates = [Int]()
+        var removeNames = [Int]()
+        var removeSubtitles = [Int]()
+        
+        for (idx, name) in myNames.enumerated() {
+            let coordinate = myCoordinates[idx].trimmingCharacters(in: .whitespacesAndNewlines)
+            let myName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            if myName.isEmpty && idx != 0 && idx != 1 {
+                removeNames.append(idx)
+                removeCoordinates.append(idx)
+                removeSubtitles.append(idx)
+            } else {
+                if coordinate.isEmpty && !myName.isEmpty {
+                    if idx == 0 || idx == 1 {
+                        if idx == 0 {
+                            myNames[idx] = "Add Home"
+                        } else {
+                            myNames[idx] = "Add Work"
+                        }
+                        mySubtitles[idx] = ""
+                    } else {
+                        removeNames.append(idx)
+                        removeCoordinates.append(idx)
+                        removeSubtitles.append(idx)
+                    }
+                }
+            }
+        }
+        
+        removeNames.forEach({ myNames.remove(at: $0) })
+        removeCoordinates.forEach({ myCoordinates.remove(at: $0) })
+        removeSubtitles.forEach({ mySubtitles.remove(at: $0) })
+        
+        prefs.setValue(myCoordinates, forKey: "RecentPlacesCoords")
+        prefs.setValue(mySubtitles, forKey: "RecentPlacesFormattedAddress")
+        prefs.setValue(myNames, forKey: "RecentPlacesNames")
+    }
+    
     func saveCountry(data: String) {
         wrapper.set(data, forKey: "Country")
     }

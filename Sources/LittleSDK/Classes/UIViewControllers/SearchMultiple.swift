@@ -90,15 +90,11 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
             locationTable.dataSource = self
             
             if am.getRecentPlacesNames().count == 0 {
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
             }
 
             if am.getRecentPlacesFormattedAddress().count == 0 || am.getRecentPlacesCoords().count == 0 {
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
             }
             
             getLocationsReload()
@@ -237,9 +233,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
                     locationSubTitleArr[index] = data?.subname.cleanLocationNames() ?? ""
                     locationCoordsArr[index] = "\(String(data?.latitude ?? "")),\(String(data?.longitude ?? ""))"
                     
-                    am.saveRecentPlacesNames(data: locationTitleArr)
-                    am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                    am.saveRecentPlacesCoords(data: locationCoordsArr)
+                    am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
                     
                     locationTitleArr = am.getRecentPlacesNames()
                     locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -265,15 +259,11 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         if buttpressed == "addhome" || buttpressed == "addwork" {
             
             if am.getRecentPlacesNames().count == 0 {
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
             }
 
             if am.getRecentPlacesFormattedAddress().count == 0 || am.getRecentPlacesCoords().count == 0 {
-                am.saveRecentPlacesNames(data: locationTitleArr)
-                am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-                am.saveRecentPlacesCoords(data: locationCoordsArr)
+                am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
             }
 
             getLocationsReload()
@@ -504,9 +494,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
             locationCoordsArr.insert(ll, at: 2)
         }
         
-        am.saveRecentPlacesNames(data: locationTitleArr)
-        am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-        am.saveRecentPlacesCoords(data: locationCoordsArr)
+        am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         
         locationTitleArr = am.getRecentPlacesNames()
         locationSubTitleArr = am.getRecentPlacesFormattedAddress()
@@ -529,15 +517,11 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         }
         
         if am.getRecentPlacesNames().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
 
         if am.getRecentPlacesFormattedAddress().count == 0 || am.getRecentPlacesCoords().count == 0 {
-            am.saveRecentPlacesNames(data: locationTitleArr)
-            am.saveRecentPlacesFormattedAddress(data: locationSubTitleArr)
-            am.saveRecentPlacesCoords(data: locationCoordsArr)
+            am.saveRecentPlaces(coordinates: locationCoordsArr, names: locationTitleArr, subtitles: locationSubTitleArr)
         }
 
         getLocationsReload()

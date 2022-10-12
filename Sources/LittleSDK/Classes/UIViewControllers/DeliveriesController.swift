@@ -215,6 +215,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     }
     
     func getRestaurants() {
+        printVal(object: "getRestaurants")
         
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
         
@@ -229,6 +230,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     }
     
     @objc func loadRestaurants(_ notification: NSNotification) {
+        printVal(object: "hideShimmer")
         
         self.view.setTemplateWithSubviews(false)
         
@@ -347,6 +349,8 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     
     func getLocationName(currentCoordinate: CLLocationCoordinate2D) {
         var proceedToCallGoogle: Bool = true
+        
+        printVal(object: "getLocationName")
         
         for i in (0..<am.getRecentPlacesCoords().count) {
             if am.getRecentPlacesCoords()[i] != "" {
@@ -571,48 +575,55 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     // MARK: - Check Location
     
     @objc func checkLocation() {
-        
-        if CLLocationManager.locationServicesEnabled() {
-            
-            if SDKReachability.isConnectedToNetwork() {
-                switch(CLLocationManager.authorizationStatus()) {
-                    
-                case .restricted, .denied:
-                    
-                    // printVal(object: "No access: Restricted/Denied")
-                    
-                    removeLoadingPage()
-                    allowLocationAccessMessage()
-                    
-                case .notDetermined:
-                    
-                    // printVal(object: "No access: Not Determined")
-                    
-                    removeLoadingPage()
-                    locationManager.delegate = self
-                    locationManager.requestWhenInUseAuthorization()
-                    
-                case .authorizedAlways, .authorizedWhenInUse:
-                    
-                    // printVal(object: "Access")
-                    
-                    locationManager.delegate = self
-                    locationManager.distanceFilter = 100.0
-                    locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                    locationManager.startUpdatingLocation()
-                    
-                    // printVal(object: "Getting location")
-                @unknown default:
-                    removeLoadingPage()
-                    allowLocationAccessMessage()
+        DispatchQueue(label: "checkLocation").async {
+            if CLLocationManager.locationServicesEnabled() {
+                
+                if SDKReachability.isConnectedToNetwork() {
+                    DispatchQueue.main.async {
+                        switch(CLLocationManager.authorizationStatus()) {
+                            
+                        case .restricted, .denied:
+                            
+                            // printVal(object: "No access: Restricted/Denied")
+                            
+                            self.removeLoadingPage()
+                            self.allowLocationAccessMessage()
+                            
+                        case .notDetermined:
+                            
+                            // printVal(object: "No access: Not Determined")
+                            
+                            self.removeLoadingPage()
+                            self.locationManager.delegate = self
+                            self.locationManager.requestWhenInUseAuthorization()
+                            
+                        case .authorizedAlways, .authorizedWhenInUse:
+                            
+                            // printVal(object: "Access")
+                            
+                            self.locationManager.delegate = self
+                            self.locationManager.distanceFilter = 100.0
+                            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                            self.locationManager.startUpdatingLocation()
+                            
+                            // printVal(object: "Getting location")
+                        @unknown default:
+                            self.removeLoadingPage()
+                            self.allowLocationAccessMessage()
+                        }
+                    }
+                } else {
+                    // showOfflineMessage()
                 }
             } else {
-                // showOfflineMessage()
+                DispatchQueue.main.async {
+                    self.removeLoadingPage()
+                    self.allowLocationAccessMessage()
+                }
+                
             }
-        } else {
-            removeLoadingPage()
-            allowLocationAccessMessage()
         }
+        
         
     }
     
@@ -915,6 +926,8 @@ extension DeliveriesController: CLLocationManagerDelegate {
         
         locationManager.stopUpdatingLocation()
         locationManager.delegate = nil
+        
+        printVal(object: "didUpdateLocations: \(manager.location)")
         
         if manager.location != nil {
             

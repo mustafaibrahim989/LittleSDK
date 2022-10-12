@@ -24,6 +24,7 @@ class SDKHandleCalls {
     var keysent = false
     
     func makeServerCall(sb: String, method: String, switchnum: Int) {
+        printVal(object: "makeServerCall: \(method)")
         
         let topController = UIApplication.topViewController()
         
@@ -36,6 +37,7 @@ class SDKHandleCalls {
         if SDKReachability.isConnectedToNetwork() || method == "VERIFYUSSDCODEJSONData" {
              connectToServer(switchnum: switchnum, method: method)
         } else {
+            printVal(object: "makeServerCall network issue: \(method)")
             
             topController?.removeLoadingPage()
             topController?.view.removeAnimation()
@@ -91,6 +93,9 @@ class SDKHandleCalls {
                parameters: [:], encoding: DataToSend, headers: headers).response { response in
 
                 let data = response.data
+            
+            printVal(object: "makeServerCall data nil: \(method): \(data == nil)")
+            printVal(object: "makeServerCall status: \(method): \(response.response?.statusCode)")
 
                 if data != nil {
 
@@ -100,7 +105,7 @@ class SDKHandleCalls {
                         
                         let stringVal = self.am.DecryptDataAES(DataToSend: sDKData.data ?? "") as String
                         
-                        printVal(object: "\(method): \(stringVal)")
+                        printVal(object: "makeServerCall \(method): \(stringVal)")
                         
                         let strData = Data(stringVal.utf8)
                         
@@ -108,8 +113,8 @@ class SDKHandleCalls {
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: self.callTypeName), object: nil, userInfo: dataDict)
                         
                         
-                    } catch {
-                        
+                    } catch(let error) {
+                        printVal(object: "makeServerCall error: \(method): \(error.localizedDescription)")
                     }
 
                 }
