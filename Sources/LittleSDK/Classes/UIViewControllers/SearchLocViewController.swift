@@ -171,7 +171,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     } else {
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PICKUP"), object: nil)
                     }
-                    self.dismiss(animated: true, completion: nil)
+//                    self.dismiss(animated: true, completion: nil)
                     self.navigationController?.popViewController(animated: true)
                     
                 } else if (buttpressed == "dropoff"){
@@ -192,7 +192,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DROPOFF"), object: nil)
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DROPOFFMULTIPLE"), object: nil)
-                    self.dismiss(animated: true, completion: nil)
+//                    self.dismiss(animated: true, completion: nil)
                     self.navigationController?.popViewController(animated: true)
                     
                 } else if (buttpressed == "addhome") {
@@ -210,7 +210,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     finishedLoadingInitialTableCells = false
                     locationTable.reloadData()
                     
-                    self.dismiss(animated: true, completion: nil)
+//                    self.dismiss(animated: true, completion: nil)
                     
                 } else if (buttpressed == "addwork") {
                     
@@ -227,7 +227,7 @@ public class SearchLocViewController: UIViewController, UITableViewDataSource, U
                     finishedLoadingInitialTableCells = false
                     locationTable.reloadData()
                     
-                    self.dismiss(animated: true, completion: nil)
+//                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }
