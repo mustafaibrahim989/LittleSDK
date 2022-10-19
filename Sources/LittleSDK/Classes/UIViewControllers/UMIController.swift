@@ -172,7 +172,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -185,7 +185,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadNearbyMerchants),name:NSNotification.Name(rawValue: "GETNEARBYMERCHANTSJSONData"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"GETNEARBYMERCHANTS\"\(commonCallParams()),\"GetMerchantName\":{\"Latitude\":\"\(am.getCurrentLocation()!.components(separatedBy: ",")[0])\",\"Longitude\":\"\(am.getCurrentLocation()!.components(separatedBy: ",")[1])\"}}"
+        let dataToSend = "{\"FormID\":\"GETNEARBYMERCHANTS\"\(commonCallParams()),\"GetMerchantName\":{\"Latitude\":\"\(SDKUtils.extractStringCoordinateLatitude(string: am.getCurrentLocation()))\",\"Longitude\":\"\(SDKUtils.extractStringCoordinateLongitude(string: am.getCurrentLocation()))\"}}"
         
         
         printVal(object: dataToSend)
@@ -241,7 +241,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         am.savePROMOTEXT(data: "")
         am.savePROMOIMAGEURL(data: "")
         
-        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation()!)|CATEGORY|UMI|MERCHANTID|\(txtMerchantCode.text!)|"
+        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation() ?? "0.0,0.0")|CATEGORY|UMI|MERCHANTID|\(txtMerchantCode.text!)|"
         
         // hc.makeServerCall(sb: datatosend, method: "VALIDATEPROMOCODE", switchnum: 0)
     }
@@ -396,7 +396,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         txtAmount.text = txtAmount.text?.replacingOccurrences(of: "-", with: "")
         
-        let dataToSend = "{\"FormID\":\"ADDMERCHANTTRX\"\(commonCallParams()),\"MerchantTransactions\":{\"MerchantID\":\"\(txtMerchantCode.text!)\",\"MobileNumber\":\"\(am.getPhoneNumber()!)\",\"Amount\":\"\(txtAmount.text!)\",\(extraDetails)\"ReferenceNumber\":\"\(txtReferenceNo.text ?? "")\",\"WalletID\":\"\(selectedWalletID)\"\(promoStuff)}}"
+        let dataToSend = "{\"FormID\":\"ADDMERCHANTTRX\"\(commonCallParams()),\"MerchantTransactions\":{\"MerchantID\":\"\(txtMerchantCode.text!)\",\"MobileNumber\":\"\(am.getPhoneNumber() ?? "")\",\"Amount\":\"\(txtAmount.text!)\",\(extraDetails)\"ReferenceNumber\":\"\(txtReferenceNo.text ?? "")\",\"WalletID\":\"\(selectedWalletID)\"\(promoStuff)}}"
         
         
         printVal(object: dataToSend)

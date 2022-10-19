@@ -60,7 +60,7 @@ public class ExtraItemsController: UIViewController {
         view.setTemplateWithSubviews(true, viewBackgroundColor: .white)
         
         lblTitle.text = "\(selectedFood?.foodName ?? "") Details"
-        btnProceed.setTitle("Proceed (\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency("\(selectedFood?.specialPrice ?? 0.0)")))", for: .normal)
+        btnProceed.setTitle("Proceed (\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency("\(selectedFood?.specialPrice ?? 0.0)")))", for: .normal)
         
         lblProducts.text = "\(selectedFood?.foodName ?? "") does not appear to have any addons. Please select a different product from the menu."
         
@@ -96,7 +96,7 @@ public class ExtraItemsController: UIViewController {
         
         let theTotal = (selectedFood?.specialPrice ?? 0.0) + extraTotalPrices
         
-        btnProceed.setTitle("Proceed (\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency("\(theTotal)")))", for: .normal)
+        btnProceed.setTitle("Proceed (\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency("\(theTotal)")))", for: .normal)
         
         if extraItemsArr.contains(where: { $0.typeOfSelection == "ONE" }) {
             for each in extraItemsArr {
@@ -158,7 +158,7 @@ extension ExtraItemsController {
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }

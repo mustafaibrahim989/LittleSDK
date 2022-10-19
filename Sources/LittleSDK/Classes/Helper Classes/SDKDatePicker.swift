@@ -133,13 +133,13 @@ public class LittleDatePickerView: UIView {
         } 
         translatesAutoresizingMaskIntoConstraints = false
         
-        if keyWindow != nil {
-            keyWindow!.addSubview(self)
+        if let keyWindow = keyWindow {
+            keyWindow.addSubview(self)
             NSLayoutConstraint.activate([
-                topAnchor.constraint(equalTo: keyWindow!.topAnchor),
-                leftAnchor.constraint(equalTo: keyWindow!.leftAnchor),
-                bottomAnchor.constraint(equalTo: keyWindow!.bottomAnchor),
-                rightAnchor.constraint(equalTo: keyWindow!.rightAnchor)
+                topAnchor.constraint(equalTo: keyWindow.topAnchor),
+                leftAnchor.constraint(equalTo: keyWindow.leftAnchor),
+                bottomAnchor.constraint(equalTo: keyWindow.bottomAnchor),
+                rightAnchor.constraint(equalTo: keyWindow.rightAnchor)
             ])
         }
         

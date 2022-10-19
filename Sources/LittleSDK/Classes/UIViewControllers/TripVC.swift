@@ -193,7 +193,7 @@ public class TripVC: UIViewController {
         
         mapContainerView.addSubview(gmsMapView)
         
-        destinationCoordinate = CLLocationCoordinate2DMake(Double(am.getCurrentLocation().components(separatedBy: ",")[0])!, Double(am.getCurrentLocation().components(separatedBy: ",")[1])!)
+        destinationCoordinate = SDKUtils.extractCoordinate(string: am.getCurrentLocation() ?? "")
         
         checkLocation()
         
@@ -360,7 +360,7 @@ public class TripVC: UIViewController {
         
         if userLoc != nil {
             
-            let datatosend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail()!)|TRIPID|\(am.getTRIPID()!)|"
+            let datatosend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail()!)|TRIPID|\(am.getTRIPID() ?? "")|"
             
             hc.makeServerCall(sb: datatosend, method: "PANICBUTTON", switchnum: 0)
             
@@ -392,14 +392,14 @@ public class TripVC: UIViewController {
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\(am.getTRIPID()!)\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
     
     @objc func cancelTrip() {
     
-        var dataToSend = "{\"FormID\":\"CANCELREQUEST\"\(commonCallParams()),\"CancelTrip\":{\"TripID\":\"\(am.getTRIPID()!)\",\"Reason\":\"\(cancelReason)\"}}"
+        var dataToSend = "{\"FormID\":\"CANCELREQUEST\"\(commonCallParams()),\"CancelTrip\":{\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Reason\":\"\(cancelReason)\"}}"
         
         printVal(object: dataToSend)
         
@@ -411,8 +411,8 @@ public class TripVC: UIViewController {
             HTTPHeader(name: "Content-Type", value: "application/json; charset=utf-8"),
             HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID()!))"),
             HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts()!)"))"),
-            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber()!)"))"),
-            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName()!)"))")
+            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber() ?? "")"))"),
+            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName() ?? "")"))")
         ]
         
         AF.request("\(string)",
@@ -457,7 +457,7 @@ public class TripVC: UIViewController {
         
         am.saveStillRequesting(data: false)
         
-        let dataToSend = "{\"FormID\":\"GETREQUESTSTATUS\"\(commonCallParams()),\"GetRequestStatus\":{\"TripID\":\"\(am.getTRIPID()!)\"}}"
+        let dataToSend = "{\"FormID\":\"GETREQUESTSTATUS\"\(commonCallParams()),\"GetRequestStatus\":{\"TripID\":\"\(am.getTRIPID() ?? "")\"}}"
         
         hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUSJSONData", switchnum: 0)
         
@@ -830,7 +830,7 @@ public class TripVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATEJSONData"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL()!)\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE()!)\",\"Rating\":\"\(rating)\",\"TripID\":\"\(am.getTRIPID()!)\",\"Comments\":\"\(message)\"}}"
+        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL()!)\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE()!)\",\"Rating\":\"\(rating)\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Comments\":\"\(message)\"}}"
         
         printVal(object: dataToSend)
         

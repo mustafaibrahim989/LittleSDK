@@ -141,9 +141,9 @@ public class InitializeSDKVC: UIViewController {
         let headers: HTTPHeaders = [
             HTTPHeader(name: "Content-Type", value: "application/json"),
             HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: cn.APIKey))"),
-            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKAccounts()!))"),
-            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKMobileNumber()!))"),
-            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKPackageName()!))")
+            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKAccounts() ?? ""))"),
+            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKMobileNumber() ?? ""))"),
+            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: am.getSDKPackageName() ?? ""))")
         ]
 
         let parameters = [String: String]()

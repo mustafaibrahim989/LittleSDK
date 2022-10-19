@@ -99,9 +99,9 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         btnSearch.isEnabled = false
         
-        currentPlaceCoordinates = CLLocationCoordinate2D(latitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[0] ?? "0.0")! , longitude: CLLocationDegrees(am.getCurrentLocation()?.components(separatedBy: ",")[1] ?? "0.0")!)
+        currentPlaceCoordinates = SDKUtils.extractCoordinate(string: am.getCurrentLocation() ?? "0.0,0.0")
 
-        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
+        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle ?? Bundle.module)?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
         
         
@@ -112,6 +112,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
     }
 
     public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         lblNoShops.text = "We unfortunately couldn't find a \(self.title?.lowercased() ?? "") provider within your area. We are however working hard to ensure all areas have \(self.title?.lowercased() ?? "") providers within your reach."
         imgNoShops.image = getImage(named: "no_\(category.replacingOccurrences(of: "ORDER", with: "").lowercased())", bundle: sdkBundle!)
@@ -209,7 +210,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -433,11 +434,10 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "LOCATIONORDER"), object: nil)
 
-        let index = am.getSelectedLocIndex()!
-        var latitude: Double
-        var longitude: Double
-        latitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[0])!
-        longitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[1])!
+        let index = am.getSelectedLocIndex() ?? 0
+        let coordinate = SDKUtils.extractCoordinate(array: am.getRecentPlacesCoords(), index: index)
+        let latitude = coordinate.latitude
+        let longitude = coordinate.longitude
         
         am.saveCurrentLocation(data: "\(latitude),\(longitude)")
         let pickupName = am.getRecentPlacesNames()[index].cleanLocationNames()

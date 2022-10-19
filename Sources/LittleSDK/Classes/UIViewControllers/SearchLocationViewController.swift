@@ -304,7 +304,7 @@ public class SearchLocationViewController: UIViewController {
         
         let escapedString = locationSearch.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
-        let url = URL(string: "https://maps.little.bz/api/v2/places?q=\(escapedString ?? "")&location=\(am.getCurrentLocation()!)&city=&country=&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))")!
+        guard let url = URL(string: "https://maps.little.bz/api/v2/places?q=\(escapedString ?? "")&location=\(am.getCurrentLocation() ?? "0.0,0.0")&city=&country=&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))") else { return }
         
         printVal(object: "URL: \(url)")
 
@@ -349,7 +349,7 @@ public class SearchLocationViewController: UIViewController {
         
         let escapedString = locationSearch.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         let theReal = am.DecryptDataKC(DataToSend: cn.placesKey) as String
-        let url = URL(string: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=\(escapedString ?? "")&types=geocode&location=\(am.getCurrentLocation()!)&radius=500&key=\(theReal)")!
+        guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=\(escapedString ?? "")&types=geocode&location=\(am.getCurrentLocation() ?? "0.0,0.0")&radius=500&key=\(theReal)") else { return }
 
         printVal(object: "URL: \(url)")
         

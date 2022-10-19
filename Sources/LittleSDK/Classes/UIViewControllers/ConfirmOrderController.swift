@@ -119,7 +119,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             deliveryModeView.isHidden = false
             
-            lblDeliveryCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(selectedRestaurant?.deliveryCharges ?? 0)))"
+            lblDeliveryCash.text = "\(currency ?? am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(String(selectedRestaurant?.deliveryCharges ?? 0)))"
             
             if am.getPICKUPADDRESS() != "" {
                 btnLocation.setTitle(am.getPICKUPADDRESS(), for: UIControl.State())
@@ -127,7 +127,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             if selectedRestaurant?.deliveryModes?.count ?? 0 > 0 {
                 btnDeliverMode.setTitle("\(selectedRestaurant?.deliveryModes?[0].deliveryModeDescription ?? "")", for: UIControl.State())
-                lblDeliveryCash.text = "\(am.getGLOBALCURRENCY()!) \(selectedRestaurant?.deliveryModes?[0].deliveryCharges ?? 0)"
+                lblDeliveryCash.text = "\(am.getGLOBALCURRENCY() ?? "KES") \(selectedRestaurant?.deliveryModes?[0].deliveryCharges ?? 0)"
             }
             
             if selectedRestaurant?.deliveryModes?[0] != nil {
@@ -167,7 +167,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0, 0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -184,7 +184,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         let restaurantID = selectedRestaurant?.restaurantID ?? ""
         
-        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation()!)|CATEGORY|\(category)|ModuleID|\(category)|RESTAURANTID|\(restaurantID)|"
+        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation() ?? "0.0,0.0")|CATEGORY|\(category)|ModuleID|\(category)|RESTAURANTID|\(restaurantID)|"
         
         hc.makeServerCall(sb: datatosend, method: "VALIDATEPROMOCODE", switchnum: 0)
     }
@@ -274,7 +274,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         payLoad = "RestaurantDeliveryItems"
         walletID = "WalletID"
         
-        let dataToSend = "{\"FormID\":\"\(formID)\"\(commonCallParams()),\"\(payLoad)\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"\(walletID)\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(txtExtraDetails.text!)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+        let dataToSend = "{\"FormID\":\"\(formID)\"\(commonCallParams()),\"\(payLoad)\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"\(walletID)\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(txtExtraDetails.text!)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
         
         hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSFoodDelivery", switchnum: 0)
         
@@ -386,14 +386,13 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "LOCATIONORDER"), object: nil)
 
-        let index = am.getSelectedLocIndex()!
-        var latitude: Double
-        var longitude: Double
-        latitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[0])!
-        longitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[1])!
+        let index = am.getSelectedLocIndex() ?? 0
+        let coordinate = SDKUtils.extractCoordinate(array: am.getRecentPlacesCoords(), index: index)
+        let latitude = coordinate.latitude
+        let longitude = coordinate.longitude
         
         am.saveCurrentLocation(data: "\(latitude),\(longitude)")
-        let pickupName = am.getRecentPlacesNames()[index].cleanLocationNames()
+        let pickupName = am.getRecentPlacesNames()[safe: index]?.cleanLocationNames() ?? ""
         am.savePICKUPADDRESS(data: pickupName)
         btnLocation.setTitle(pickupName, for: UIControl.State())
         
@@ -471,7 +470,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     func updateOrderValues(total: Double) {
         
-        lblProductsCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(total)))"
+        lblProductsCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(total)))"
         let delivery = Double(lblDeliveryCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
         let promocode = Double(lblPromoCodeCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
         var grandTotal = (total - promocode)
@@ -480,12 +479,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         } else {
             grandTotal = grandTotal + delivery
         }
-        lblTotalCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(grandTotal)))"
+        lblTotalCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(grandTotal)))"
         
         if total == 0.00 {
             btnConfirmOrder.backgroundColor = .darkGray
         } else if total < 0.00 {
-            lblTotalCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) 0.00"
+            lblTotalCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) 0.00"
         } else {
             let color = SDKConstants.littleSDKThemeColor
             btnConfirmOrder.backgroundColor = SDKConstants.littleSDKThemeColor
@@ -498,7 +497,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = false
         promoIs = txtPromoCode.text!
-        lblPromoCodeCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(am.getPROMOAMOUNT()!)))"
+        lblPromoCodeCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(am.getPROMOAMOUNT() ?? "0")))"
         changeCartValues()
     }
     
@@ -508,7 +507,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         btnConfirmPromo.backgroundColor = color
         btnConfirmPromo.isEnabled = true
         promoIs = ""
-        lblPromoCodeCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) 0.00"
+        lblPromoCodeCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) 0.00"
         changeCartValues()
     }
     
@@ -674,7 +673,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     }
     
     @IBAction func btnCashSourcePressed(_ sender: UIButton) {
-        if let amount = lblTotalCash.text?.replacingOccurrences(of: "\(currency ?? am.getGLOBALCURRENCY()!) ", with: "") {
+        if let amount = lblTotalCash.text?.replacingOccurrences(of: "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) ", with: "") {
             if amount != "0.00" {
                 am.saveAmount(data: amount)
             } else {
@@ -738,7 +737,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             }
             
             let grandTotal = totalAmount + (menuItem.specialPrice ?? 0.0)
-            cell.lblTotalAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(grandTotal)))"
+            cell.lblTotalAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(grandTotal)))"
             cell.lblExtrasWithOrder.text = "\(string)"
             
             cell.selectionStyle = .none
@@ -758,8 +757,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             cell.imgMenu.alpha = 1
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblDescription.text = "\(menuItem.foodDescription ?? "")"
-            cell.lblMenuAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.specialPrice ?? 0.00)"
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.originalPrice ?? 0.00)")
+            cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.specialPrice ?? 0.00)"
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.originalPrice ?? 0.00)")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
             cell.lblMenuWasAmount.attributedText = attributeString
             

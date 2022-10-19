@@ -1271,9 +1271,12 @@ class SDKAllMethods {
     // MARK: - Encryption
     
     func EncodeDataBase64(DataToSend:String) -> NSString {
-        let plainData = (DataToSend as NSString).data(using: String.Encoding.utf8.rawValue)
-        let base64String = plainData!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-        return base64String as NSString
+        if let plainData = (DataToSend as NSString).data(using: String.Encoding.utf8.rawValue) {
+            let base64String = plainData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            return base64String as NSString
+        }
+        
+        return ""
     }
     
     func EncryptDataKC(DataToSend: String) -> String {
@@ -1295,7 +1298,7 @@ class SDKAllMethods {
     }
     
     func EncryptDataAES(DataToSend:String)->String{
-        let aes = LittleSDKAES(key: am.getMyEncryptionKey()!, iv: am.getMyEncryptionIV()!)
+        let aes = LittleSDKAES(key: am.getMyEncryptionKey() ?? "", iv: am.getMyEncryptionIV() ?? "")
         if let encrypteddata = aes?.encrypt(string: DataToSend) {
             let encryptedstr = encrypteddata.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
             return encryptedstr
@@ -1336,7 +1339,7 @@ class SDKAllMethods {
     }
     
     func DecryptDataAES(DataToSend:String)->NSString{
-        let aes = LittleSDKAES(key: am.getMyEncryptionKey()!, iv: am.getMyEncryptionIV()!)
+        let aes = LittleSDKAES(key: am.getMyEncryptionKey() ?? "", iv: am.getMyEncryptionIV() ?? "")
         if let b64encdata1 = Data(base64Encoded: DataToSend, options: NSData.Base64DecodingOptions(rawValue: 0)) {
             let decryptedstr = aes?.decrypt(data: b64encdata1)
             return (decryptedstr ?? "") as NSString

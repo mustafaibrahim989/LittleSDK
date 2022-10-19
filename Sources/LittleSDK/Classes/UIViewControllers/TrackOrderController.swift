@@ -107,7 +107,7 @@ public class TrackOrderController: UIViewController {
     
     func resumeTrip() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCreateRequest),name:NSNotification.Name(rawValue: "CREATEREQUEST_NEW"), object: nil)
-        let datatosend = "FORMID|RESUME|TRIPID|\(am.getTRIPID()!)|"
+        let datatosend = "FORMID|RESUME|TRIPID|\(am.getTRIPID() ?? "")|"
         hc.makeServerCall(sb: datatosend, method: "CREATEREQUEST_NEW", switchnum: 0)
     }
        

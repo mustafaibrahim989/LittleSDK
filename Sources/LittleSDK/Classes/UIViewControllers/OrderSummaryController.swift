@@ -90,7 +90,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -131,10 +131,10 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 }
                 
                 lblOrderID.text = "Order #\(deliveryID?.components(separatedBy: "-")[0] ?? "") - \(tripStatus ?? "")"
-                lblDeliveryFee.text = "\(currency ?? am.getGLOBALCURRENCY()!)  \(formatCurrency(String(deliveryCharges ?? 0.0)))"
-                lblPromoCode.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(promo ?? 0.0)))"
-                lblProductsAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(orderAmount ?? 0.0)))"
-                lblTotalAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(totalCharges ?? 0)))"
+                lblDeliveryFee.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES"))  \(formatCurrency(String(deliveryCharges ?? 0.0)))"
+                lblPromoCode.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(promo ?? 0.0)))"
+                lblProductsAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(orderAmount ?? 0.0)))"
+                lblTotalAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(totalCharges ?? 0)))"
                 
                 if let lastItem = deliveryLogsArr.last {
                     if lastItem.eventTime != nil && lastItem.eventTime != "" {
@@ -378,7 +378,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             
             cell.imgMenuImage.image = getImage(named: "default_food", bundle: sdkBundle!)
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
-            cell.lblMenuAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.price1 ?? 0)"
+            cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.price1 ?? 0)"
             cell.lblMenuNumber.text = "x \(menuItem.quantity ?? 0)"
             cell.selectionStyle = .none
             

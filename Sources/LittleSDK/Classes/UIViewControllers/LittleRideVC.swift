@@ -958,7 +958,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         } else {
             let unique_id = NSUUID().uuidString
             let unique_id2 = NSUUID().uuidString
-            locationStopsArr.append(LocationSetSDK(id: unique_id, name: am.getPICKUPADDRESS(), subname: am.getPICKUPADDRESS(), latitude: (am.getCurrentLocation()?.components(separatedBy: ",")[0])!, longitude: (am.getCurrentLocation()?.components(separatedBy: ",")[1])!, phonenumber: "", instructions: ""))
+            locationStopsArr.append(LocationSetSDK(id: unique_id, name: am.getPICKUPADDRESS(), subname: am.getPICKUPADDRESS(), latitude: SDKUtils.extractStringCoordinateLatitude(string: am.getCurrentLocation() ?? ""), longitude: SDKUtils.extractStringCoordinateLongitude(string: am.getCurrentLocation() ?? ""), phonenumber: "", instructions: ""))
             locationStopsArr.append(LocationSetSDK(id: unique_id2, name: "", subname: "", latitude: "", longitude: "", phonenumber: "", instructions: ""))
         }
     }
@@ -3197,7 +3197,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID()!)\",\"MobileNumber\":\"\(am.getSDKMobileNumber()!)\",\"IMEI\":\"\(am.getIMEI()!)\",\"CodeBase\":\"\(am.getMyCodeBase()!)\",\"PackageName\":\"\(am.getSDKPackageName()!)\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation()!)\",\"LatLong\":\"\(am.getCurrentLocation()!)\",\"TripID\":\"\(am.getTRIPID()!)\",\"City\":\"\(am.getCity()!)\",\"RegisteredCountry\":\"\(am.getCountry()!)\",\"Country\":\"\(am.getCountry()!)\",\"UniqueID\":\"\(am.getMyUniqueID()!)\",\"CarrierName\":\"\(getCarrierName()!)\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
         
         return str
     }
@@ -3310,7 +3310,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
                 am.saveFORWARDCOUNT(data: results.forwardCount ?? "1")
                 
-                forwardCount = Int(am.getFORWARDCOUNT()!)!
+                forwardCount = Int(am.getFORWARDCOUNT() ?? "") ?? 0
                 
                 cardViewController.paymentOptionsTableView.reloadData()
                 
@@ -3464,14 +3464,14 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 for each in jsonEstimates! {
                     if each.subVehicleType == "MAIN" {
                         if each.minAmount == each.maxAmount {
-                            carTypePriceEstimate.append("\(each.currency?.capitalized ?? am.getGLOBALCURRENCY()!.capitalized). \(Int(each.minAmount ?? 0))")
+                            carTypePriceEstimate.append("\(each.currency?.capitalized ?? (am.getGLOBALCURRENCY()?.capitalized ?? "Kes")). \(Int(each.minAmount ?? 0))")
                         } else {
-                            carTypePriceEstimate.append("\(each.currency?.capitalized ?? am.getGLOBALCURRENCY()!.capitalized). \(Int(each.minAmount ?? 0)) - \(Int(each.maxAmount ?? 0))")
+                            carTypePriceEstimate.append("\(each.currency?.capitalized ?? (am.getGLOBALCURRENCY()?.capitalized ?? "Kes")). \(Int(each.minAmount ?? 0)) - \(Int(each.maxAmount ?? 0))")
                         }
                         carOldTripCost.append("\(each.oldTripCost ?? "0")")
                         
                         carCostEstimate.append(each.costEstimate?.capitalized ?? "")
-                        carCurrency.append(each.currency?.capitalized ?? am.getGLOBALCURRENCY()!.capitalized)
+                        carCurrency.append(each.currency?.capitalized ?? (am.getGLOBALCURRENCY()?.capitalized ?? "Kes"))
                         CarTypes.append(each.vehicleType ?? "")
                         SubVehicleTypes.append(each.subVehicleType ?? "")
                         carVTypeTimes.append(each.textLabels ?? "")
@@ -3632,10 +3632,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         let headers: HTTPHeaders = [
             HTTPHeader(name: "Content-Type", value: "application/json; charset=utf-8"),
-            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID()!))"),
-            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts()!)"))"),
-            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber()!)"))"),
-            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName()!)"))")
+            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID() ?? ""))"),
+            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts() ?? "")"))"),
+            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber() ?? "")"))"),
+            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName() ?? "")"))")
         ]
         
         AF.request("\(string)",
@@ -3758,7 +3758,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         am.savePROMOTEXT(data: "")
         am.savePROMOIMAGEURL(data: "")
         
-        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|VEHICLETYPE|\(CarTypes[selectedCarIndex].uppercased())|PICKUPLL|\(am.getCurrentLocation()!)|DROPOFFLL|\(destinationLL)|"
+        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|VEHICLETYPE|\(CarTypes[selectedCarIndex].uppercased())|PICKUPLL|\(am.getCurrentLocation() ?? "0.0,0.0")|DROPOFFLL|\(destinationLL)|"
         
         // hc.makeServerCall(sb: datatosend, method: "VALIDATEPROMOCODE", switchnum: am.VALIDATEPROMOCODE)
     }
@@ -3833,7 +3833,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 am.savePROMOTEXT(data: "Invalid Promo Code.")
             }
             
-            showAlerts(title: "", message: "\(am.getPROMOTEXT()!)")
+            showAlerts(title: "", message: "\(am.getPROMOTEXT() ?? "")")
         }
         
     }
@@ -3896,7 +3896,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         if preferredDriversArr.count == 0 {
             
-            showAlerts(title: "", message: "No drivers of \(am.getCarType()!) category are near you at the moment.\nKindly try a different vehicle category as we work on re-routing some to your location.")
+            showAlerts(title: "", message: "No drivers of \(am.getCarType() ?? "") category are near you at the moment.\nKindly try a different vehicle category as we work on re-routing some to your location.")
             
             if getPhoneFaceIdType() {
                 yPositionConfirmOpen = view.frame.height - (topSafeAreaConst + bottomSafeAreaConst + 425)
@@ -4066,18 +4066,16 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "PICKUP"), object: nil)
         
-        let index = am.getSelectedLocIndex()!
-        var latitude: Double
-        var longitude: Double
+        let index = am.getSelectedLocIndex() ?? 0
+        let coordinate = SDKUtils.extractCoordinate(array: am.getRecentPlacesCoords(), index: index)
+        let latitude = coordinate.latitude
+        let longitude = coordinate.longitude
         
-        printVal(object: am.getRecentPlacesNames()[index])
-        printVal(object: am.getRecentPlacesFormattedAddress()[index])
-        printVal(object: am.getRecentPlacesCoords()[index])
+//        printVal(object: am.getRecentPlacesNames()[index])
+//        printVal(object: am.getRecentPlacesFormattedAddress()[index])
+//        printVal(object: am.getRecentPlacesCoords()[index])
         
-        printVal(object: "coordinates: \(am.getRecentPlacesCoords()), index: \(index)")
-        guard !am.getRecentPlacesCoords()[index].trimmingCharacters(in: .whitespaces).isEmpty else { return }
-        latitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[0])!
-        longitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[1])!
+//        guard !am.getRecentPlacesCoords()[index].trimmingCharacters(in: .whitespaces).isEmpty else { return }
         
         var distanceInMeters: CLLocationDistance = 0.0
         if self.myOrigin != nil {
@@ -4225,11 +4223,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "DROPOFF"), object: nil)
         
-        let index = am.getSelectedLocIndex()!
-        var latitude: Double
-        var longitude: Double
-        latitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[0])!
-        longitude = Double(am.getRecentPlacesCoords()[index].components(separatedBy: ",")[1])!
+        let index = am.getSelectedLocIndex() ?? 0
+        let coordinate = SDKUtils.extractCoordinate(array: am.getRecentPlacesCoords(), index: index)
+        let latitude = coordinate.latitude
+        let longitude = coordinate.longitude
         
        
         cardViewController.btnDestination.setTitle(am.getRecentPlacesNames()[index].cleanLocationNames(), for: UIControl.State())
@@ -4406,7 +4403,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             if self.preferredDriver == true {
                 forwardCount = 1
-                preferredDriver = "\(am.getPreferredDriver()!)"
+                preferredDriver = "\(am.getPreferredDriver() ?? "")"
             } else {
                 forwardCount -= 1
             }
@@ -4423,7 +4420,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     place = "WORK"
                 }
                 
-                parcelString = ",\"Parceldetails\":{\"ItemCarried\":\"\(cardViewController.txtParcelName.text!)\",\"Size\":\"\(parcelSize)\",\"RecipientName\":\"\(cardViewController.txtReceiversName.text!)\",\"RecipientMobile\":\"\(cardViewController.txtReceiversNumber.text!)\",\"RecipientAddress\":\"\(cardViewController.txtReceiversAddress.text!)\",\"ContactPerson\":\"\(am.getPhoneNumber()!)\",\"DeliveryNotes\":\"\(cardViewController.txtReceiversAddress.text!)\",\"TypeOfAddress\":\"\(place)\"}"
+                parcelString = ",\"Parceldetails\":{\"ItemCarried\":\"\(cardViewController.txtParcelName.text!)\",\"Size\":\"\(parcelSize)\",\"RecipientName\":\"\(cardViewController.txtReceiversName.text!)\",\"RecipientMobile\":\"\(cardViewController.txtReceiversNumber.text!)\",\"RecipientAddress\":\"\(cardViewController.txtReceiversAddress.text!)\",\"ContactPerson\":\"\(am.getPhoneNumber() ?? "")\",\"DeliveryNotes\":\"\(cardViewController.txtReceiversAddress.text!)\",\"TypeOfAddress\":\"\(place)\"}"
             }
             
             
@@ -4435,8 +4432,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             cardViewController.requestingLoadingView.isUserInteractionEnabled = true
             
             if self.preferredDriver == true {
-                cardViewController.lblRequestingText.text = "Requesting \(am.getPreferredDriverName()!.capitalized) on \(CarTypes[selectedCarIndex])\n(Tap here to cancel request)"
-                makeRequestDefaultMessage = "Requesting \(am.getPreferredDriverName()!.capitalized) on \(CarTypes[selectedCarIndex])\n(Tap here to cancel request)"
+                cardViewController.lblRequestingText.text = "Requesting \(am.getPreferredDriverName()?.capitalized ?? "") on \(CarTypes[selectedCarIndex])\n(Tap here to cancel request)"
+                makeRequestDefaultMessage = "Requesting \(am.getPreferredDriverName()?.capitalized ?? "") on \(CarTypes[selectedCarIndex])\n(Tap here to cancel request)"
             } else {
                 cardViewController.lblRequestingText.text = "Requesting a \(CarTypes[selectedCarIndex]) ride\n(Tap here to cancel request)"
                 makeRequestDefaultMessage = "Requesting a \(CarTypes[selectedCarIndex]) ride\n(Tap here to cancel request)"
@@ -4475,7 +4472,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             resetViewAfterRequest()
             
-            forwardCount = Int(am.getFORWARDCOUNT()!)!
+            forwardCount = Int(am.getFORWARDCOUNT() ?? "0") ?? 0
             forwardSkipDrivers = ""
             flySaveDetails = ""
             
@@ -4486,7 +4483,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             if preferredDriver == false {
                 string = "No drivers around. Kindly try a different vehicle category."
             } else {
-                string = "\(am.getPreferredDriverName()!) did not respond to request."
+                string = "\(am.getPreferredDriverName() ?? "") did not respond to request."
             }
             
             showAlerts(title: "", message: "\(string)")
@@ -4544,10 +4541,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             if am.getTRIPID() != "" {
                 
                 if forwardSkipDrivers == "" {
-                    forwardSkipDrivers = am.getDRIVEREMAIL()!
+                    forwardSkipDrivers = am.getDRIVEREMAIL() ?? ""
                 } else {
-                    if !forwardSkipDrivers.contains(am.getDRIVEREMAIL()!) {
-                        forwardSkipDrivers = forwardSkipDrivers + ";" + am.getDRIVEREMAIL()!
+                    if !forwardSkipDrivers.contains(am.getDRIVEREMAIL() ?? "") {
+                        forwardSkipDrivers = forwardSkipDrivers + ";" + (am.getDRIVEREMAIL() ?? "")
                     }
                 }
                 
@@ -4575,13 +4572,13 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 var string = ""
                 
                 if am.getMESSAGE() != "" {
-                    showAlerts(title: "", message: am.getMESSAGE()!)
+                    showAlerts(title: "", message: am.getMESSAGE() ?? "")
                 } else {
                     
                     if preferredDriver == false {
                         string = "No drivers around. Kindly try a different vehicle category."
                     } else {
-                        string = "\(am.getPreferredDriverName()!) did not respond to request."
+                        string = "\(am.getPreferredDriverName() ?? "") did not respond to request."
                     }
                     showAlerts(title: "", message: "\(string)")
                 }
@@ -4671,7 +4668,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         am.saveStillRequesting(data: false)
         
-        let dataToSend = "{\"FormID\":\"GETREQUESTSTATUS\"\(commonCallParams()),\"GetRequestStatus\":{\"TripID\":\"\(am.getTRIPID()!)\"}}"
+        let dataToSend = "{\"FormID\":\"GETREQUESTSTATUS\"\(commonCallParams()),\"GetRequestStatus\":{\"TripID\":\"\(am.getTRIPID() ?? "")\"}}"
         
         hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUSJSONData", switchnum: 0)
     
@@ -4805,7 +4802,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
         } else {
             if am.getTRIPSTATUS() != "" {
-                if let intVal: Int = Int(am.getTRIPSTATUS()!) {
+                if let intVal: Int = Int(am.getTRIPSTATUS() ?? "0") {
                     if intVal >= 2 {
                         
                         isContinueRequest=false
@@ -4919,7 +4916,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             cardViewController.requestingLoadingView.removeAnimation()
             cardViewController.lblRequestingText.isHidden = true
             
-            forwardCount = Int(am.getFORWARDCOUNT()!)!
+            forwardCount = Int(am.getFORWARDCOUNT() ?? "") ?? 0
             forwardSkipDrivers = ""
             
             var string = ""
@@ -4927,7 +4924,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             if preferredDriver == false {
                 string = "No drivers around. Kindly try a different vehicle category."
             } else {
-                string = "\(am.getPreferredDriverName()!) did not respond to request."
+                string = "\(am.getPreferredDriverName() ?? "") did not respond to request."
             }
             
             self.paymentsPageReveal(open: false)
@@ -4941,7 +4938,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         isCancellingRequest = true
         
-        var dataToSend = "{\"FormID\":\"CANCELREQUEST\"\(commonCallParams()),\"CancelTrip\":{\"TripID\":\"\(am.getTRIPID()!)\",\"Reason\":\"CANCELALL\"}}"
+        var dataToSend = "{\"FormID\":\"CANCELREQUEST\"\(commonCallParams()),\"CancelTrip\":{\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Reason\":\"CANCELALL\"}}"
         
         printVal(object: dataToSend)
         
@@ -4951,10 +4948,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         let headers: HTTPHeaders = [
             HTTPHeader(name: "Content-Type", value: "application/json; charset=utf-8"),
-            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID()!))"),
-            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts()!)"))"),
-            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber()!)"))"),
-            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName()!)"))")
+            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID() ?? ""))"),
+            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts() ?? "")"))"),
+            HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber() ?? "")"))"),
+            HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName() ?? "")"))")
         ]
         
         AF.request("\(string)",
