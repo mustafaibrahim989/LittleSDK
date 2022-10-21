@@ -942,8 +942,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         if locationStopsArr.count > 0 {
             if originLL != "" {
                 var firstLoc = locationStopsArr.first(where:  {$0.id == locationStopsArr[0].id})
-                firstLoc = LocationSetSDK(id: locationStopsArr[0].id, name: am.getPICKUPADDRESS(), subname: am.getPICKUPADDRESS(), latitude: originLL.components(separatedBy: ",")[0], longitude:
-                                                        originLL.components(separatedBy: ",")[1], phonenumber: locationStopsArr[0].phonenumber, instructions: locationStopsArr[0].instructions)
+                firstLoc = LocationSetSDK(id: locationStopsArr[0].id, name: am.getPICKUPADDRESS(), subname: am.getPICKUPADDRESS(), latitude: originLL.components(separatedBy: ",")[safe: 0] ?? "0", longitude:
+                                            originLL.components(separatedBy: ",")[safe: 1] ?? "0", phonenumber: locationStopsArr[0].phonenumber, instructions: locationStopsArr[0].instructions)
                 locationStopsArr.removeAll()
                 locationStopsArr.append(firstLoc!)
                 if (locationsEstimateSet?.dropoffLocations?.count ?? 0) > 0 {
@@ -1468,7 +1468,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         let latitude = coordinate.latitude
         let longitude = coordinate.longitude
         cardViewController.btnDestination.setTitle(locationTitleArr[index], for: UIControl.State())
-        btnDestinationInformation.setTitle(locationTitleArr[index].components(separatedBy: ",")[0], for: UIControl.State())
+        btnDestinationInformation.setTitle(locationTitleArr[index].components(separatedBy: ",")[safe: 0], for: UIControl.State())
         myDestination = CLLocation(latitude: latitude, longitude: longitude)
         destinationCoordinate = myDestination.coordinate
         destinationLL = locationCoordsArr[index]
@@ -1483,7 +1483,14 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             locationStopsArr.append(LocationSetSDK(id: unique_id, name: dropOffName, subname: dropOffName, latitude: "\(latitude)", longitude: "\(longitude)", phonenumber: "", instructions: ""))
         }
         
-        locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationsEstimateSet?.pickupLocation, dropoffLocations: [locationStopsArr[0]])
+        var dropoffLocations: [LocationSetSDK]? {
+            if let dropOffLocation = locationStopsArr[safe: 0] {
+                return [dropOffLocation]
+            }
+            
+            return nil
+        }
+        locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationsEstimateSet?.pickupLocation, dropoffLocations: dropoffLocations)
         
         drawPath()
         fareEstimateIndex = 0
@@ -1540,7 +1547,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         for i in (0..<am.getRecentPlacesCoords().count) {
             if am.getRecentPlacesCoords()[i] != "" {
                 
-                let origin = CLLocation(latitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[0]) ?? 0.0), longitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[1]) ?? 0.0))
+                let origin = CLLocation(latitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[safe: 0] ?? "0") ?? 0.0), longitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[safe: 1] ?? "0") ?? 0.0))
                 
                 var distanceInMeters: CLLocationDistance = 0.0
                 
@@ -1558,8 +1565,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     self.pickupName = am.getRecentPlacesNames()[i]
                     self.currentPlaceName = am.getRecentPlacesNames()[i]
                     self.cardViewController.btnPickup.layer.removeAllAnimations()
-                    self.cardViewController.btnPickup.setTitle(am.getRecentPlacesNames()[i].components(separatedBy: ",")[0], for: UIControl.State())
-                    self.btnPickupInformation.setTitle(am.getRecentPlacesNames()[i].components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+                    self.cardViewController.btnPickup.setTitle(am.getRecentPlacesNames()[i].components(separatedBy: ",")[safe: 0], for: UIControl.State())
+                    self.btnPickupInformation.setTitle(am.getRecentPlacesNames()[i].components(separatedBy: ",")[safe: 0]?.cleanLocationNames(), for: UIControl.State())
                     
                     self.getPendingRequests()
                     
@@ -1796,7 +1803,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     let status = parsedData["status"] as! String
                     
                     if status == "OK" {
-                        self.selectedRoute = (parsedData["routes"] as! Array<Dictionary<String, AnyObject>>)[0]
+                        guard let routes = parsedData["routes"], let route = (routes as? Array<Dictionary<String, AnyObject>>)?.first else { return }
+                        self.selectedRoute = route
                         self.overviewPolyline = self.selectedRoute["overview_polyline"] as? Dictionary<String, AnyObject>
                         
                         let bounds = self.selectedRoute["bounds"] as! Dictionary<String, AnyObject>
@@ -1809,19 +1817,19 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         self.bbox.append(northEast["lng"] as! Double)
                         self.bbox.append(northEast["lat"] as! Double)
                         
-                        let legs = self.selectedRoute["legs"] as! Array<Dictionary<String, AnyObject>>
-                        
-                        let timeDictionary = legs[0]["duration"] as! Dictionary<String, AnyObject>
+                        guard let legs = self.selectedRoute["legs"], let myLegs = legs as? Array<Dictionary<String, AnyObject>> else { return }
+                        guard let firstLeg = myLegs.first else { return }
+                        guard let timeDictionary = firstLeg["duration"] as? Dictionary<String, AnyObject> else { return }
                         self.totalTime = timeDictionary["text"] as? String
                         
-                        let startLocationDictionary = legs[0]["start_location"] as! Dictionary<String, AnyObject>
+                        guard let startLocationDictionary = firstLeg["start_location"] as? Dictionary<String, AnyObject> else { return }
                         self.originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
                         
-                        let endLocationDictionary = legs[legs.count - 1]["end_location"] as! Dictionary<String, AnyObject>
+                        guard let endLocationDictionary = myLegs[myLegs.count - 1]["end_location"] as? Dictionary<String, AnyObject> else { return }
                         self.destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
                         
-                        self.originAddress = legs[0]["start_address"] as? String
-                        self.destinationAddress = legs[legs.count - 1]["end_address"] as? String
+                        self.originAddress = firstLeg["start_address"] as? String
+                        self.destinationAddress = myLegs[myLegs.count - 1]["end_address"] as? String
                         
                         
                         
@@ -1868,9 +1876,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
 
                             let paths = parsedData["paths"] as? Array<Dictionary<String, AnyObject>>
                             
-                            self.overviewPolylineString = paths?[0]["points"] as? String
+                            self.overviewPolylineString = paths?[safe: 0]?["points"] as? String
                             self.bbox.removeAll()
-                            self.bbox = paths?[0]["bbox"] as? Array<Double> ?? []
+                            self.bbox = paths?[safe: 0]?["bbox"] as? Array<Double> ?? []
                             
                             DispatchQueue.main.async {
                                 self.gmsMapView.clear()
@@ -3096,7 +3104,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 approxDestinationTimeView.isHidden = true
                 let font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17.0)!
                 cardViewController.btnDestination.titleLabel?.font =  font
-                cardViewController.btnDestination.setTitle("Where do you want to go \(am.getFullName()?.components(separatedBy: " ")[0].capitalized ?? "")?", for: UIControl.State())
+                cardViewController.btnDestination.setTitle("Where do you want to go \(am.getFullName()?.components(separatedBy: " ").first?.capitalized ?? "")?", for: UIControl.State())
                 btnDestinationInformation.setTitle("", for: UIControl.State())
                 
                 cardViewController.suggestedPlacesCollectionView.isHidden = false
@@ -3186,7 +3194,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         approxDestinationTimeView.isHidden = true
         let font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17.0)!
         cardViewController.btnDestination.titleLabel?.font =  font
-        cardViewController.btnDestination.setTitle("Where do you want to go \(am.getFullName()?.components(separatedBy: " ")[0].capitalized ?? "")?", for: UIControl.State())
+        cardViewController.btnDestination.setTitle("Where do you want to go \(am.getFullName()?.components(separatedBy: " ").first?.capitalized ?? "")?", for: UIControl.State())
         btnDestinationInformation.setTitle("", for: UIControl.State())
     }
     
@@ -3370,8 +3378,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         self.currentPlaceName = defaultMessage.message ?? ""
                         self.am.savePICKUPADDRESS(data: defaultMessage.message?.cleanLocationNames() ?? "")
                         self.cardViewController.btnPickup.layer.removeAllAnimations()
-                        self.cardViewController.btnPickup.setTitle(defaultMessage.message?.components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
-                        self.btnPickupInformation.setTitle(defaultMessage.message?.components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+                        self.cardViewController.btnPickup.setTitle(defaultMessage.message?.components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
+                        self.btnPickupInformation.setTitle(defaultMessage.message?.components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
                         
                         let unique_id = NSUUID().uuidString
                         self.locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: LocationSetSDK(id: unique_id, name: defaultMessage.message?.cleanLocationNames() ?? "", subname: defaultMessage.message?.cleanLocationNames() ?? "", latitude: "\(self.currentPlaceCoordinates.latitude)", longitude: "\(self.currentPlaceCoordinates.longitude)", phonenumber: "", instructions: ""), dropoffLocations: self.locationsEstimateSet?.dropoffLocations ?? [])
@@ -3971,8 +3979,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 pickupName = data?.pickupLocation?.name ?? ""
                 currentPlaceName = data?.pickupLocation?.name ?? ""
                 am.savePICKUPADDRESS(data: pickupName)
-                cardViewController.btnPickup.setTitle((data?.pickupLocation?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
-                btnPickupInformation.setTitle((data?.pickupLocation?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+                cardViewController.btnPickup.setTitle((data?.pickupLocation?.name ?? "").components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
+                btnPickupInformation.setTitle((data?.pickupLocation?.name ?? "").components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
                 
                 let dropOffLocations = data?.dropoffLocations?.filter { $0.latitude != "" }
                 
@@ -3983,8 +3991,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     lat = Double("\(dropOffLocations?.last?.latitude ?? "0.0")") ?? 0
                     long = Double("\(dropOffLocations?.last?.longitude ?? "0.0")") ?? 0
                     
-                    cardViewController.btnDestination.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
-                    btnDestinationInformation.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+                    cardViewController.btnDestination.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
+                    btnDestinationInformation.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
                     myDestination = CLLocation(latitude: lat, longitude: long)
                     destinationCoordinate = myDestination.coordinate
                     destinationLL = "\(lat),\(long)"
@@ -4160,8 +4168,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: LocationSetSDK(id: unique_id, name: pickupName, subname: pickupName, latitude: "\(latitude)", longitude: "\(longitude)", phonenumber: "", instructions: ""), dropoffLocations: locationsEstimateSet?.dropoffLocations ?? [])
             
-            cardViewController.btnPickup.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
-            btnPickupInformation.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+            cardViewController.btnPickup.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
+            btnPickupInformation.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
             
             
             let group = DispatchGroup()
@@ -4233,7 +4241,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
        
         cardViewController.btnDestination.setTitle(am.getRecentPlacesNames()[index].cleanLocationNames(), for: UIControl.State())
-        btnDestinationInformation.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
+        btnDestinationInformation.setTitle(am.getRecentPlacesNames()[index].components(separatedBy: ",").first?.cleanLocationNames(), for: UIControl.State())
         myDestination = CLLocation(latitude: latitude, longitude: longitude)
         destinationCoordinate = myDestination.coordinate
         destinationLL = am.getRecentPlacesCoords()[index]
@@ -4604,7 +4612,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
                 let tripResponse = try JSONDecoder().decode(TripResponse.self, from: data!)
                 
-                let trip = tripResponse[0]
+                guard let trip = tripResponse[safe: 0] else { return }
                 
                 printVal(object: tripResponse)
                 
@@ -4614,9 +4622,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 
                 do {
                     let defaultResponse = try JSONDecoder().decode(DefaultMessages.self, from: data!)
+                    guard let response = defaultResponse.first else { return }
                     
-                    if defaultResponse[0].status == "091" {
-                        showAlerts(title: "", message: defaultResponse[0].message ?? "An error has been encountered trying to create a ride request for you. Kindly retry and if this persistes feel free to contuct us directly to help you with your Little experience.")
+                    if response.status == "091" {
+                        showAlerts(title: "", message: response.message ?? "An error has been encountered trying to create a ride request for you. Kindly retry and if this persistes feel free to contuct us directly to help you with your Little experience.")
                     }
                     
                     informationTopView.isUserInteractionEnabled = true
@@ -4732,7 +4741,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             do {
                 let requestStatusResponse = try JSONDecoder().decode(RequestStatusResponse.self, from: data!)
-                let response = requestStatusResponse[0]
+                guard let response = requestStatusResponse[safe: 0] else { return }
                 
                 printVal(object: response)
                 
@@ -4974,7 +4983,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         do {
                             
                             let requestStatusResponse = try JSONDecoder().decode(DefaultMessages.self, from: strData)
-                            let response = requestStatusResponse[0]
+                            guard let response = requestStatusResponse[safe: 0] else { return }
                             
                             self.showAlerts(title: "", message: response.message ?? "Successfully cancelled")
                             

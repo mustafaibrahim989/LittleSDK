@@ -81,7 +81,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
                     historyData = data!
                     historyArr.removeAll()
                     let orderHistory = try JSONDecoder().decode(OrderHistory.self, from: data!)
-                    historyArr = orderHistory[0].listTrips ?? []
+                    historyArr = orderHistory[safe: 0]?.listTrips ?? []
                 }
                 
             } catch {
@@ -124,7 +124,7 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
         
         cell.lblOrderName.text = histItem.restaurantName ?? ""
         cell.lblOrderStatus.text = histItem.tripStatus ?? ""
-        cell.lblOrderID.text = "Order #\(histItem.deliveryTripID?.components(separatedBy: "-")[0] ?? "") -"
+        cell.lblOrderID.text = "Order #\(histItem.deliveryTripID?.components(separatedBy: "-")[safe: 0] ?? "") -"
         cell.lblOrderAmount.text = "\(histItem.currencyID ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(histItem.totalCharges ?? 0.0)))"
         cell.lblOrderTime.text = histItem.orderedOn ?? ""
 

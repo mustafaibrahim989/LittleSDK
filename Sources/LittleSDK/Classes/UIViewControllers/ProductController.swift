@@ -158,7 +158,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     sortedArr.removeAll()
                     categoryArr.removeAll()
                     let getRestaurantMenu = try JSONDecoder().decode(GetRestaurantMenu.self, from: data!)
-                    menuArr = getRestaurantMenu[0].foodMenu ?? []
+                    guard let getRestaurant = getRestaurantMenu.first else { return }
+                    menuArr = getRestaurant.foodMenu ?? []
                     categoryArr.append("All")
                     for each in menuArr {
                         if !(categoryArr.contains(each.foodCategory!)) {
@@ -169,7 +170,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                         }
                     }
                     selectedCategory = 0
-                    currency = getRestaurantMenu[0].currency ?? (am.getGLOBALCURRENCY() ?? "KES")
+                    currency = getRestaurant.currency ?? (am.getGLOBALCURRENCY() ?? "KES")
                     finishedLoadingInitialTableCells = false
                     if sortIndex == 0 {
                         menuTable.reloadData()
@@ -551,8 +552,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     menuArr[menuIDindex] = FoodMenu(menuID: sortedArr[IDindex].menuID ?? "", foodCategory: sortedArr[IDindex].foodCategory ?? "", foodName: sortedArr[IDindex].foodName ?? "", foodDescription: sortedArr[IDindex].foodDescription ?? "", originalPrice: sortedArr[IDindex].originalPrice ?? 0.0, specialPrice: sortedArr[IDindex].specialPrice ?? 0.0, foodImage: sortedArr[IDindex].foodImage ?? "", extraItem: sortedArr[IDindex].extraItem ?? "", addonID: addon_id, extraItems: selectedItems!)
                 }
                 
-                merchantMessage = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[0]
-                proceed = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[1]
+                merchantMessage = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[safe: 0] ?? ""
+                proceed = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[safe: 1] ?? ""
                 
                 printVal(object: sortedArr)
                 printVal(object: menuArr)

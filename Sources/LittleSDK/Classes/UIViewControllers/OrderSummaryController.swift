@@ -118,9 +118,10 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             do {
                 cartItems.removeAll()
                 let orderSummary = try JSONDecoder().decode(OrderSummary.self, from: data!)
-                cartItems = orderSummary[0].deliveryTripDetails ?? []
-                deliveryLogsArr = orderSummary[0].deliveryLogs ?? []
-                rateEmail = orderSummary[0].driverEMail ?? ""
+                guard let orderSummaryItem = orderSummary.first else { return}
+                cartItems = orderSummaryItem.deliveryTripDetails ?? []
+                deliveryLogsArr = orderSummaryItem.deliveryLogs ?? []
+                rateEmail = orderSummaryItem.driverEMail ?? ""
                 
                 menuTableHeight.constant = CGFloat((cartItems.count*100))
                 deliveryTableHeight.constant = CGFloat((deliveryLogsArr.count*100))
@@ -130,7 +131,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                     self.view.layoutIfNeeded()
                 }
                 
-                lblOrderID.text = "Order #\(deliveryID?.components(separatedBy: "-")[0] ?? "") - \(tripStatus ?? "")"
+                lblOrderID.text = "Order #\(deliveryID?.components(separatedBy: "-")[safe: 0] ?? "") - \(tripStatus ?? "")"
                 lblDeliveryFee.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES"))  \(formatCurrency(String(deliveryCharges ?? 0.0)))"
                 lblPromoCode.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(promo ?? 0.0)))"
                 lblProductsAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(orderAmount ?? 0.0)))"
@@ -276,10 +277,10 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 
                 let response = try JSONDecoder().decode(DefaultMessages.self, from: data!)
                 
-                if response[0].status == "000" {
+                if response[safe: 0]?.status == "000" {
                     
                     let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(response[0].message ?? "")\n", image: "", action: "")
+                    view.loadPopup(title: "", message: "\n\(response[safe: 0]?.message ?? "")\n", image: "", action: "")
                     view.proceedAction = {
                        SwiftMessages.hide()
                     }
@@ -292,7 +293,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                     SwiftMessages.show(config: config, view: view)
                     
                 } else {
-                    showAlerts(title: "", message: response[0].message ?? "")
+                    showAlerts(title: "", message: response[safe: 0]?.message ?? "")
                 }
                 
             } catch {

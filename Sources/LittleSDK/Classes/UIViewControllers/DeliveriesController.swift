@@ -250,11 +250,13 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                     offersSortedArr.removeAll()
                     let getRestaurants = try JSONDecoder().decode(GetRestaurants.self, from: data!)
                     
-                    shopArr = getRestaurants[0].restaurants ?? []
-                    sortedArr = getRestaurants[0].restaurants ?? []
-                    offersArr = getRestaurants[0].offers ?? []
-                    offersSortedArr = getRestaurants[0].offers ?? []
-                    paymentSourceArr = getRestaurants[0].balance ?? []
+                    if let myData = getRestaurants.first {
+                        shopArr = myData.restaurants ?? []
+                        sortedArr = myData.restaurants ?? []
+                        offersArr = myData.offers ?? []
+                        offersSortedArr = myData.offers ?? []
+                        paymentSourceArr = myData.balance ?? []
+                    }
                     finishedLoadingInitialTableCells = false
                     categoryArr.append("All")
                     selectedCategory = 0
@@ -356,7 +358,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         for i in (0..<am.getRecentPlacesCoords().count) {
             if am.getRecentPlacesCoords()[i] != "" {
                 
-                let origin = CLLocation(latitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[0]) ?? 0.0), longitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[1]) ?? 0.0))
+                let origin = CLLocation(latitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[safe: 0] ?? "0") ?? 0.0), longitude: CLLocationDegrees(Double(am.getRecentPlacesCoords()[i].components(separatedBy: ",")[safe: 1] ?? "0") ?? 0.0))
                 
                 var distanceInMeters: CLLocationDistance = 0.0
                 

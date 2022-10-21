@@ -143,7 +143,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
             locationStopsArr.remove(at: index!)
         }
         
-        var arr = locationStopsArr.filter { $0.id != locationStopsArr[0].id }
+        var arr = locationStopsArr.filter { $0.id != locationStopsArr[safe: 0]?.id }
         arr.removeAll(where: { $0.name == "" })
         locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationsEstimateSet?.pickupLocation, dropoffLocations: arr)
         
@@ -166,7 +166,7 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
         view.proceedAction = {
             SwiftMessages.hide()
             self.locationStopsArr[sender.tag] = LocationSetSDK(id: stop.id, name: stop.name, subname: stop.subname, latitude: stop.latitude, longitude: stop.longitude, phonenumber: view.txtPopupText.text ?? "", instructions: view.txtAddInstructions.text ?? "")
-            var arr = self.locationStopsArr.filter { $0.id != self.locationStopsArr[0].id }
+            var arr = self.locationStopsArr.filter { $0.id != self.locationStopsArr[safe: 0]?.id }
             arr.removeAll(where: { $0.name == "" })
             self.locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: self.locationsEstimateSet?.pickupLocation, dropoffLocations: arr)
             self.stopsTable.reloadData()
@@ -367,9 +367,9 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
             
             if location.name != "" {
                 if location.instructions == "" && location.phonenumber == "" {
-                    cell.lblAddInstructions.text = "+ Add \(location.name.components(separatedBy: " ")[0])'s instructions?"
+                    cell.lblAddInstructions.text = "+ Add \(location.name.components(separatedBy: " ")[safe: 0] ?? "")'s instructions?"
                 } else {
-                    cell.lblAddInstructions.text = "x Edit \(location.name.components(separatedBy: " ")[0])'s instructions?"
+                    cell.lblAddInstructions.text = "x Edit \(location.name.components(separatedBy: " ")[safe: 0] ?? "")'s instructions?"
                 }
                 cell.lblAddInstructions.isHidden = false
                 cell.btnAddInstructions.isHidden = false
@@ -397,16 +397,16 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
             } else {
                 am.saveSelectedLocIndex(data: indexPath.item)
                 if am.getFromPickupLoc() {
-                    locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: LocationSetSDK(id: locationsEstimateSet?.pickupLocation?.id ?? "", name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[0], longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[1], phonenumber: locationsEstimateSet?.pickupLocation?.phonenumber ?? "", instructions: locationsEstimateSet?.pickupLocation?.instructions ?? ""), dropoffLocations: locationsEstimateSet?.dropoffLocations ?? [])
+                    locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: LocationSetSDK(id: locationsEstimateSet?.pickupLocation?.id ?? "", name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 0] ?? "0", longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 1] ?? "0", phonenumber: locationsEstimateSet?.pickupLocation?.phonenumber ?? "", instructions: locationsEstimateSet?.pickupLocation?.instructions ?? ""), dropoffLocations: locationsEstimateSet?.dropoffLocations ?? [])
                 } else {
                     let unique_id = NSUUID().uuidString
                     var dropOffs = locationsEstimateSet?.dropoffLocations
-                    if dropOffs!.contains(where: { $0.latitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[0]}) && dropOffs!.contains(where: { $0.longitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[1]}) {
-                        if let index = dropOffs?.firstIndex(where: { $0.latitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[0]}) {
-                            dropOffs?[index] = LocationSetSDK(id: unique_id, name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[0], longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[1], phonenumber: "", instructions: "")
+                    if dropOffs!.contains(where: { $0.latitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 0] ?? "0"}) && dropOffs!.contains(where: { $0.longitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 1] ?? "0"}) {
+                        if let index = dropOffs?.firstIndex(where: { $0.latitude == locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 0] ?? "0"}) {
+                            dropOffs?[index] = LocationSetSDK(id: unique_id, name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 0] ?? "0", longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 1] ?? "0", phonenumber: "", instructions: "")
                         }
                     } else {
-                        dropOffs?.append(LocationSetSDK(id: unique_id, name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[0], longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[1], phonenumber: "", instructions: ""))
+                        dropOffs?.append(LocationSetSDK(id: unique_id, name: locationTitleArr[indexPath.item], subname: locationSubTitleArr[indexPath.item], latitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 0] ?? "0", longitude: locationCoordsArr[indexPath.item].components(separatedBy: ",")[safe: 1] ?? "0", phonenumber: "", instructions: ""))
                     }
                     locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationsEstimateSet?.pickupLocation, dropoffLocations: dropOffs)
                     
@@ -526,13 +526,13 @@ public class SearchMultiple: UIViewController, UITableViewDataSource, UITableVie
 
         getLocationsReload()
         
-        locationStopsArr[selectedIndex!] = LocationSetSDK(id: locationStopsArr[selectedIndex!].id, name: locationTitleArr[am.getSelectedLocIndex()], subname: locationSubTitleArr[am.getSelectedLocIndex()], latitude: locationCoordsArr[am.getSelectedLocIndex()].components(separatedBy: ",")[0], longitude: locationCoordsArr[am.getSelectedLocIndex()].components(separatedBy: ",")[1], phonenumber: locationStopsArr[selectedIndex!].phonenumber, instructions: locationStopsArr[selectedIndex!].instructions)
+        locationStopsArr[selectedIndex!] = LocationSetSDK(id: locationStopsArr[selectedIndex!].id, name: locationTitleArr[am.getSelectedLocIndex()], subname: locationSubTitleArr[am.getSelectedLocIndex()], latitude: locationCoordsArr[am.getSelectedLocIndex()].components(separatedBy: ",")[safe: 0] ?? "0", longitude: locationCoordsArr[am.getSelectedLocIndex()].components(separatedBy: ",")[safe: 1] ?? "0", phonenumber: locationStopsArr[selectedIndex!].phonenumber, instructions: locationStopsArr[selectedIndex!].instructions)
         
         if am.getFromPickupLoc() {
-            let arr = locationStopsArr.filter { $0.id != locationStopsArr[0].id && $0.latitude != "" }
+            let arr = locationStopsArr.filter { $0.id != locationStopsArr[safe: 0]?.id && $0.latitude != "" }
             locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationStopsArr[selectedIndex!], dropoffLocations: arr)
         } else {
-            let arr = locationStopsArr.filter { $0.id != locationStopsArr[0].id && $0.latitude != "" }
+            let arr = locationStopsArr.filter { $0.id != locationStopsArr[safe: 0]?.id && $0.latitude != "" }
             locationsEstimateSet = LocationsEstimateSetSDK(pickupLocation: locationsEstimateSet?.pickupLocation, dropoffLocations: arr)
         }
         

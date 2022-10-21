@@ -431,7 +431,7 @@ public class TripVC: UIViewController {
                         do {
                             
                             let requestStatusResponse = try JSONDecoder().decode(DefaultMessages.self, from: strData)
-                            let response = requestStatusResponse[0]
+                            guard let response = requestStatusResponse[safe: 0] else { return }
                             
                             self.stopCheckingStatusUpdate()
                             self.am.saveTRIPID(data: "")
@@ -527,7 +527,7 @@ public class TripVC: UIViewController {
             
             do {
                 let requestStatusResponse = try JSONDecoder().decode(RequestStatusResponse.self, from: data!)
-                let response = requestStatusResponse[0]
+                guard let response = requestStatusResponse[safe: 0] else { return }
                 
                 STATUS = response.status ?? ""
                 TRIPSTATUS = response.tripStatus ?? ""
@@ -1232,19 +1232,21 @@ public class TripVC: UIViewController {
                             let status = parsedData["status"] as! String
                             
                             if status == "OK" {
-                                self.selectedRoute = (parsedData["routes"] as! Array<Dictionary<String, AnyObject>>)[0]
-                                self.overviewPolyline = self.selectedRoute["overview_polyline"] as! Dictionary<String, AnyObject>
+                                guard let routes = parsedData["routes"], let route = (routes as? Array<Dictionary<String, AnyObject>>)?.first else { return }
+                                self.selectedRoute = route
+                                self.overviewPolyline = self.selectedRoute["overview_polyline"] as? Dictionary<String, AnyObject>
                                 
-                                let legs = self.selectedRoute["legs"] as! Array<Dictionary<String, AnyObject>>
+                                guard let legs = self.selectedRoute["legs"], let myLegs = legs as? Array<Dictionary<String, AnyObject>> else { return }
+                                guard let firstLeg = myLegs.first else { return }
                                 
-                                let startLocationDictionary = legs[0]["start_location"] as! Dictionary<String, AnyObject>
+                                guard let startLocationDictionary = firstLeg["start_location"] as? Dictionary<String, AnyObject> else { return }
                                 self.originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
                                 
-                                let endLocationDictionary = legs[legs.count - 1]["end_location"] as! Dictionary<String, AnyObject>
+                                guard let endLocationDictionary = myLegs[myLegs.count - 1]["end_location"] as? Dictionary<String, AnyObject> else { return }
                                 self.destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
                                 
-                                self.originAddress = legs[0]["start_address"] as! String
-                                self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
+                                self.originAddress = firstLeg["start_address"] as? String
+                                self.destinationAddress = myLegs[myLegs.count - 1]["end_address"] as? String
                                 DispatchQueue.main.async {
                                     
                                     for p in (0 ..< self.oldPolylineArr.count) {
@@ -1295,7 +1297,7 @@ public class TripVC: UIViewController {
         
                                     let paths = parsedData["paths"] as? Array<Dictionary<String, AnyObject>>
                                     
-                                    self.overviewPolylineString = paths?[0]["points"] as? String
+                                    self.overviewPolylineString = paths?[safe: 0]?["points"] as? String
                                     
                                     DispatchQueue.main.async {
                                         self.configureMapAndMarkersForRoute()

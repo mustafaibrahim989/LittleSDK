@@ -57,7 +57,7 @@ public class CancelOrderController: UIViewController {
             do {
                 let defaultMessage = try JSONDecoder().decode([DefaultMessage].self, from: data!)
                 DispatchQueue.main.async(execute: {
-                    if defaultMessage[0].status == "000" {
+                    if defaultMessage[safe: 0]?.status == "000" {
                         
                         let bundle = Bundle.module
                         
@@ -77,7 +77,7 @@ public class CancelOrderController: UIViewController {
                         
                         self.removeAnimate()
                     } else {
-                        self.showAlerts(title: "", message: defaultMessage[0].message ?? "Error occurred cancelling your selected order.")
+                        self.showAlerts(title: "", message: defaultMessage[safe: 0]?.message ?? "Error occurred cancelling your selected order.")
                         
                     }
                 })

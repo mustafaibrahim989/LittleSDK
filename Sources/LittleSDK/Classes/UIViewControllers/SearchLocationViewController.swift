@@ -230,10 +230,10 @@ public class SearchLocationViewController: UIViewController {
                 placeDets = "\(littleLocation.city ?? ""), \(littleLocation.state ?? "")"
             }
             if littleLocation.latlng != nil {
-                let lat = littleLocation.latlng?.components(separatedBy: ",")[0]
-                let long = littleLocation.latlng?.components(separatedBy: ",")[1]
+                let lat = littleLocation.latlng?.components(separatedBy: ",")[safe: 0] ?? "0"
+                let long = littleLocation.latlng?.components(separatedBy: ",")[safe: 1] ?? "0"
                 let unique_id = NSUUID().uuidString
-                selectedLocation = LocationSetSDK(id: unique_id, name: littleLocation.predictionDescription ?? "", subname: placeDets, latitude: lat ?? "", longitude: long ?? "", phonenumber: "", instructions: "")
+                selectedLocation = LocationSetSDK(id: unique_id, name: littleLocation.predictionDescription ?? "", subname: placeDets, latitude: lat, longitude: long, phonenumber: "", instructions: "")
                 self.dismiss(animated: true) {
                     self.viewClosed()
                     self.proceedAction?()
@@ -412,10 +412,10 @@ public class SearchLocationViewController: UIViewController {
                     printVal(object: "Location: \(placeDetails)")
                     self.view.removeAnimation()
                     if placeDetails.status == "OK" {
-                        let lat = placeDetails.results?[0].geometry?.location?.lat ?? 0.0
-                        let long = placeDetails.results?[0].geometry?.location?.lng ?? 0.0
+                        let lat = placeDetails.results?[safe: 0]?.geometry?.location?.lat ?? 0.0
+                        let long = placeDetails.results?[safe: 0]?.geometry?.location?.lng ?? 0.0
                         let unique_id = NSUUID().uuidString
-                        self.selectedLocation = LocationSetSDK(id: unique_id, name: placename, subname: placeDetails.results?[0].addressComponents?[0].longName ?? "", latitude: "\(lat)", longitude: "\(long)", phonenumber: "", instructions: "")
+                        self.selectedLocation = LocationSetSDK(id: unique_id, name: placename, subname: placeDetails.results?[safe: 0]?.addressComponents?[safe: 0]?.longName ?? "", latitude: "\(lat)", longitude: "\(long)", phonenumber: "", instructions: "")
                         
                         self.dismiss(animated: true) {
                             self.viewClosed()
