@@ -124,7 +124,7 @@ public class TrackOrderController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRequestStatus),name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
         
-        let datatosend = "FORMID|GETREQUESTSTATUS_V1|TRIPID|\(trackID)|GETET|Y|DEVICETOKEN|\(am.getDeviceToken()!)|CORPORATETRIPID||"
+        let datatosend = "FORMID|GETREQUESTSTATUS_V1|TRIPID|\(trackID)|GETET|Y|DEVICETOKEN|\(am.getDeviceToken() ?? "")|CORPORATETRIPID||"
         
         hc.makeServerCall(sb: datatosend, method: "GETREQUESTSTATUS_NEW", switchnum: 0)
         
@@ -133,7 +133,7 @@ public class TrackOrderController: UIViewController {
     @objc func loadRequestStatus() {
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
         
-        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE()!) ?? 0.0, Double(am.getDRIVERLONGITUDE()!) ?? 0.0)
+        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
         
         let endedMessage = "Your order has already been marked delivered and signed for. Thank you for using Little!"
         
@@ -156,7 +156,7 @@ public class TrackOrderController: UIViewController {
                 tripEnded(message: endedMessage)
             default:
                 updateDriverLocation(coordinates: originCoordinate)
-                tripEnded(message: am.getMESSAGE()!)
+                tripEnded(message: am.getMESSAGE() ?? "")
         }
     }
     
@@ -191,22 +191,22 @@ public class TrackOrderController: UIViewController {
         
         imgDriverImage.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         
-        let amount = Double(am.getRATING()!)
+        let amount = Double(am.getRATING() ?? "0")
         if amount != nil {
             lblDriverRating.text = String(format: "%.1f", amount!)
         } else {
             lblDriverRating.text = ""
         }
         
-        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE()!) ?? 0.0, Double(am.getDRIVERLONGITUDE()!) ?? 0.0)
+        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
         
         let camera = GMSCameraPosition.camera(withLatitude: originCoordinate.latitude, longitude: originCoordinate.longitude, zoom: 16)
         gmsMapView.animate(to: camera)
         
-        lblDriverCar.text = "\(am.getMODEL()!.capitalized) - \(am.getCOLOR()!.capitalized)"
-        lblDriverPlates.text = "\(am.getNUMBER()!.uppercased())"
-        lblDriverName.text = "\(am.getDRIVERNAME()!.capitalized)"
-        lblDriverName.text = "Order being delivered by \(am.getDRIVERNAME()!.capitalized)"
+        lblDriverCar.text = "\(am.getMODEL()?.capitalized ??  "") - \(am.getCOLOR()?.capitalized ?? "")"
+        lblDriverPlates.text = "\(am.getNUMBER()?.uppercased() ?? "")"
+        lblDriverName.text = "\(am.getDRIVERNAME()?.capitalized ?? "")"
+        lblDriverName.text = "Order being delivered by \(am.getDRIVERNAME()?.capitalized ?? "")"
         
         stopLoading()
     }
@@ -234,9 +234,9 @@ public class TrackOrderController: UIViewController {
         var time = "soon..."
         if am.getET() != "" {
             if am.getET() == "1" {
-                time = "in \(am.getET()!) min"
+                time = "in \(am.getET() ?? "0") min"
             } else {
-                time = "in \(am.getET()!) mins"
+                time = "in \(am.getET() ?? "0") mins"
             }
             
         }
@@ -246,7 +246,7 @@ public class TrackOrderController: UIViewController {
             originMarker = GMSMarker()
             originMarker.position = coordinates
             if am.getDRIVERBEARING() != "" {
-                originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
+                originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? CLLocationDegrees(0)
             }
             let imageName = "PARCELTOP"
             let image = getImage(named: imageName, bundle: sdkBundle!)
@@ -258,7 +258,7 @@ public class TrackOrderController: UIViewController {
             CATransaction.begin()
             CATransaction.setAnimationDuration(1.0)
             if am.getDRIVERBEARING() != "" {
-                originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
+                originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? CLLocationDegrees(0)
             }
             let imageName = "PARCELTOP"
             let image = getImage(named: imageName, bundle: sdkBundle!)
@@ -455,7 +455,7 @@ public class TrackOrderController: UIViewController {
     }
     
     @IBAction func btnCallDriverPressed(_ sender: UIButton) {
-        var number = am.getDRIVERMOBILE()!
+        var number = am.getDRIVERMOBILE() ?? ""
         if number != "" {
             number="+"+number
             guard let url = URL(string: "telprompt://\(number)") else {

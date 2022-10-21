@@ -158,8 +158,9 @@ public class TripVC: UIViewController {
         super.viewDidLoad()
         
         sdkBundle = Bundle.module
+        guard let sdkBundle = sdkBundle else { return }
         
-        path = sdkBundle!.path(forResource: "sparkle.wav", ofType:nil)!
+        path = sdkBundle.path(forResource: "sparkle.wav", ofType:nil)!
         
         let loadBackGround = createLoadingScreen()
         self.view.addSubview(loadBackGround)
@@ -167,14 +168,14 @@ public class TripVC: UIViewController {
         self.profPic.isHidden = true
         self.menuBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
         self.menuBtn.addTarget(self, action: #selector(postBackHome), for: .touchUpInside)
-        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle!), for: UIControl.State())
+        self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle), for: UIControl.State())
         
         observersArray = ["HidePanic","ShowPanic"]
         NotificationCenter.default.addObserver(self, selector: #selector(hidePanicBtn),name:NSNotification.Name(rawValue: "HidePanic"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showPanicBtn),name:NSNotification.Name(rawValue: "ShowPanic"), object: nil)
         
         progressSlider.isUserInteractionEnabled = false
-        progressSlider.setThumbImage(getImage(named: "sliderpoint", bundle: sdkBundle!), for: .normal)
+        progressSlider.setThumbImage(getImage(named: "sliderpoint", bundle: sdkBundle), for: .normal)
         
         am.saveFromTrip(data: true)
         am.saveOnTrip(data: true)
@@ -360,7 +361,7 @@ public class TripVC: UIViewController {
         
         if userLoc != nil {
             
-            let datatosend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail()!)|TRIPID|\(am.getTRIPID() ?? "")|"
+            let datatosend = "FORMID|PANICBUTTON|LL|\(userLoc.coordinate.latitude),\(userLoc.coordinate.longitude)|EMAIL|\(am.getEmail() ?? "")|TRIPID|\(am.getTRIPID() ?? "")|"
             
             hc.makeServerCall(sb: datatosend, method: "PANICBUTTON", switchnum: 0)
             
@@ -409,8 +410,8 @@ public class TripVC: UIViewController {
         
         let headers: HTTPHeaders = [
             HTTPHeader(name: "Content-Type", value: "application/json; charset=utf-8"),
-            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID()!))"),
-            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts()!)"))"),
+            HTTPHeader(name: "KeyID", value: "\(am.EncryptDataHeaders(DataToSend: am.getMyKeyID() ?? ""))"),
+            HTTPHeader(name: "Accounts", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKAccounts() ?? "")"))"),
             HTTPHeader(name: "MobileNumber", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKMobileNumber() ?? "")"))"),
             HTTPHeader(name: "PackageName", value: "\(am.EncryptDataHeaders(DataToSend: "\(am.getSDKPackageName() ?? "")"))")
         ]
@@ -626,14 +627,14 @@ public class TripVC: UIViewController {
             
         case "2":
             
-            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0")!, Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
+            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
             updateDriverLocation(coordinates: originCoordinate)
             
             if driverOnWay == false {
                 
                 if am.getDRIVERLATITUDE() != "" && am.getDRIVERLONGITUDE() != "" {
-                    driverLoc = CLLocation(latitude: Double(am.getDRIVERLATITUDE() ?? "0.0")!, longitude: Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
-                    originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0")!, Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
+                    driverLoc = CLLocation(latitude: Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, longitude: Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
+                    originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
                     let bounds = GMSCoordinateBounds(coordinate: originCoordinate, coordinate: destinationCoordinate)
                     gmsMapView.moveCamera(GMSCameraUpdate.fit(bounds, withPadding: 60.0))
                 }
@@ -644,7 +645,7 @@ public class TripVC: UIViewController {
                 driverOnWay = true
             }
             lblPaymentMode.text = am.getPaymentMode()
-            lblPaymentModeTrip.text = "\(am.getPaymentMode()!.uppercased()) TRIP"
+            lblPaymentModeTrip.text = "\(am.getPaymentMode()?.uppercased() ?? "Cash") TRIP"
             if destinationCoordinate != nil {
                 drawPath()
             }
@@ -653,7 +654,7 @@ public class TripVC: UIViewController {
             if btnMuteAudio.isHidden == true {
                 btnMuteAudio.isHidden = false
             }
-            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0")!, Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
+            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
             updateDriverLocation(coordinates: originCoordinate)
             
             if arrived == false {
@@ -666,7 +667,7 @@ public class TripVC: UIViewController {
                 arrived = true
             }
             lblPaymentMode.text = am.getPaymentMode()
-            lblPaymentModeTrip.text = "\(am.getPaymentMode()!.uppercased()) TRIP"
+            lblPaymentModeTrip.text = "\(am.getPaymentMode()?.uppercased() ?? "Cash") TRIP"
             if destinationCoordinate != nil {
                 drawPath()
             }
@@ -687,7 +688,7 @@ public class TripVC: UIViewController {
             gmsMapView.isMyLocationEnabled = false
             onTripView.isHidden = false
             lblPaymentMode.text = am.getPaymentMode()
-            lblPaymentModeTrip.text = "\(am.getPaymentMode()!.uppercased()) TRIP"
+            lblPaymentModeTrip.text = "\(am.getPaymentMode()?.uppercased() ?? "Cash") TRIP"
             if mapcleared == false {
                 animatePath = GMSPath()
                 gmsMapView.clear()
@@ -702,7 +703,7 @@ public class TripVC: UIViewController {
                 UNUserNotificationCenter.current().delegate = self
                 scheduleNotifications()
                 
-                destinationChange = Double(am.getDISTANCE()!)!
+                destinationChange = Double(am.getDISTANCE() ?? "0") ?? 0
                 if am.getPANICBUTTONSHOW() == "1" {
                     if am.getSOSMESSAGE() != "" {
                         panicBtnTxt.text = am.getSOSMESSAGE()
@@ -714,7 +715,7 @@ public class TripVC: UIViewController {
             }
             
             if originCoordinate != nil {
-                if originCoordinate.latitude == Double(am.getDRIVERLATITUDE() ?? "0.0")! &&  originCoordinate.longitude == Double(am.getDRIVERLONGITUDE() ?? "0.0")! {
+                if originCoordinate.latitude == (Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0) &&  originCoordinate.longitude == (Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0) {
                     isBrakingCount += 1
                     if isBrakingCount == 4 {
                         isBraking = true
@@ -725,19 +726,19 @@ public class TripVC: UIViewController {
                 }
             }
             
-            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0")!, Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
+            originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
             
             updateDriverLocation(coordinates: originCoordinate)
             
-            var amount = Double(am.getLIVEFARE()!)
+            var amount = Double(am.getLIVEFARE() ?? "0")
             if amount == nil {
                 amount = 0.0
             }
             
-            lblTripCurrency.text = "\(am.getGLOBALCURRENCY()!.capitalized)"
+            lblTripCurrency.text = "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES")"
             lblTripCost.text = "\(Int(amount!.roundTo(places: 0)))"
-            lblTripDuration.text = "\(am.getTIME()!)"
-            let dist = Double(am.getDISTANCE()!)
+            lblTripDuration.text = "\(am.getTIME() ?? "")"
+            let dist = Double(am.getDISTANCE() ?? "0")
             lblDistanceTravelled.text = String(format: "%.2f", dist!)
             
             tripStarted()
@@ -800,7 +801,7 @@ public class TripVC: UIViewController {
             
             let popOverVC = UIStoryboard(name: "Trip", bundle: sdkBundle!).instantiateViewController(withIdentifier: "RatingVC") as! RatingVC
             self.addChild(popOverVC)
-            popOverVC.driverName = am.getDRIVERNAME()!
+            popOverVC.driverName = am.getDRIVERNAME() ?? ""
             popOverVC.driverImage = am.getDRIVERPICTURE()
             popOverVC.view.frame = UIScreen.main.bounds
             self.view.addSubview(popOverVC.view)
@@ -830,7 +831,7 @@ public class TripVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATEJSONData"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL()!)\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE()!)\",\"Rating\":\"\(rating)\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Comments\":\"\(message)\"}}"
+        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL() ?? "")\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE() ?? "")\",\"Rating\":\"\(rating)\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Comments\":\"\(message)\"}}"
         
         printVal(object: dataToSend)
         
@@ -897,7 +898,7 @@ public class TripVC: UIViewController {
     func tripStarted() {
         
         if am.getED() != "" {
-            destinationTotal = Double(am.getED())!
+            destinationTotal = Double(am.getED()) ?? 0
         } else {
             destinationTotal = 10.0
         }
@@ -928,10 +929,10 @@ public class TripVC: UIViewController {
             
             let gregorian = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
             let offsetComponents = NSDateComponents()
-            offsetComponents.minute = Int("\(am.getET()!)") ?? 0
-            let eta = gregorian!.date(byAdding: offsetComponents as DateComponents, to: now as Date, options: [])!
+            offsetComponents.minute = Int("\(am.getET() ?? "0")") ?? 0
+            let eta = gregorian!.date(byAdding: offsetComponents as DateComponents, to: now as Date, options: []) ?? Date()
             let strTime = dateFormatter.string(from: eta as Date)
-            printVal(object: "myETA: \(am.getET())")
+            printVal(object: "myETA: \(am.getET() ?? "")")
             
             lblETA.text = "ETA: \(strTime) Hrs"
         }
@@ -940,7 +941,7 @@ public class TripVC: UIViewController {
         gmsMapView.settings.tiltGestures = false
         gmsMapView.settings.rotateGestures = false
         
-        driverLoc = CLLocation(latitude: Double(am.getDRIVERLATITUDE() ?? "0.0")!, longitude: Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
+        driverLoc = CLLocation(latitude: Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, longitude: Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
         
         // driverLoc.coordinate.latitude
         
@@ -948,33 +949,33 @@ public class TripVC: UIViewController {
             let camera = GMSCameraPosition.camera(withLatitude: driverLoc.coordinate.latitude,
                                                   longitude: driverLoc.coordinate.longitude,
                                                   zoom: 18,
-                                                  bearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0")!,
+                                                  bearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0,
                                                   viewingAngle: 60)
             gmsMapView.animate(to: camera)
             tripstart = true
         } else {
             CATransaction.begin()
             CATransaction.setValue(6.0, forKey: kCATransactionAnimationDuration)
-            gmsMapView.animate(toBearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0")!)
+            gmsMapView.animate(toBearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0)
             gmsMapView.animate(toLocation: driverLoc.coordinate)
             CATransaction.commit()
         }
         
-        // gmsMapView.animate(toBearing: CLLocationDegrees(am.getDRIVERBEARING()!)!)
+        // gmsMapView.animate(toBearing: CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0)
         
         //cashCentre
     }
     
     func driverArrived() {
-        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0")!, Double(am.getDRIVERLONGITUDE() ?? "0.0")!)
-        // driverNameLbl.text = "\(am.getDRIVERNAME()!.capitalized) has arrived."
+        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0.0") ?? 0, Double(am.getDRIVERLONGITUDE() ?? "0.0") ?? 0)
+        // driverNameLbl.text = "\(am.getDRIVERNAME()?.capitalized ?? "") has arrived."
     }
     
     func showDriverDetails() {
         
         imgDriverPic.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
         imgCarType.sd_setImage(with: URL(string: am.getVEHICLEIMAGE()), placeholderImage: getImage(named: am.getVEHICLETYPE(), bundle: sdkBundle!))
-        let amount = Double(am.getRATING()!)
+        let amount = Double(am.getRATING() ?? "0")
         if amount != nil {
             lblRating.text = String(format: "%.1f", amount!)
         } else {
@@ -996,11 +997,11 @@ public class TripVC: UIViewController {
         viewTripAT.isHidden = false
         lblTripAt.text = am.getPERKM()
         
-        lblCarModelColor.text = "\(am.getMODEL()!.capitalized) - \(am.getCOLOR()!.capitalized)"
-        lblPlateNumber.text = "\(am.getNUMBER()!.uppercased())"
-        lblDriverName.text = "\(am.getDRIVERNAME()!.capitalized)"
-        lblYouAreDrivenBy.text = "You are being driven by \(am.getDRIVERNAME()!.capitalized)"
-        printVal(object: "timeAr: \(am.getET())")
+        lblCarModelColor.text = "\(am.getMODEL()?.capitalized ??  "") - \(am.getCOLOR()?.capitalized ?? "0")"
+        lblPlateNumber.text = "\(am.getNUMBER()?.uppercased() ?? "")"
+        lblDriverName.text = "\(am.getDRIVERNAME()?.capitalized ?? "")"
+        lblYouAreDrivenBy.text = "You are being driven by \(am.getDRIVERNAME()?.capitalized ?? "")"
+        printVal(object: "timeAr: \(am.getET() ?? "")")
         if let et = am.getET() {
             if let min = Double(et), min >= 1 {
                 lblArrivalTime.text = "ETA \(String(format: "%.0f", et))mins."
@@ -1010,8 +1011,8 @@ public class TripVC: UIViewController {
         } else {
             lblArrivalTime.text = "ETA 0mins."
         }
-        lblPaymentMode.text = "\(am.getPaymentMode()!)"
-        lblPaymentModeTrip.text = "\(am.getPaymentMode()!.uppercased()) TRIP"
+        lblPaymentMode.text = "\(am.getPaymentMode() ?? "Cash")"
+        lblPaymentModeTrip.text = "\(am.getPaymentMode()?.uppercased() ?? "Cash") TRIP"
         
         
     }
@@ -1047,7 +1048,7 @@ public class TripVC: UIViewController {
             originMarker.position = coordinates
             if am.getTRIPSTATUS() != "4" {
                 if am.getDRIVERBEARING() != "" {
-                    originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
+                    originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0
                 }
                 
                 var imageName = ""
@@ -1069,7 +1070,7 @@ public class TripVC: UIViewController {
                 originMarker.icon = scaleImage(image: image!,size: 0.7)
                 
                 if am.getDRIVERBEARING() != "" {
-                    // originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
+                    // originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING() ?? 0) ?? CLLocationDegrees("0")
                 }
             }
             originMarker.title = "My Ride"
@@ -1082,7 +1083,7 @@ public class TripVC: UIViewController {
             CATransaction.setAnimationDuration(6.0)
             if am.getTRIPSTATUS() != "4" {
                 if am.getDRIVERBEARING() != "" {
-                    originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING()!)!
+                    originMarker.rotation = CLLocationDegrees(am.getDRIVERBEARING() ?? "0") ?? 0
                 }
             } else {
                 var imageName = ""
@@ -1388,7 +1389,7 @@ public class TripVC: UIViewController {
     }
     
     @IBAction func callBtnPressed(_ sender: UIButton) {
-        var number = am.getDRIVERMOBILE()!
+        var number = am.getDRIVERMOBILE() ?? ""
         if number != "" {
             number="+"+number
             guard let url = URL(string: "telprompt://\(number)") else {
@@ -1440,10 +1441,10 @@ public class TripVC: UIViewController {
     @IBAction func sambazaTripBtn(_ sender: UIButton) {
         
         if am.getVIEWID() == "" {
-            am.saveVIEWID(data: String(am.getTRIPID()!.prefix(5)))
+            am.saveVIEWID(data: String(am.getTRIPID()?.prefix(5) ?? ""))
         }
         
-        let firstActivityItem = "Take a look at my ride with LittleCab\r\n https://little.bz/app/route/?id="+am.getVIEWID()!+"\r\nOR view a trip on your Little App with ID \(am.getVIEWID()!)"
+        let firstActivityItem = "Take a look at my ride with LittleCab\r\n https://little.bz/app/route/?id="+(am.getVIEWID() ?? "")+"\r\nOR view a trip on your Little App with ID \(am.getVIEWID() ?? "")"
         
         let activityViewController : UIActivityViewController = UIActivityViewController(
             activityItems: [firstActivityItem], applicationActivities: nil)
@@ -1471,15 +1472,15 @@ public class TripVC: UIViewController {
     }
     
     @IBAction func btnStartTripPressed(_ sender: UIButton) {
-        showMessageOTP(title: "Start Trip Code: \(am.getStartTripOTP()!)", message: "A start trip code will be required by \(am.getDRIVERNAME()!.capitalized), your driver, to start this trip. Kindly provide him the code: \(am.getEndTripOTP()!) so as to start the trip.")
+        showMessageOTP(title: "Start Trip Code: \(am.getStartTripOTP() ?? "")", message: "A start trip code will be required by \(am.getDRIVERNAME()?.capitalized ?? ""), your driver, to start this trip. Kindly provide him the code: \(am.getEndTripOTP() ?? "") so as to start the trip.")
     }
     
     @IBAction func btnEndTripPressed(_ sender: UIButton) {
-        showMessageOTP(title: "End Trip Code: \(am.getEndTripOTP()!)", message: "An end trip code will be requested by \(am.getDRIVERNAME()!.capitalized), your driver, in order to successfully END your trip. Please note that this code changes after every KM and only give to driver if he is ending at the right destination.")
+        showMessageOTP(title: "End Trip Code: \(am.getEndTripOTP() ?? "")", message: "An end trip code will be requested by \(am.getDRIVERNAME()?.capitalized ?? ""), your driver, in order to successfully END your trip. Please note that this code changes after every KM and only give to driver if he is ending at the right destination.")
     }
     
     @IBAction func btnParkingPressed(_ sender: UIButton) {
-        showMessageOTP(title: "Parking Fee Code: \(am.getParkingFeeOTP()!)", message: "Kindly give the driver this code ONLY if a parking fee charge was incurred at any particular point during this trip. Also make sure the amount is right.")
+        showMessageOTP(title: "Parking Fee Code: \(am.getParkingFeeOTP() ?? "")", message: "Kindly give the driver this code ONLY if a parking fee charge was incurred at any particular point during this trip. Also make sure the amount is right.")
     }
     
     func showMessageOTP(title: String, message: String) {

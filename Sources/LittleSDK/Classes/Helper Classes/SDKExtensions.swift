@@ -613,10 +613,10 @@ extension Date {
     
     func timeAgoDisplay() -> String {
         let calendar = Calendar.current
-        let minuteAgo = calendar.date(byAdding: .minute, value: -1, to: Date())!
-        let hourAgo = calendar.date(byAdding: .hour, value: -1, to: Date())!
-        let dayAgo = calendar.date(byAdding: .day, value: -1, to: Date())!
-        let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date())!
+        let minuteAgo = calendar.date(byAdding: .minute, value: -1, to: Date()) ?? Date()
+        let hourAgo = calendar.date(byAdding: .hour, value: -1, to: Date()) ?? Date()
+        let dayAgo = calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+        let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date()) ?? Date()
         
         if minuteAgo < self {
             let diff = Calendar.current.dateComponents([.second], from: self, to: Date()).second ?? 0
@@ -719,7 +719,7 @@ func formatCurrency(_ str: String) -> String {
     numberFormatter.numberStyle = NumberFormatter.Style.currency
     numberFormatter.currencySymbol = currency
     if largeNumber != nil {
-        return numberFormatter.string(from: largeNumber! as NSNumber)!
+        return numberFormatter.string(from: largeNumber! as NSNumber) ?? ""
     } else {
         return str
     }

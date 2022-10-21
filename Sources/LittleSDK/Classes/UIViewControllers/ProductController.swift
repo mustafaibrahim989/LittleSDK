@@ -169,7 +169,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                         }
                     }
                     selectedCategory = 0
-                    currency = getRestaurantMenu[0].currency ?? am.getGLOBALCURRENCY()!
+                    currency = getRestaurantMenu[0].currency ?? (am.getGLOBALCURRENCY() ?? "KES")
                     finishedLoadingInitialTableCells = false
                     if sortIndex == 0 {
                         menuTable.reloadData()
@@ -322,7 +322,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         if sortedArr[sender.tag].extraItem == "Y" {
             let result = cartItems.compactMap { $0 }.contains(where: { $0.addonID == sortedArr[sender.tag].addonID })
             if result {
-                let index = cartItems.firstIndex(where: { $0.addonID == sortedArr[sender.tag].addonID })!
+                guard let index = cartItems.firstIndex(where: { $0.addonID == sortedArr[sender.tag].addonID }) else { return }
                 cartItems[index] = CartItems(itemID: sortedArr[sender.tag].menuID, addonID: sortedArr[sender.tag].addonID, number: sender.value)
             } else {
                 cartItems.append(CartItems(itemID: sortedArr[sender.tag].menuID, addonID: sortedArr[sender.tag].addonID, number: sender.value))
@@ -330,7 +330,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         } else {
             let result = cartItems.compactMap { $0 }.contains(where: { $0.itemID == sortedArr[sender.tag].menuID })
             if result {
-                let index = cartItems.firstIndex(where: { $0.itemID == sortedArr[sender.tag].menuID })!
+                guard let index = cartItems.firstIndex(where: { $0.itemID == sortedArr[sender.tag].menuID }) else { return }
                 cartItems[index] = CartItems(itemID: sortedArr[sender.tag].menuID, addonID: nil, number: sender.value)
             } else {
                 cartItems.append(CartItems(itemID: sortedArr[sender.tag].menuID, addonID: nil, number: sender.value))
@@ -348,8 +348,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
             for item in cartItems {
                 if item.number == 0 {
                     if item.addonID != nil {
-                        let IDindex = sortedArr.firstIndex(where: { $0.addonID == item.addonID })!
-                        let menuIDindex = menuArr.firstIndex(where: { $0.addonID == item.addonID })!
+                        guard let IDindex = sortedArr.firstIndex(where: { $0.addonID == item.addonID }) else { return }
+                                guard let menuIDindex = menuArr.firstIndex(where: { $0.addonID == item.addonID }) else { return }
                         sortedArr.remove(at: IDindex)
                         menuArr.remove(at: menuIDindex)
                     }
@@ -396,7 +396,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
         
         grandTotal = total
         
-        lblOrderAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(grandTotal)))"
+        lblOrderAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "")) \(formatCurrency(String(grandTotal)))"
         
         if btnNext.title(for: .normal) != "Next" {
             btnNext.setTitle("Next", for: .normal)
@@ -523,7 +523,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                 
                 if addonId == "" {
                     IDindex = selectedFoodIndex!
-                    menuIDindex = menuArr.firstIndex(where: { $0.menuID == sortedArr[selectedFoodIndex!].menuID })!
+                    menuIDindex = menuArr.firstIndex(where: { $0.menuID == sortedArr[selectedFoodIndex!].menuID }) ?? 0
                     
                     num = CartItems(itemID: sortedArr[IDindex].menuID, addonID: addon_id, number: 1)
                     
@@ -534,8 +534,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     cartItems.append(num!)
                     
                 } else {
-                    IDindex = sortedArr.firstIndex(where: { $0.addonID == addonId })!
-                    menuIDindex = menuArr.firstIndex(where: { $0.addonID == addonId })!
+                    IDindex = sortedArr.firstIndex(where: { $0.addonID == addonId }) ?? 0
+                    menuIDindex = menuArr.firstIndex(where: { $0.addonID == addonId }) ?? 0
                     
                     addon_id = sortedArr[IDindex].addonID ?? ""
                     
@@ -551,8 +551,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     menuArr[menuIDindex] = FoodMenu(menuID: sortedArr[IDindex].menuID ?? "", foodCategory: sortedArr[IDindex].foodCategory ?? "", foodName: sortedArr[IDindex].foodName ?? "", foodDescription: sortedArr[IDindex].foodDescription ?? "", originalPrice: sortedArr[IDindex].originalPrice ?? 0.0, specialPrice: sortedArr[IDindex].specialPrice ?? 0.0, foodImage: sortedArr[IDindex].foodImage ?? "", extraItem: sortedArr[IDindex].extraItem ?? "", addonID: addon_id, extraItems: selectedItems!)
                 }
                 
-                merchantMessage = am.getMESSAGE()!.components(separatedBy: ":::")[0]
-                proceed = am.getMESSAGE()!.components(separatedBy: ":::")[1]
+                merchantMessage = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[0]
+                proceed = (am.getMESSAGE() ?? "").components(separatedBy: ":::")[1]
                 
                 printVal(object: sortedArr)
                 printVal(object: menuArr)
@@ -706,7 +706,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
             }
             
             let grandTotal = totalAmount + (menuItem.specialPrice ?? 0.0)
-            cell.lblTotalAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(grandTotal)))"
+            cell.lblTotalAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "")) \(formatCurrency(String(grandTotal)))"
             cell.lblExtrasWithOrder.text = "\(string)"
             
             cell.selectionStyle = .none
@@ -725,8 +725,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
             cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage: getImage(named: "default_food", bundle: sdkBundle!))
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblDescription.text = "\(menuItem.foodDescription ?? "")"
-            cell.lblMenuAmount.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.specialPrice ?? 0.00)"
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "\(currency ?? am.getGLOBALCURRENCY()!) \(menuItem.originalPrice ?? 0.00)")
+            cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "")) \(menuItem.specialPrice ?? 0)"
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "\(currency ?? (am.getGLOBALCURRENCY() ?? "")) \(menuItem.originalPrice ?? 0)")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSMakeRange(0, attributeString.length))
             cell.lblMenuWasAmount.attributedText = attributeString
             

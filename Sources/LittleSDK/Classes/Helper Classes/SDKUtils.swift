@@ -11,7 +11,7 @@ import CoreLocation
 class SDKUtils {
     static func dictionaryArrayToJson(from object: [[String: String]]) throws -> String {
         let data = try JSONSerialization.data(withJSONObject: object)
-        return String(data: data, encoding: .utf8)!
+        return String(data: data, encoding: .utf8) ?? ""
     }
     
     static func extractCoordinate(string: String?) -> CLLocationCoordinate2D {

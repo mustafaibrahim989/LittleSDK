@@ -125,14 +125,13 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 btnLocation.setTitle(am.getPICKUPADDRESS(), for: UIControl.State())
             }
             
-            if selectedRestaurant?.deliveryModes?.count ?? 0 > 0 {
+            if (selectedRestaurant?.deliveryModes?.count ?? 0) > 0 {
                 btnDeliverMode.setTitle("\(selectedRestaurant?.deliveryModes?[0].deliveryModeDescription ?? "")", for: UIControl.State())
                 lblDeliveryCash.text = "\(am.getGLOBALCURRENCY() ?? "KES") \(selectedRestaurant?.deliveryModes?[0].deliveryCharges ?? 0)"
             }
             
-            if selectedRestaurant?.deliveryModes?[0] != nil {
-                adjustDeliveryHeight(source: (selectedRestaurant?.deliveryModes?[0])!)
-                if selectedRestaurant?.deliveryModes?[0].deliveryModeDescription?.lowercased().contains("pickup") ?? false {
+            if let restaurantDeliveryMode = selectedRestaurant?.deliveryModes?[safe: 0] {
+                if restaurantDeliveryMode.deliveryModeDescription?.lowercased().contains("pickup") ?? false {
                     self.txtDeliveryDetails.placeholder = "Add House, Floor No. (Optional)"
                 } else {
                     self.txtDeliveryDetails.placeholder = "Add House, Floor No."
@@ -404,7 +403,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             let result = cartItems.compactMap { $0 }.contains(where: { $0.addonID == menuArr[sender.tag].addonID })
             if result {
-                let index = cartItems.firstIndex(where: { $0.itemID == menuArr[sender.tag].menuID })!
+                let index = cartItems.firstIndex(where: { $0.itemID == menuArr[sender.tag].menuID }) ?? 0
                 cartItems[index] = CartItems(itemID: menuArr[sender.tag].menuID, addonID: menuArr[sender.tag].addonID, number: sender.value)
             } else {
                 cartItems.append(CartItems(itemID: menuArr[sender.tag].menuID, addonID: menuArr[sender.tag].addonID, number: sender.value))
@@ -417,7 +416,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         } else {
             let result = cartItems.compactMap { $0 }.contains(where: { $0.itemID == menuArr[sender.tag].menuID })
             if result {
-                let index = cartItems.firstIndex(where: { $0.itemID == menuArr[sender.tag].menuID })!
+                let index = cartItems.firstIndex(where: { $0.itemID == menuArr[sender.tag].menuID }) ?? 0
                 cartItems[index] = CartItems(itemID: menuArr[sender.tag].menuID, addonID: menuArr[sender.tag].addonID, number: sender.value)
             } else {
                 cartItems.append(CartItems(itemID: menuArr[sender.tag].menuID, addonID: menuArr[sender.tag].addonID, number: sender.value))
@@ -660,13 +659,13 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 } else {
                     NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                     
-                    let userInfo = ["amount":Double(lblTotalCash.text ?? "0")!,"reference":reference] as [String : Any]
+                    let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference] as [String : Any]
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                 }
             } else {
                 NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                 
-                let userInfo = ["amount":Double(lblTotalCash.text ?? "0")!,"reference":reference] as [String : Any]
+                let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference] as [String : Any]
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
             }
         }

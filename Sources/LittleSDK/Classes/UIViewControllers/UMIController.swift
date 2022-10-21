@@ -76,16 +76,17 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
 
         sdkBundle = Bundle.module
+        guard let sdkBundle = sdkBundle else { return }
         
         reference = NSUUID().uuidString
         
-        let nib = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle!)
+        let nib = UINib.init(nibName: "MenuCategoryCell", bundle: sdkBundle)
         self.nearMerchCollection.register(nib, forCellWithReuseIdentifier: "cell")
         
-        let nib2 = UINib.init(nibName: "ExtraFieldsCell", bundle: sdkBundle!)
+        let nib2 = UINib.init(nibName: "ExtraFieldsCell", bundle: sdkBundle)
         extraTableview.register(nib2, forCellReuseIdentifier: "cell")
         
-        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
+        let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
         
         
@@ -324,8 +325,8 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                         extraFields = merchantValidate[0].fields ?? []
                         
                         self.promoConstraint.constant = 100
-                        self.tableHeight.constant = CGFloat(50 * (merchantValidate[0].fields?.count)!)
-                        self.totalHeight.constant = 650 + CGFloat(50 * (merchantValidate[0].fields?.count)!) + 110
+                        self.tableHeight.constant = CGFloat(50 * (merchantValidate[0].fields?.count ?? 0))
+                        self.totalHeight.constant = 650 + CGFloat(50 * (merchantValidate[0].fields?.count ?? 0)) + 110
                         
                         UIView.animate(withDuration: 0.3, animations: {
                             self.merchantView.alpha = 1
@@ -674,7 +675,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                 
-                let userInfo = ["amount":Double(txtAmount.text ?? "0")!,"reference":reference] as [String : Any]
+                let userInfo = ["amount":Double(txtAmount.text ?? "0") ?? 0,"reference":reference] as [String : Any]
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                 
             }

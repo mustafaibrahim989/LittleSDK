@@ -1458,16 +1458,15 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         var ind = 0
         
         if source == "Table" {
-            ind = locationTitleArr.firstIndex(of: DestinationsArr![indexPath.item])!
+            ind = locationTitleArr.firstIndex(of: DestinationsArr![indexPath.item]) ?? 0
         } else if source == "Collection" {
-            ind = locationTitleArr.firstIndex(of: SuggestionsArr![indexPath.item])!
+            ind = locationTitleArr.firstIndex(of: SuggestionsArr![indexPath.item]) ?? 0
         }
         
         let index = ind
-        var latitude: Double
-        var longitude: Double
-        latitude = Double(locationCoordsArr[index].components(separatedBy: ",")[0])!
-        longitude = Double(locationCoordsArr[index].components(separatedBy: ",")[1])!
+        let coordinate = SDKUtils.extractCoordinate(array: locationCoordsArr, index: index)
+        let latitude = coordinate.latitude
+        let longitude = coordinate.longitude
         cardViewController.btnDestination.setTitle(locationTitleArr[index], for: UIControl.State())
         btnDestinationInformation.setTitle(locationTitleArr[index].components(separatedBy: ",")[0], for: UIControl.State())
         myDestination = CLLocation(latitude: latitude, longitude: longitude)
@@ -1920,7 +1919,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             var bounds = GMSCoordinateBounds()
             
-            let startLoc = CLLocationCoordinate2D(latitude: CLLocationDegrees(Double(locationsEstimateSet?.pickupLocation?.latitude ?? "0.0")!), longitude: CLLocationDegrees(Double(locationsEstimateSet?.pickupLocation?.longitude ?? "0.0")!))
+            let startLoc = CLLocationCoordinate2D(latitude: CLLocationDegrees(Double(locationsEstimateSet?.pickupLocation?.latitude ?? "0.0") ?? 0), longitude: CLLocationDegrees(Double(locationsEstimateSet?.pickupLocation?.longitude ?? "0.0") ?? 0))
             
             originMarker = GMSMarker(position: startLoc)
             originMarker.map = self.gmsMapView
@@ -1936,7 +1935,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             for each in allDrops {
                 
-                let eachLoc = CLLocationCoordinate2D(latitude: CLLocationDegrees(Double(each.latitude)!), longitude: CLLocationDegrees(Double(each.longitude)!))
+                let eachLoc = CLLocationCoordinate2D(latitude: CLLocationDegrees(Double(each.latitude) ?? 0), longitude: CLLocationDegrees(Double(each.longitude) ?? 0))
                 
                 if each.id == allDrops.last?.id {
                     destinationMarker = GMSMarker(position: eachLoc)
@@ -1990,7 +1989,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             route = overviewPolyline["points"] as! String
         }
         
-        let path: GMSPath = GMSPath(fromEncodedPath: route)!
+        guard let path: GMSPath = GMSPath(fromEncodedPath: route) else { return }
         
         routePolyline = GMSPolyline(path: path)
         routePolyline.strokeWidth = 3
@@ -2454,7 +2453,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             var homeIndex = 0
             var workIndex = 1
             
-            if (SuggestionsArr?.contains("View Approved"))! {
+            if (SuggestionsArr?.contains("View Approved")) == true {
                 homeIndex += 1
                 workIndex += 1
             }
@@ -3358,6 +3357,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "GETLOCATIONNAMEJSONData"), object: nil)
         
         if data != nil {
+            printVal(object: "myData: \(String(data: data!, encoding: .utf8))")
             do {
                 let defaultMessage = try JSONDecoder().decode(DefaultMessage.self, from: data!)
                 
@@ -3936,7 +3936,10 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             self.locationsEstimateSet = data
             
             locationStopsArr.removeAll()
-            locationStopsArr.append((locationsEstimateSet?.pickupLocation)!)
+            if let pickupLocation = locationsEstimateSet?.pickupLocation {
+                locationStopsArr.append(pickupLocation)
+            }
+
             for each in locationsEstimateSet?.dropoffLocations ?? [] {
                 if each.name != "" {
                     locationStopsArr.append(each)
@@ -3945,8 +3948,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             var latitude: Double
             var longitude: Double
-            latitude = Double("\(data?.pickupLocation?.latitude ?? "0.0")")!
-            longitude = Double("\(data?.pickupLocation?.longitude ?? "0.0")")!
+            latitude = Double("\(data?.pickupLocation?.latitude ?? "0.0")") ?? 0
+            longitude = Double("\(data?.pickupLocation?.longitude ?? "0.0")") ?? 0
             
             var distanceInMeters: CLLocationDistance = 0.0
             if self.myOrigin != nil {
@@ -3977,8 +3980,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     
                     var lat: Double
                     var long: Double
-                    lat = Double("\(dropOffLocations?.last?.latitude ?? "0.0")")!
-                    long = Double("\(dropOffLocations?.last?.longitude ?? "0.0")")!
+                    lat = Double("\(dropOffLocations?.last?.latitude ?? "0.0")") ?? 0
+                    long = Double("\(dropOffLocations?.last?.longitude ?? "0.0")") ?? 0
                     
                     cardViewController.btnDestination.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
                     btnDestinationInformation.setTitle((dropOffLocations?.last?.name ?? "").components(separatedBy: ",")[0].cleanLocationNames(), for: UIControl.State())
@@ -4025,8 +4028,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         var latitude: Double
         var longitude: Double
-        latitude = Double("\(data.pickupLocation?.latitude ?? "0.0")")!
-        longitude = Double("\(data.pickupLocation?.longitude ?? "0.0")")!
+        latitude = Double("\(data.pickupLocation?.latitude ?? "0.0")") ?? 0
+        longitude = Double("\(data.pickupLocation?.longitude ?? "0.0")") ?? 0
         
         let loadBackGround = self.createLoadingScreen()
         self.view.addSubview(loadBackGround)
@@ -4169,7 +4172,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
             group.notify(queue: .main) {
                 self.placeMarkerOnCenter(centerMapCoordinate: self.currentPlaceCoordinates)
-                if !(self.cardViewController.btnDestination.title(for: UIControl.State())?.contains("Where do "))! {
+                if !(self.cardViewController.btnDestination.title(for: UIControl.State())?.contains("Where do ") == true) {
                     
                     var distanceFromDestinationInMeters: CLLocationDistance = 0.0
                     if self.myDestination != nil {
@@ -4998,6 +5001,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func populateMarkers(list: [LittleDriver]) {
+        guard let sdkBundle = sdkBundle else { return }
         for i in (0..<list.count) {
             let marker = GMSMarker()
             marker.isFlat = true
@@ -5005,9 +5009,9 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             marker.groundAnchor=CGPoint(x: 0.5, y: 0.5)
             marker.map = gmsMapView
             marker.rotation=list[i].getBearing()
-            let imv = UIImageView(image: scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle!)!, size: 0.08))
+            let imv = UIImageView(image: scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle)!, size: 0.08))
             if imv.image == nil {
-                imv.image = scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle!)!, size: 0.08)
+                imv.image = scaleImage(image: getImage(named: "ComfortNew1", bundle: sdkBundle)!, size: 0.08)
             }
             marker.iconView = imv
             marker.position = CLLocationCoordinate2DMake(list[i].getLatitude(),list[i].getLongitude())

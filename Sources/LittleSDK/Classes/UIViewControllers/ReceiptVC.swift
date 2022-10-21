@@ -66,19 +66,19 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         sdkBundle = Bundle.module
         
         var amount = Double(am.getLIVEFARE())
-        lblAmountToPay.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        lblAmountToPay.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         lblPickUp.text = am.getPICKUPADDRESS()
         lblDropOff.text = am.getDROPOFFADDRESS()
-        costPerKmLbl.text = "Distance Cost (\(am.getGLOBALCURRENCY()!.capitalized). \(am.getPERKM()!)/km)"
-        costPerMinLbl.text = "Time Cost (\(am.getGLOBALCURRENCY()!.capitalized). \(am.getPERMIN()!)/min)"
+        costPerKmLbl.text = "Distance Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERKM() ?? "0")/km)"
+        costPerMinLbl.text = "Time Cost (\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). \(am.getPERMIN() ?? "0")/min)"
         amount = Double(am.getBASEPRICE())
-        minimumCostsLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        minimumCostsLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         amount = Double(am.getBASEFARE())
-        baseFareLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        baseFareLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         amount = Double(am.getDISTANCETOTALCOST())
-        distanceCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        distanceCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         amount = Double(am.getTIMETOTALCOST())
-        timeCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        timeCostLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         
         if am.getCORPORATECODE() != "" {
             paymentMode = "COPORATE"
@@ -94,7 +94,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                 paymentModes = paymentModes.filter { $0 != "" }
                 paymentModeIDs = am.getPaymentModeIDs().components(separatedBy: ";")
                 paymentModeIDs = paymentModeIDs.filter { $0 != "" }
-                btnPaymentType.setTitle("\(am.getPaymentMode()!.capitalized)", for: UIControl.State())
+                btnPaymentType.setTitle("\(am.getPaymentMode()?.capitalized ?? "Cash")", for: UIControl.State())
                 paymentMode = am.getPaymentMode()
                 paymentModeID = am.getPaymentModeID()
             }
@@ -178,9 +178,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         
         
-        let reference = am.getTRIPID()!
+        let reference = am.getTRIPID() ?? ""
         
-        let userInfo = ["amount":Double(am.getLIVEFARE()!)!,"reference":reference] as [String : Any]
+        let userInfo = ["amount":Double(am.getLIVEFARE() ?? "0") ?? 0,"reference":reference] as [String : Any]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
         
         if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
@@ -209,7 +209,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             cell.plusMinusImage.image = getImage(named: "add", bundle: sdkBundle!)
         }
         let amount = Double(payCostArr[indexPath.item].replacingOccurrences(of: "-", with: ""))
-        cell.payAmountLbl.text = String(format: "\(am.getGLOBALCURRENCY()!.capitalized). %.2f", amount!)
+        cell.payAmountLbl.text = String(format: "\(am.getGLOBALCURRENCY()?.capitalized ?? "KES"). %.2f", amount!)
         cell.payDescLbl.text = payDescArr[indexPath.item]
         return cell
         

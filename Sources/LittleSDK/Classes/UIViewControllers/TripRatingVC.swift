@@ -47,7 +47,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         setupFloatRatingView()
         
         driverIm.sd_setImage(with: URL(string: am.getDRIVERPICTURE()), placeholderImage: getImage(named: "default", bundle: sdkBundle!))
-        driverNameLbl.text = "Rate \(am.getDRIVERNAME()!.capitalized)"
+        driverNameLbl.text = "Rate \(am.getDRIVERNAME()?.capitalized ?? "")"
         vehicle = am.getVEHICLETYPE().capitalized
         
     }
@@ -128,7 +128,7 @@ public class TripRatingVC: UIViewController, SDKRatingViewDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATEJSONData"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL()!)\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE()!)\",\"Rating\":\"\(rate)\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Comments\":\"\(commentsTxt.text!)\"}}"
+        let dataToSend = "{\"FormID\":\"RATE\"\(commonCallParams()),\"RateAgent\":{\"DriverEmail\":\"\(am.getDRIVEREMAIL() ?? "")\",\"DriverMobileNumber\":\"\(am.getDRIVERMOBILE() ?? "")\",\"Rating\":\"\(rate)\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"Comments\":\"\(commentsTxt.text ?? "")\"}}"
         
         printVal(object: dataToSend)
         

@@ -44,11 +44,12 @@ public class ShowTripStopsController: UIViewController {
     }
     
     func configureUI(pageTitle: String) {
+        guard let sdkBundle = sdkBundle else { return }
         
         view.backgroundColor = .white
         
         navigationItem.title = pageTitle
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
     }
     
     func configureTableView() {

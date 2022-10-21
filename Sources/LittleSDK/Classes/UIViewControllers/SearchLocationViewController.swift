@@ -73,6 +73,7 @@ public class SearchLocationViewController: UIViewController {
     // MARK: - Handlers
     
     func configureUI() {
+        guard let sdkBundle = sdkBundle else { return }
         
         configureSearch()
         
@@ -82,7 +83,7 @@ public class SearchLocationViewController: UIViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "Search Location"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle!)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: getImage(named: "icon_close", bundle: sdkBundle)!.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(handleDismiss))
         
         noLocationsView = UIView()
         view.addSubview(noLocationsView)
@@ -94,7 +95,7 @@ public class SearchLocationViewController: UIViewController {
         noLocationsView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         imgNoLocations = UIImageView()
-        imgNoLocations.image = getImage(named: "no_record", bundle: sdkBundle!)
+        imgNoLocations.image = getImage(named: "no_record", bundle: sdkBundle)
         noLocationsView.addSubview(imgNoLocations)
         
         imgNoLocations.translatesAutoresizingMaskIntoConstraints = false
@@ -399,7 +400,7 @@ public class SearchLocationViewController: UIViewController {
         
         let theReal = am.DecryptDataKC(DataToSend: cn.placesKey) as String
         let placeIDString = placeID.replacingOccurrences(of: "string(\"", with: "").replacingOccurrences(of: "\")", with: "")
-        let url = URL(string: "https://maps.googleapis.com/maps/api/geocode/json?place_id=\(placeIDString)&key=\(theReal)")!
+        guard let url = URL(string: "https://maps.googleapis.com/maps/api/geocode/json?place_id=\(placeIDString)&key=\(theReal)") else { return }
         
         printVal(object: "URL: \(url)")
         
@@ -509,7 +510,7 @@ extension SearchLocationViewController: UISearchResultsUpdating {
     
             if (searchBar.text?.count ?? 0) <= 2 && searchBar.text != "" {
                 
-                let arr = littlePredictionsArr.filter({ ($0.predictionDescription?.contains(searchBar.text!))! })
+                let arr = littlePredictionsArr.filter({ ($0.predictionDescription?.contains(searchBar.text ?? "")) == true })
                 self.littlePredictionsArr = arr
                 self.tableView.reloadData()
                 self.tableHeightSet()

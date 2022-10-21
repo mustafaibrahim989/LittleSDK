@@ -24,14 +24,12 @@ class SDKHandleCalls {
     var keysent = false
     
     func makeServerCall(sb: String, method: String, switchnum: Int) {
-        printVal(object: "makeServerCall: \(method)")
+        printVal(object: "makeServerCall \(method): \(sb)")
         
         let topController = UIApplication.topViewController()
         
         DataToSend = am.EncryptDataAES(DataToSend: sb) as String
-        
-        printVal(object: sb)
-        
+                
         callTypeName = method
         
         if SDKReachability.isConnectedToNetwork() || method == "VERIFYUSSDCODEJSONData" {
@@ -94,11 +92,8 @@ class SDKHandleCalls {
 
                 let data = response.data
             
-            printVal(object: "makeServerCall data nil: \(method): \(data == nil)")
-            printVal(object: "makeServerCall status: \(method): \(response.response?.statusCode)")
 
                 if data != nil {
-
                     do {
                         
                         let sDKData = try JSONDecoder().decode(SDKData.self, from: data!)
@@ -115,6 +110,10 @@ class SDKHandleCalls {
                         
                     } catch(let error) {
                         printVal(object: "makeServerCall error: \(method): \(error.localizedDescription)")
+//                        let topController = UIApplication.topViewController()
+//                        topController?.removeLoadingPage()
+//                        topController?.view.removeAnimation()
+//                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: method), object: nil)
                     }
 
                 }

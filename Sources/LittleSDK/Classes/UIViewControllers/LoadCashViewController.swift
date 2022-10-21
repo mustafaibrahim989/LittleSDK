@@ -102,7 +102,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "LOADCASH"), object: nil)
         
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\(am.getMESSAGE()!)", image: "", action: "")
+        view.loadPopup(title: "", message: "\(am.getMESSAGE() ?? "")", image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
             self.navigationController?.popViewController(animated: true)
@@ -327,7 +327,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadFromOtherDone),name:NSNotification.Name(rawValue: "LOADCASH"), object: nil)
         
-        let datatosend:String="FORMID|LOADCASH|AMOUNT|\(txtAmount.text!)|PAYMENTMODE|\(cashSourceBtn.title(for: .normal)!)|"
+        let datatosend:String="FORMID|LOADCASH|AMOUNT|\(txtAmount.text!)|PAYMENTMODE|\(cashSourceBtn.title(for: .normal) ?? "")|"
         
         hc.makeServerCall(sb: datatosend, method: "LOADCASH", switchnum: 0)
         
@@ -634,34 +634,34 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         var typedAmount = 0.0
         
         if sender.text != "" {
-            typedAmount = Double(sender.text!)!
+            typedAmount = Double(sender.text ?? "") ?? 0
         }
         
-        if am.getWalletAmount()?.components(separatedBy: ";").count ?? 0 > 3 {
-            let amount1 = Double(am.getWalletAmount().components(separatedBy: ";")[0])!
-            let amount2 = Double(am.getWalletAmount().components(separatedBy: ";")[1])!
-            let amount3 = Double(am.getWalletAmount().components(separatedBy: ";")[2])!
-            let amount4 = Double(am.getWalletAmount().components(separatedBy: ";")[3])!
+        if (am.getWalletAmount()?.components(separatedBy: ";").count ?? 0) > 3 {
+            let amount1 = Double(am.getWalletAmount().components(separatedBy: ";")[0]) ?? 0
+            let amount2 = Double(am.getWalletAmount().components(separatedBy: ";")[1]) ?? 0
+            let amount3 = Double(am.getWalletAmount().components(separatedBy: ";")[2]) ?? 0
+            let amount4 = Double(am.getWalletAmount().components(separatedBy: ";")[3]) ?? 0
             
             if sender.text == "" || typedAmount < amount1 {
                 let str = "\(am.getWalletAmount().components(separatedBy: ";")[0])"
-                lblDiscount.text = "Load greater than \(am.getGLOBALCURRENCY()!) \(formatCurrency(str)) for bonus."
+                lblDiscount.text = "Load greater than \(am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(str)) for bonus."
             } else if typedAmount < amount2 {
-                let difference = Double(am.getWalletDiscount().components(separatedBy: ";")[0])! - Double(am.getWalletAmount().components(separatedBy: ";")[0])!
+                let difference = (Double(am.getWalletDiscount().components(separatedBy: ";")[0]) ?? 0) - (Double(am.getWalletAmount().components(separatedBy: ";")[0]) ?? 0)
                 let str = "\(difference+typedAmount)"
-                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY()!) \(formatCurrency(str))"
+                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(str))"
             } else if typedAmount < amount3 {
-                let difference = Double(am.getWalletDiscount().components(separatedBy: ";")[1])! - Double(am.getWalletAmount().components(separatedBy: ";")[1])!
+                let difference = (Double(am.getWalletDiscount().components(separatedBy: ";")[1]) ?? 0) - (Double(am.getWalletAmount().components(separatedBy: ";")[1]) ?? 0)
                 let str = "\(difference+typedAmount)"
-                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY()!) \(formatCurrency(str))"
+                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(str))"
             } else if typedAmount < amount4 {
-                let difference = Double(am.getWalletDiscount().components(separatedBy: ";")[2])! - Double(am.getWalletAmount().components(separatedBy: ";")[2])!
+                let difference = (Double(am.getWalletDiscount().components(separatedBy: ";")[2]) ?? 0) - (Double(am.getWalletAmount().components(separatedBy: ";")[2]) ?? 0)
                 let str = "\(difference+typedAmount)"
-                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY()!) \(formatCurrency(str))"
+                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(str))"
             } else if typedAmount >= amount4 {
-                let difference = Double(am.getWalletDiscount().components(separatedBy: ";")[3])! - Double(am.getWalletAmount().components(separatedBy: ";")[3])!
+                let difference = (Double(am.getWalletDiscount().components(separatedBy: ";")[3]) ?? 0) - (Double(am.getWalletAmount().components(separatedBy: ";")[3]) ?? 0)
                 let str = "\(difference+typedAmount)"
-                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY()!) \(formatCurrency(str))"
+                lblDiscount.text = "Little Bonus: You get \(am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(str))"
             }
         }
     }

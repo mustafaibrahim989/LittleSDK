@@ -116,7 +116,7 @@ public class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate
 
     func alertCameraAccessNeeded() {
         
-        let url = URL(string: UIApplication.openSettingsURLString)!
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "Camera access denied/restricted", message: "\nYou won't be able to scan QR Codes on Little unless you allow access to the Camera. Click settings to turn on camera access.\n", image: "", action: "")
