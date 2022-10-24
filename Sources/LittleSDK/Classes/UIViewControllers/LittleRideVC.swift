@@ -4420,7 +4420,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
             
             if self.isUAT {
-                preferredDriver = "og12@gmail.com"
+                preferredDriver = SDKConstants.testDriverEmail
             }
             
             if (CarTypes[selectedCarIndex].lowercased().contains("parcel") || CarTypes[selectedCarIndex].lowercased().contains("goods")) {

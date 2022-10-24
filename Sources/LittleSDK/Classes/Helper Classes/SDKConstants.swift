@@ -29,8 +29,10 @@ class SDKConstants {
     }
     
     func link() -> String {
-        return live
+        return uat
     }
+    
+    static let testDriverEmail = "kk123456@gmail.com"
     
     // Colors
     
