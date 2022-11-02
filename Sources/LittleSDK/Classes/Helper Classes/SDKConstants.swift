@@ -35,9 +35,16 @@ class SDKConstants {
     
     // Colors
     
-    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
-    // static var littleSDKThemeColor = UIColor(hex: "#A22A29")
-    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+    // Equity
+//    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
+    // Vooma
+    static var littleSDKThemeColor = UIColor(hex: "#891755")
+    
+    // Equity
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+    // Vooma
+    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+    
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
     static var littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
