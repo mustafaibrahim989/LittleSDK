@@ -14,6 +14,11 @@ class SDKUtils {
         return String(data: data, encoding: .utf8) ?? ""
     }
     
+    static func dictionaryToJson(from object: [String: String]) throws -> String {
+        let data = try JSONSerialization.data(withJSONObject: object)
+        return String(data: data, encoding: .utf8) ?? ""
+    }
+    
     static func extractCoordinate(string: String?) -> CLLocationCoordinate2D {
         guard let string = string else { return CLLocationCoordinate2D(latitude: 0, longitude: 0) }
         

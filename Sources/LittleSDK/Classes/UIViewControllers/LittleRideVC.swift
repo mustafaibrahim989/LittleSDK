@@ -1756,11 +1756,12 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     }
     
     func drawPath() {
-        if am.getCountry()?.uppercased() == "KENYA" {
-            goLocalMultiple()
-        } else {
-            goGoogleMultiple()
-        }
+        goLocalMultiple()
+//        if am.getCountry()?.uppercased() == "KENYA" {
+//            goLocalMultiple()
+//        } else {
+//            goGoogleMultiple()
+//        }
     }
     
     func goGoogleMultiple() {
@@ -1856,20 +1857,16 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             if destinationCoordinate != nil {
                 let origin = "\(originCoordinate.latitude),\(originCoordinate.longitude)"
                 
-                var points = "&point=\(origin)"
                 let allDrops = locationsEstimateSet?.dropoffLocations ?? []
-                if allDrops.count > 1 {
-                    for each in allDrops {
-                        points.append("&point=\(each.latitude),\(each.longitude)")
-                    }
-                }
+                let points = allDrops.map({ "\($0.latitude),\($0.longitude)" }).joined(separator: "|")
                 
-                let directionURL = "https://maps.little.bz/api/v2/direction/full?\(points)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
+                let directionURL = "https://maps.little.bz/api/direction/full?origin=\(origin)&destination=\(points.urlEncoded)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
 
-                let url = URL(string: directionURL)
-                URLSession.shared.dataTask(with:url!) { (data, response, error) in
+                guard let url = URL(string: directionURL) else { return }
+                
+                URLSession.shared.dataTask(with: url) { (data, response, error) in
                     if error != nil {
-                        self.goGoogleMultiple()
+//                        self.goGoogleMultiple()
                     } else {
                         do {
                             let parsedData = try JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]
@@ -1886,7 +1883,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                                 self.drawRoute()
                             }
                         } catch _ as NSError {
-                            self.goGoogleMultiple()
+//                            self.goGoogleMultiple()
                         }
                     }
 
@@ -1989,7 +1986,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             if overviewPolylineString != nil {
                 route = overviewPolylineString!
             } else {
-                goGoogleMultiple()
+//                goGoogleMultiple()
                 return
             }
 
@@ -3204,7 +3201,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\",\"UserAdditionalData\":\(am.getSDKAdditionalData())"
         
         return str
     }
@@ -4475,7 +4472,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             NotificationCenter.default.addObserver(self, selector: #selector(loadMakeRequest(_:)),name:NSNotification.Name(rawValue: "MAKEJSONREQUESTJSONData"), object: nil)
             
-            let dataToSend = "{\"FormID\":\"MAKEJSONREQUEST\"\(commonCallParams()),\"TripDetails\":{\"VehicleType\":\"\(carType)\",\"TripType\":\"TRIP\",\"PaymentMode\":\"\(pmode)\",\"WalletUniqueID\":\"\(pmodeID)\",\"CorporateID\":\"\(CC)\",\"CorporateRef\":\"\(reasonTest)\",\"CorporateTripID\":\"\(CorporateTripID)\",\"SkipDrivers\":\"\(forwardSkipDrivers)\",\"FavouriteDriver\":\"\(preferredDriver)\",\"PromoCode\":\"\(promoText)\",\"PromoType\":\"\(promoType)\",\"PickupAddress\":\"\(pickupName)\",\"PickupLL\":\"\(originLL)\",\"DropOffAddress\":\"\(dropOffName)\",\"DropOffLL\":\"\(destinationLL)\",\"DropOffDetails\":[\(dropOffDetails)]\(parcelString)\(flySaveDetails)}}"
+            let dataToSend = "{\"FormID\":\"MAKEJSONREQUEST\"\(commonCallParams()),\"TripDetails\":{\"VehicleType\":\"\(carType)\",\"TripType\":\"TRIP\",\"PaymentMode\":\"\(pmode)\",\"WalletUniqueID\":\"\(pmodeID)\",\"CorporateID\":\"\(CC)\",\"CorporateRef\":\"\(reasonTest)\",\"CorporateTripID\":\"\(CorporateTripID)\",\"SkipDrivers\":\"\(forwardSkipDrivers)\",\"FavouriteDriver\":\"\(preferredDriver)\",\"PromoCode\":\"\(promoText)\",\"PromoType\":\"\(promoType)\",\"PickupAddress\":\"\(pickupName)\",\"PickupLL\":\"\(originLL)\",\"DropOffAddress\":\"\(dropOffName)\",\"DropOffLL\":\"\(destinationLL)\",\"DropOffDetails\":[\(dropOffDetails)]\(parcelString)\(flySaveDetails)},\"UserAdditionalData\":\(am.getSDKAdditionalData())}"
             
             hc.makeServerCall(sb: dataToSend, method: "MAKEJSONREQUESTJSONData", switchnum: 0)
             

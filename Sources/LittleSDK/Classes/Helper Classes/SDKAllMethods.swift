@@ -472,6 +472,14 @@ class SDKAllMethods {
         wrapper.set(data, forKey: "FEEDBACK")
     }
     
+    func saveSDKAdditionalData(data: String) {
+        wrapper.set(data, forKey: "SDKAddionalData")
+    }
+    
+    func saveSDKAPIKey(data: String) {
+        wrapper.set(data, forKey: "SDKAPIKey")
+    }
+    
     // MARK: - Get Functions
     
     func getFromSearch() -> Bool! {
@@ -1265,6 +1273,16 @@ class SDKAllMethods {
             check = ""
         }
         return check
+    }
+    
+    func getSDKAdditionalData() -> String{
+        var check = wrapper.string(forKey: "SDKAddionalData")
+        return check ?? ""
+    }
+    
+    func getSDKAPIKey() -> String{
+        var check = wrapper.string(forKey: "SDKAPIKey")
+        return check ?? ""
     }
     
     

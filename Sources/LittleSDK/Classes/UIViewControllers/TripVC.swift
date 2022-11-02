@@ -393,7 +393,7 @@ public class TripVC: UIViewController {
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\(am.getTRIPID() ?? "")\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\",\"UserAdditionalData\":\(am.getSDKAdditionalData())"
         
         return str
     }
@@ -1199,11 +1199,12 @@ public class TripVC: UIViewController {
     }
     
     func drawPath() {
-       if am.getCountry()?.uppercased() == "KENYA" {
-            goLocal()
-       } else {
-            goGoogle()
-        }
+        goLocal()
+//       if am.getCountry()?.uppercased() == "KENYA" {
+//            goLocal()
+//       } else {
+//            goGoogle()
+//        }
     }
     
     func goGoogle() {
@@ -1283,12 +1284,13 @@ public class TripVC: UIViewController {
                     if destinationCoordinate != nil {
                         let origin = "\(originCoordinate.latitude),\(originCoordinate.longitude)"
                         let destination = "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"
-                        let directionURL = "https://maps.little.bz/api/v2/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
-        
-                        let url = URL(string: directionURL)
-                        URLSession.shared.dataTask(with:url!) { (data, response, error) in
+                        let directionURL = "https://maps.little.bz/api/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
+
+                        guard let url = URL(string: directionURL) else { return }
+                        
+                        URLSession.shared.dataTask(with: url) { (data, response, error) in
                             if error != nil {
-                                self.goGoogle()
+//                                self.goGoogle()
                                 // printVal(object: error as Any)
                             } else {
                                 do {
@@ -1308,7 +1310,7 @@ public class TripVC: UIViewController {
                                     
                                     // printVal(object: parsedData.description)
                                 } catch let error as NSError {
-                                    self.goGoogle()
+//                                    self.goGoogle()
                                     // printVal(object: error)
                                 }
                             }

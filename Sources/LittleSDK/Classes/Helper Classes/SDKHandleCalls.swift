@@ -111,10 +111,10 @@ class SDKHandleCalls {
                         
                     } catch(let error) {
                         printVal(object: "makeServerCall error: \(method): \(error.localizedDescription)")
-                        let topController = UIApplication.topViewController()
-                        topController?.removeLoadingPage()
-                        topController?.view.removeAnimation()
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: method), object: nil)
+//                        let topController = UIApplication.topViewController()
+//                        topController?.removeLoadingPage()
+//                        topController?.view.removeAnimation()
+//                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: method), object: nil)
                     }
 
                 }

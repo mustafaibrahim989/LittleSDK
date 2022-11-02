@@ -122,7 +122,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\",\"UserAdditionalData\":\(am.getSDKAdditionalData())"
         
         return str
     }
@@ -248,7 +248,7 @@ public class LoadCashViewController: UIViewController, UITableViewDataSource, UI
         
         txtAmount.text = txtAmount.text?.replacingOccurrences(of: "-", with: "")
         
-        let dataToSend = "{\"FormID\": \"LOADWALLET\"\(commonCallParams()),\"LoadWallet\":{\"WalletUniqueID\":\"\(walletID)\",\"Amount\":\"\(txtAmount.text!)\",\"ToWalletName\":\"\(toWalletName)\",\"ToWalletID\":\"\(toWalletID)\"\(string)\(string2)}}"
+        let dataToSend = "{\"FormID\": \"LOADWALLET\"\(commonCallParams()),\"LoadWallet\":{\"WalletUniqueID\":\"\(walletID)\",\"Amount\":\"\(txtAmount.text!)\",\"ToWalletName\":\"\(toWalletName)\",\"ToWalletID\":\"\(toWalletID)\"\(string)\(string2)},\"UserAdditionalData\":\(am.getSDKAdditionalData())}"
         
         hc.makeServerCall(sb: dataToSend, method: "LOADWALLETJSONData", switchnum: 0)
     }

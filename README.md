@@ -24,8 +24,15 @@ let accounts = \[\[
     "AccountName": "Account Name"
 \]\] \/\/ Array of Dictionary\<String, String\>
 
+\/\/ Additional data to be passed on callbacks
+let addionalData = \[String: String\]()
+
+littleFramework.initializeSDKParameters(accounts: accounts, additionalData: addionalData, mobileNumber: "254700408386", packageName: "com.craftsilicon.littlesdk", APIKey: "", isUAT: true)
+
+\/\/ Initialize SDK
 littleFramework.initializeSDKParameters(accounts: accountsArr, mobileNumber: "254700123123", packageName: "Bundle Identifier", isUAT: true)
 
+\/\/ Map Keys
 littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePlacesKey: Constants.PLACES_KEY)
 
 ### Navigate to ride request
@@ -39,7 +46,3 @@ littleFramework.initializeToDeliveries(self, deliveryType: .food)  \/\/ Delivery
 ## Acknowledgements
 
 Built at **[Little Limited](https://little.africa)**
-
-Special thanks to: 
-
-- [@GarbuJohnG](https://github.com/GarbuJohnG) for his valuable help on the SDK

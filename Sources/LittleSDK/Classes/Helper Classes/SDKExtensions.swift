@@ -667,6 +667,12 @@ extension Date {
     
 }
 
+extension String {
+    var urlEncoded: String {
+        return self.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+    }
+}
+
 public func typingStatus(text: String) {
    let message = text
     let color = SDKConstants.littleSDKThemeColor
@@ -729,6 +735,7 @@ func printVal(object: Any) {
     #if DEBUG
 //        print("______________________________________________________________________\n")
 //        print("Little:", object)
+        print("Little:", object)
 //        print("\n______________________________________________________________________")
     #endif
 }

@@ -16,7 +16,6 @@ class SDKConstants {
     
     var live = "lwCGahusOkXBoFnNKoWjOC58LxqE0rYr6QCBcag234r0pkyhIFs/8YyL3zZcOT1C"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
-    var APIKey = "D6A307B0-9F1B-4ED2-BD83-410217CCFB01"
     var mapsKey = "H+9x5dNgB0X7+tCZaCwKe9SbL0rG7i55NxDxQ+LReuubZ+nLUyINNG70bIAgqkME"
     var placesKey = "qn89yrVStFuJG6EEqugAV92lsc77lTXy1DeXZWhu3/4SZH6ASWxUB4zepBJ9TMrW"
     var littleMapKey = "/iPGWhGGttczgqTb/ZAXW8KcCKzPlbe259mm7o2VnHAuzftRz+s6VHkH5LguC1WK"

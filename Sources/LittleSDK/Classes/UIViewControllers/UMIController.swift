@@ -173,7 +173,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let version = getAppVersion()
         
-        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\""
+        let str = ",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"\(am.getMyCodeBase() ?? "")\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(getPhoneType())\",\"SOFTWAREVERSION\":\"\(version)\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"CarrierName\":\"\(getCarrierName() ?? "")\",\"UserAdditionalData\":\(am.getSDKAdditionalData())"
         
         return str
     }
@@ -186,7 +186,7 @@ public class UMIController: UIViewController, UITableViewDelegate, UITableViewDa
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadNearbyMerchants),name:NSNotification.Name(rawValue: "GETNEARBYMERCHANTSJSONData"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"GETNEARBYMERCHANTS\"\(commonCallParams()),\"GetMerchantName\":{\"Latitude\":\"\(SDKUtils.extractStringCoordinateLatitude(string: am.getCurrentLocation()))\",\"Longitude\":\"\(SDKUtils.extractStringCoordinateLongitude(string: am.getCurrentLocation()))\"}}"
+        let dataToSend = "{\"FormID\":\"GETNEARBYMERCHANTS\"\(commonCallParams()),\"GetMerchantName\":{\"Latitude\":\"\(SDKUtils.extractStringCoordinateLatitude(string: am.getCurrentLocation()))\",\"Longitude\":\"\(SDKUtils.extractStringCoordinateLongitude(string: am.getCurrentLocation()))\"},\"UserAdditionalData\":\(am.getSDKAdditionalData())}"
         
         
         printVal(object: dataToSend)

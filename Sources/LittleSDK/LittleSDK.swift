@@ -48,12 +48,15 @@ public class LittleFramework {
         paymentVC = vc
     }
     
-    public func initializeSDKParameters(accounts: [[String: String]], mobileNumber: String, packageName: String, isUAT: Bool) {
+    public func initializeSDKParameters(accounts: [[String: String]], additionalData: [String: String], mobileNumber: String, packageName: String, APIKey: String, isUAT: Bool) {
         self.isUAT = isUAT
         guard let accountsArr = try? SDKUtils.dictionaryArrayToJson(from: accounts) else { return }
+        guard let addionalDataStr = try? SDKUtils.dictionaryToJson(from: additionalData) else { return }
         SDKAllMethods().saveSDKMobileNumber(data: mobileNumber)
         SDKAllMethods().saveSDKPackageName(data: packageName)
         SDKAllMethods().saveSDKAccounts(data: accountsArr)
+        SDKAllMethods().saveSDKAdditionalData(data: addionalDataStr)
+        SDKAllMethods().saveSDKAPIKey(data: APIKey)
     }
     
     public func initializeToRides(_ vc: UIViewController) {

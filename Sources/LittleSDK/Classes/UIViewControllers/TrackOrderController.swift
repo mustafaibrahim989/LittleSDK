@@ -269,11 +269,12 @@ public class TrackOrderController: UIViewController {
     }
     
     func drawPath() {
-       if am.getCountry()?.uppercased() == "KENYA" {
-            goLocal()
-       } else {
-            goGoogle()
-        }
+        goLocal()
+//        if am.getCountry()?.uppercased() == "KENYA" {
+//            goLocal()
+//        } else {
+//            goGoogle()
+//        }
     }
     
     func goGoogle() {
@@ -353,12 +354,13 @@ public class TrackOrderController: UIViewController {
                     if destinationCoordinate != nil {
                         let origin = "\(originCoordinate.latitude),\(originCoordinate.longitude)"
                         let destination = "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"
-                        let directionURL = "https://maps.little.bz/api/v2/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
+                        let directionURL = "https://maps.little.bz/api/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
+
+                        guard let url = URL(string: directionURL) else { return }
         
-                        let url = URL(string: directionURL)
-                        URLSession.shared.dataTask(with:url!) { (data, response, error) in
+                        URLSession.shared.dataTask(with: url) { (data, response, error) in
                             if error != nil {
-                                self.goGoogle()
+//                                self.goGoogle()
                                 // printVal(object: error as Any)
                             } else {
                                 do {
@@ -378,7 +380,7 @@ public class TrackOrderController: UIViewController {
                                     
                                     // printVal(object: parsedData.description)
                                 } catch _ as NSError {
-                                    self.goGoogle()
+//                                    self.goGoogle()
                                     // printVal(object: error)
                                 }
                             }
