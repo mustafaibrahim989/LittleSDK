@@ -274,11 +274,12 @@ public class SearchLocationViewController: UIViewController {
     }
     
     @objc func filterContentForSearchText() {
-        if isOSM {
-            callLittleServers()
-        } else {
-            callGoogleServers()
-        }
+        callLittleServers()
+//        if isOSM {
+//            callLittleServers()
+//        } else {
+//            callGoogleServers()
+//        }
     }
     
     @objc func handleDismiss() {

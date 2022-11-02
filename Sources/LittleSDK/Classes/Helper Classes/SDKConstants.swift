@@ -31,7 +31,7 @@ class SDKConstants {
         return uat
     }
     
-    static let testDriverEmail = "kk123456@gmail.com"
+    static let testDriverEmail = "og12@gmail.com"
     
     // Colors
     

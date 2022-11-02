@@ -25,6 +25,7 @@ let accounts = \[\[
 \]\] \/\/ Array of Dictionary\<String, String\>
 
 \/\/ Additional data to be passed on callbacks
+
 let addionalData = \[String: String\]()
 
 littleFramework.initializeSDKParameters(accounts: accounts, additionalData: addionalData, mobileNumber: "254700408386", packageName: "com.craftsilicon.littlesdk", APIKey: "", isUAT: true)
