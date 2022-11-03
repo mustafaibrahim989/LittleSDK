@@ -11,7 +11,7 @@ LittleSDK Author & Maintainer: [@littleappdevs](https://github.com/littleappdevs
 ### Swift Package Manager
 
 1. Click File &rarr; Swift Packages &rarr; Add Package Dependency
-2. Type `https://github.com/boazjameslittle/LittleSDK`
+2. Type `https://github.com/boazjameslittle/LittleSDK-Vooma`
 
 ## Usage
 
