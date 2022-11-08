@@ -221,33 +221,30 @@ public class SearchLocationViewController: UIViewController {
     }
     
     func locationTapped(index: Int) {
-        if isOSM {
-            let littleLocation = littlePredictionsArr[index]
-            var placeDets = ""
-            if littleLocation.street != nil && littleLocation.street != "" {
-                placeDets = littleLocation.street!
-            } else {
-                placeDets = "\(littleLocation.city ?? ""), \(littleLocation.state ?? "")"
-            }
-            if littleLocation.latlng != nil {
-                let lat = littleLocation.latlng?.components(separatedBy: ",")[safe: 0] ?? "0"
-                let long = littleLocation.latlng?.components(separatedBy: ",")[safe: 1] ?? "0"
-                let unique_id = NSUUID().uuidString
-                selectedLocation = LocationSetSDK(id: unique_id, name: littleLocation.predictionDescription ?? "", subname: placeDets, latitude: lat, longitude: long, phonenumber: "", instructions: "")
-                self.dismiss(animated: true) {
-                    self.viewClosed()
-                    self.proceedAction?()
-                }
-            } else {
-                let id = littleLocation.id
-                if id != nil {
-                    getPlaceDetails(placename: littleLocation.predictionDescription ?? placeDets, placeID: "\(id!)")
-                }
+        let littleLocation = littlePredictionsArr[index]
+        var placeDets = ""
+        if littleLocation.street != nil && littleLocation.street != "" {
+            placeDets = littleLocation.street!
+        } else {
+            placeDets = "\(littleLocation.city ?? ""), \(littleLocation.state ?? "")"
+        }
+        
+        let latlng = littleLocation.latlng?.trimmingCharacters(in: .whitespaces) ?? ""
+        let latlngComponents = latlng.components(separatedBy: ",")
+        if latlngComponents.count > 1 {
+            let lat = littleLocation.latlng?.components(separatedBy: ",")[safe: 0] ?? "0"
+            let long = littleLocation.latlng?.components(separatedBy: ",")[safe: 1] ?? "0"
+            let unique_id = NSUUID().uuidString
+            selectedLocation = LocationSetSDK(id: unique_id, name: littleLocation.predictionDescription ?? "", subname: placeDets, latitude: lat, longitude: long, phonenumber: "", instructions: "")
+            self.dismiss(animated: true) {
+                self.viewClosed()
+                self.proceedAction?()
             }
         } else {
-            let selectedLocation = locationPredictionsArr[index]
-            let id = selectedLocation.placeID ?? ""
-            getPlaceDetails(placename: selectedLocation.structuredFormatting?.mainText ?? "" ,placeID: "\(id)")
+            let id = littleLocation.id
+            if id != nil {
+                getPlaceDetails(placename: littleLocation.predictionDescription ?? placeDets, placeID: "\(id!)")
+            }
         }
         
     }
