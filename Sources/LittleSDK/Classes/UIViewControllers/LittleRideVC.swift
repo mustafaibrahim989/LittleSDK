@@ -4417,7 +4417,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
             
             if self.isUAT {
-                preferredDriver = SDKConstants.testDriverEmail
+                // Preferred Driver
+//                preferredDriver = SDKConstants.testDriverEmail
             }
             
             if (CarTypes[selectedCarIndex].lowercased().contains("parcel") || CarTypes[selectedCarIndex].lowercased().contains("goods")) {
@@ -4472,8 +4473,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             
             NotificationCenter.default.addObserver(self, selector: #selector(loadMakeRequest(_:)),name:NSNotification.Name(rawValue: "MAKEJSONREQUESTJSONData"), object: nil)
             
-            let dataToSend = "{\"FormID\":\"MAKEJSONREQUEST\"\(commonCallParams()),\"TripDetails\":{\"VehicleType\":\"\(carType)\",\"TripType\":\"TRIP\",\"PaymentMode\":\"\(pmode)\",\"WalletUniqueID\":\"\(pmodeID)\",\"CorporateID\":\"\(CC)\",\"CorporateRef\":\"\(reasonTest)\",\"CorporateTripID\":\"\(CorporateTripID)\",\"SkipDrivers\":\"\(forwardSkipDrivers)\",\"FavouriteDriver\":\"\(preferredDriver)\",\"PromoCode\":\"\(promoText)\",\"PromoType\":\"\(promoType)\",\"PickupAddress\":\"\(pickupName)\",\"PickupLL\":\"\(originLL)\",\"DropOffAddress\":\"\(dropOffName)\",\"DropOffLL\":\"\(destinationLL)\",\"DropOffDetails\":[\(dropOffDetails)]\(parcelString)\(flySaveDetails)},\"UserAdditionalData\":\(am.getSDKAdditionalData())}"
-            
+            let dataToSend = "{\"FormID\":\"MAKEJSONREQUEST\"\(commonCallParams()),\"TripDetails\":{\"VehicleType\":\"\(carType)\",\"Notes\":\(am.getSDKAdditionalData()),\"TripType\":\"TRIP\",\"PaymentMode\":\"\(pmode)\",\"WalletUniqueID\":\"\(pmodeID)\",\"CorporateID\":\"\(CC)\",\"CorporateRef\":\"\(reasonTest)\",\"CorporateTripID\":\"\(CorporateTripID)\",\"SkipDrivers\":\"\(forwardSkipDrivers)\",\"FavouriteDriver\":\"\(preferredDriver)\",\"PromoCode\":\"\(promoText)\",\"PromoType\":\"\(promoType)\",\"PickupAddress\":\"\(pickupName)\",\"PickupLL\":\"\(originLL)\",\"DropOffAddress\":\"\(dropOffName)\",\"DropOffLL\":\"\(destinationLL)\",\"DropOffDetails\":[\(dropOffDetails)]\(parcelString)\(flySaveDetails)},\"UserAdditionalData\":\(am.getSDKAdditionalData())}"
+                        
             hc.makeServerCall(sb: dataToSend, method: "MAKEJSONREQUESTJSONData", switchnum: 0)
             
         } else {

@@ -26,7 +26,7 @@ let accounts = \[\[
 
 \/\/ Additional data to be passed on callbacks
 
-let addionalData = \[String: String\]()
+let addionalData = "String"
 
 littleFramework.initializeSDKParameters(accounts: accounts, additionalData: addionalData, mobileNumber: "254700408386", packageName: "com.craftsilicon.littlesdk", APIKey: "", isUAT: true)
 

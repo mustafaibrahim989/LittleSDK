@@ -1276,12 +1276,12 @@ class SDKAllMethods {
     }
     
     func getSDKAdditionalData() -> String{
-        var check = wrapper.string(forKey: "SDKAddionalData")
-        return check ?? ""
+        let check = wrapper.string(forKey: "SDKAddionalData")
+        return check?.escapedString() ?? ""
     }
     
     func getSDKAPIKey() -> String{
-        var check = wrapper.string(forKey: "SDKAPIKey")
+        let check = wrapper.string(forKey: "SDKAPIKey")
         return check ?? ""
     }
     
