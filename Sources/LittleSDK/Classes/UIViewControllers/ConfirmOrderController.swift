@@ -665,7 +665,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             } else {
                 NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
                 
-                let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference] as [String : Any]
+                let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
             }
         }
