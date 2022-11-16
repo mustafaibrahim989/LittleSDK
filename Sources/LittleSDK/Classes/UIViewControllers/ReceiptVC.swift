@@ -161,7 +161,7 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         navigator.pushViewController(viewController, animated: true)
                     }
                 }
-                self.showAlerts(title: "", message: "Payment Confirmed.")
+//                self.showAlerts(title: "", message: "Payment Confirmed.")
             } else {
                 self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
             }
