@@ -151,8 +151,9 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         let success = notification.userInfo?["success"] as? Bool
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
-        if success != nil {
-            if success! {
+        
+        if let success = success {
+            if success {
                 if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
                     if let navigator = self.navigationController {
                         viewController.popToRestorationID = self.popToRestorationID
@@ -183,13 +184,13 @@ public class ReceiptVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let userInfo = ["amount":Double(am.getLIVEFARE() ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
         
-        if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
+        /*if let viewController = UIStoryboard(name: "Trip", bundle: self.sdkBundle!).instantiateViewController(withIdentifier: "TripRatingVC") as? TripRatingVC {
             if let navigator = self.navigationController {
                 viewController.popToRestorationID = self.popToRestorationID
                 viewController.navShown = self.navShown
                 navigator.pushViewController(viewController, animated: true)
             }
-        }
+        }*/
         
     }
     

@@ -542,8 +542,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         let success = notification.userInfo?["success"] as? Bool
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
-        if success != nil {
-            if success! {
+        if let success = success {
+            if success {
                 self.placeFoodOrder()
             } else {
                 self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
