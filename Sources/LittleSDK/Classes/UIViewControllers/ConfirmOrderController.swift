@@ -291,13 +291,14 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 let orderResponse = try JSONDecoder().decode(OrderResponse.self, from: data!)
                 
                 if orderResponse[0].status == "000" {
+                    
                     DispatchQueue.main.async(execute: {
                         
                         let restaurantName = self.selectedRestaurant?.restaurantName ?? ""
                         
                         self.view.removeAnimation()
                         
-                        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: self.sdkBundle!)
+                        /*let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: self.sdkBundle!)
                         view.loadPopup(title: "", message: "\n\(orderResponse[0].message ?? "Your order has been successfully placed.")\n", image: "", action: "")
                         view.proceedAction = {
                             SwiftMessages.hide()
@@ -313,9 +314,19 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                         config.duration = .forever
                         config.presentationStyle = .bottom
                         config.dimMode = .gray(interactive: false)
-                        SwiftMessages.show(config: config, view: view)
+                        SwiftMessages.show(config: config, view: view)*/
                         
                     })
+                    
+                    NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
+                    
+                    let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
+                    
+                    /*DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        let userInfo = ["success": true] as [String : Any]
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
+                    }*/
                 } else if orderResponse[0].status == "091" {
                     DispatchQueue.main.async(execute: {
                         self.showAlerts(title: "", message: orderResponse[0].message ?? "Error occured creating your order. Kindly retry.")
@@ -544,7 +555,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
         if let success = success {
             if success {
-                self.placeFoodOrder()
+//                self.placeFoodOrder()
+                self.am.saveFromConfirmOrder(data: true)
+                let desiredViewController = self.navigationController?.viewControllers.filter { $0 is DeliveriesController }.first
+                if desiredViewController != nil {
+                    self.navigationController?.popToViewController(desiredViewController!, animated: true)
+                }
             } else {
                 self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
             }
@@ -657,16 +673,10 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 if txtExtraDetails.text == "" {
                     showAlerts(title: "", message: "Kindly ensure you have filled in the '\(merchantMessage)' field.")
                 } else {
-                    NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
-                    
-                    let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
+                    self.placeFoodOrder()
                 }
             } else {
-                NotificationCenter.default.addObserver(self, selector: #selector(paymentResultReceived(_:)),name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil)
-                
-                let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
+                self.placeFoodOrder()
             }
         }
     }
