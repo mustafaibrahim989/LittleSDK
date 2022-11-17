@@ -409,7 +409,7 @@ class MyRidesViewController: UIViewController {
     }
     
     @objc func trackTripPressed (_ sender: UIButton) {
-        let index = sender.tag
+        
         
     }
     
@@ -873,6 +873,30 @@ extension MyRidesViewController: UITableViewDelegate, UITableViewDataSource, UIS
                 cell.alpha = 1
             }, completion: nil)
         }
+    }
+    
+}
+
+extension MyRidesViewController: MFMailComposeViewControllerDelegate {
+    public func mailComposeController(_ controller:MFMailComposeViewController, didFinishWith result:MFMailComposeResult, error:Error?) {
+        switch result {
+        case .cancelled:
+            // printVal(object: "Mail cancelled")
+            showAlerts(title: "", message: "Email sending was cancelled.".localized)
+        case .saved:
+            // printVal(object: "Mail saved")
+            showAlerts(title: "", message: "Email saved.".localized)
+        case .sent:
+            // printVal(object: "Mail sent")
+            showAlerts(title: "", message: "Email sent.".localized)
+        case .failed:
+            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
+            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
+        default:
+            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
+            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
+        }
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

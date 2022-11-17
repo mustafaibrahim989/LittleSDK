@@ -556,7 +556,7 @@ extension UIViewController {
         }
     }
     
-    @objc func proceedEmail(email: String) {
+    @objc func proceedEmail(email: String, delegate: MFMailComposeViewControllerDelegate) {
         
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: Bundle.module)
         view.loadPopup(title: "", message: "Proceed to write an email to Little Customer Care?".localized, image: "", action: "")
@@ -567,7 +567,7 @@ extension UIViewController {
             let recipients = [email]
             
             let mc: MFMailComposeViewController = MFMailComposeViewController()
-            mc.mailComposeDelegate = self
+            mc.mailComposeDelegate = delegate
             mc.setSubject(subject)
             mc.setMessageBody(body, isHTML: false)
             mc.setToRecipients(recipients)
@@ -834,30 +834,6 @@ func printVal(object: Any) {
 
 extension UIColor {
     static let littleElevatedViews = UIColor(named: "littleElevatedViews", in: Bundle.module, compatibleWith: nil)!
-}
-
-extension UIViewController: MFMailComposeViewControllerDelegate {
-    public func mailComposeController(_ controller:MFMailComposeViewController, didFinishWith result:MFMailComposeResult, error:Error?) {
-        switch result {
-        case .cancelled:
-            // printVal(object: "Mail cancelled")
-            showAlerts(title: "", message: "Email sending was cancelled.".localized)
-        case .saved:
-            // printVal(object: "Mail saved")
-            showAlerts(title: "", message: "Email saved.".localized)
-        case .sent:
-            // printVal(object: "Mail sent")
-            showAlerts(title: "", message: "Email sent.".localized)
-        case .failed:
-            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
-            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
-        default:
-            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
-            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
 }
 
 extension UIImage {
