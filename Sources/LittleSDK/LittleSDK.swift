@@ -17,7 +17,7 @@ public enum ToWhere {
 }
 
 public enum deliveryTypes: String {
-    case food = "FOOD"
+    case food = "ORDERFOOD"
     case supermarket = "SUPERMARKET"
     case groceries = "GROCERIES"
     case gas = "GAS"
