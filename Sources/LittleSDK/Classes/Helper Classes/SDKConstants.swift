@@ -34,6 +34,8 @@ class SDKConstants {
     static let testDriverEmail = "og12@gmail.com"
     
     // Colors
+    static let littleRed = UIColor(hex: "#D52029")
+    static let littleGreen = UIColor(hex: "#0D9848")
     
     // Equity
     static var littleSDKThemeColor = UIColor(hex: "#A32A29")

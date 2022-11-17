@@ -13,6 +13,7 @@ public enum ToWhere {
     case rides
     case umi
     case deliveries
+    case rideHistory
 }
 
 public enum deliveryTypes: String {
@@ -88,6 +89,18 @@ public class LittleFramework {
             viewController.isUAT = self.isUAT
             viewController.toWhere = .deliveries
             viewController.deliveryType = deliveryType
+            viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
+            viewController.popToRestorationID = vc
+            viewController.paymentVC = paymentVC
+            navigator.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    public func initializeToRideHistory(_ vc: UIViewController) {
+        let viewController = InitializeSDKVC()
+        if let navigator = vc.navigationController {
+            viewController.isUAT = self.isUAT
+            viewController.toWhere = .rideHistory
             viewController.navShown = !(vc.navigationController?.isNavigationBarHidden ?? true)
             viewController.popToRestorationID = vc
             viewController.paymentVC = paymentVC

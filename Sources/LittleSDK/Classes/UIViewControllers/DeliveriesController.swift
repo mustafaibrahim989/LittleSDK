@@ -146,7 +146,6 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         for controller in self.navigationController!.viewControllers as Array {
             if controller == popToRestorationID {
-                printVal(object: "ToView")
                 if self.navShown ?? false {
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
                 } else {

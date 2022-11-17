@@ -11,6 +11,7 @@ import SwiftMessages
 import CommonCrypto
 import CoreTelephony
 import NVActivityIndicatorView
+import MessageUI
 
 let am = SDKAllMethods()
 let cn = SDKConstants()
@@ -65,12 +66,12 @@ public extension UIDevice {
         let identifier = machineMirror.children.reduce("") { identifier, element in
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
-    }
-    
-    printVal(object: "Identifier: \(ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS")")
+        }
         
-    func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
-            #if os(iOS)
+        printVal(object: "Identifier: \(ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS")")
+        
+        func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
+#if os(iOS)
             switch identifier {
             case "iPod5,1":                                 return "iPod touch (5th generation)"
             case "iPod7,1":                                 return "iPod touch (6th generation)"
@@ -139,21 +140,21 @@ public extension UIDevice {
             case "i386", "x86_64":                          return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
             default:                                        return identifier
             }
-            #elseif os(tvOS)
+#elseif os(tvOS)
             switch identifier {
             case "AppleTV5,3": return "Apple TV 4"
             case "AppleTV6,2": return "Apple TV 4K"
             case "i386", "x86_64": return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "tvOS"))"
             default: return identifier
             }
-            #else
+#else
             return identifier
-            #endif
+#endif
         }
-
+        
         return mapToDevice(identifier: identifier)
     }()
-
+    
 }
 
 extension GMSMapView {
@@ -494,7 +495,7 @@ extension UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 40.0) {
             checkIfLoaded()
         }
-
+        
         loadBackGround.addSubview(activityView)
         
         loadBackGround.layer.zPosition = .greatestFiniteMagnitude
@@ -507,8 +508,85 @@ extension UIViewController {
         var arr = array
         let element = arr.remove(at: fromIndex)
         arr.insert(element, at: toIndex)
-
+        
         return arr
+    }
+    
+    func showGeneralErrorAlert() {
+        
+        self.view.endEditing(true)
+        
+        let color = SDKConstants.littleSDKThemeColor
+        
+        func alertConfig() -> SwiftMessages.Config {
+            var config = SwiftMessages.defaultConfig
+            config.dimMode = .gray(interactive: true)
+            config.duration = .seconds(seconds: 4)
+            config.presentationStyle = .center
+            return config
+        }
+        
+        let messageView = MessageView.viewFromNib(layout: .centeredView)
+        messageView.configureTheme(backgroundColor: color, foregroundColor: .white, iconImage: nil, iconText: nil)
+        messageView.configureContent(title: "", body: "\n\("Ooops, something went wrong.".localized)\n")
+        messageView.bodyLabel?.font = .systemFont(ofSize: 16)
+        if title == "" {
+            messageView.titleLabel?.isHidden = true
+        }
+        messageView.button?.isHidden = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSwiftAlert))
+        messageView.addGestureRecognizer(tap)
+        messageView.configureDropShadow()
+        messageView.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 50, right: 20)
+        SwiftMessages.show(config: alertConfig(), view: messageView)
+        
+    }
+    
+    @objc func proceedCall(phone: String) {
+        let number = phone
+        if number != "" {
+            guard let url = URL(string: "telprompt://\(number)") else {
+                return
+            }
+            UIApplication.shared.open(url, options: [:]) { didOpen in
+                didOpen ? printVal(object: "Success") : self.showAlerts(title: "", message: "Error opening call prompt to the number \(number)")
+            }
+        } else {
+            self.showAlerts(title: "", message: "Error opening call prompt. The number cannot be empty.")
+        }
+    }
+    
+    @objc func proceedEmail(email: String) {
+        
+        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: Bundle.module)
+        view.loadPopup(title: "", message: "Proceed to write an email to Little Customer Care?".localized, image: "", action: "")
+        view.proceedAction = {
+            SwiftMessages.hide()
+            let subject = "General Inquiry".localized
+            let body = ""
+            let recipients = [email]
+            
+            let mc: MFMailComposeViewController = MFMailComposeViewController()
+            mc.mailComposeDelegate = self
+            mc.setSubject(subject)
+            mc.setMessageBody(body, isHTML: false)
+            mc.setToRecipients(recipients)
+            
+            if MFMailComposeViewController.canSendMail() {
+                self.present(mc, animated: true, completion: nil)
+            }
+        }
+        view.cancelAction = {
+            SwiftMessages.hide()
+        }
+        view.btnProceed.setTitle("Write Email".localized, for: .normal)
+        view.configureDropShadow()
+        var config = SwiftMessages.defaultConfig
+        config.duration = .forever
+        config.presentationStyle = .center
+        config.dimMode = .gray(interactive: false)
+        SwiftMessages.show(config: config, view: view)
+        
     }
 }
 
@@ -534,7 +612,7 @@ public extension UIApplication {
 extension String {
     func cleanLocationNames() -> String {
         
-        let string = self.folding(options: .diacriticInsensitive, locale: .current) 
+        let string = self.folding(options: .diacriticInsensitive, locale: .current)
         let alphaNumericSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&,.- "
         let filteredCharacters = string.filter {
             return alphaNumericSet.contains(String($0))
@@ -689,7 +767,7 @@ extension String {
 }
 
 public func typingStatus(text: String) {
-   let message = text
+    let message = text
     let color = SDKConstants.littleSDKThemeColor
     func alertConfig() -> SwiftMessages.Config {
         var config = SwiftMessages.defaultConfig
@@ -747,9 +825,82 @@ func formatCurrency(_ str: String) -> String {
 }
 
 func printVal(object: Any) {
-    #if DEBUG
-//        print("______________________________________________________________________\n")
-//        print("Little:", object)
-//        print("\n______________________________________________________________________")
-    #endif
+#if DEBUG
+    //        print("______________________________________________________________________\n")
+    //        print("Little:", object)
+    //        print("\n______________________________________________________________________")
+#endif
+}
+
+extension UIColor {
+    static let littleElevatedViews = UIColor(named: "littleElevatedViews", in: Bundle.module, compatibleWith: nil)!
+}
+
+extension UIViewController: MFMailComposeViewControllerDelegate {
+    public func mailComposeController(_ controller:MFMailComposeViewController, didFinishWith result:MFMailComposeResult, error:Error?) {
+        switch result {
+        case .cancelled:
+            // printVal(object: "Mail cancelled")
+            showAlerts(title: "", message: "Email sending was cancelled.".localized)
+        case .saved:
+            // printVal(object: "Mail saved")
+            showAlerts(title: "", message: "Email saved.".localized)
+        case .sent:
+            // printVal(object: "Mail sent")
+            showAlerts(title: "", message: "Email sent.".localized)
+        case .failed:
+            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
+            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
+        default:
+            // printVal(object: "Mail sent failure: \(String(describing: error?.localizedDescription))")
+            showAlerts(title: "", message: "Email sending failure:".localized + " \(String(describing: error?.localizedDescription))")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+extension UIImage {
+    func renderResizedImage (_ newWidth: CGFloat) -> UIImage? {
+        let scale = newWidth / self.size.width
+        let newHeight = self.size.height * scale
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        defer { UIGraphicsEndImageContext() }
+        
+        self.draw(in: CGRect(origin: .zero, size: newSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
+        
+    }
+    
+    func rotate(radians: CGFloat) -> UIImage {
+        let rotatedSize = CGRect(origin: .zero, size: size)
+            .applying(CGAffineTransform(rotationAngle: CGFloat(radians)))
+            .integral.size
+        UIGraphicsBeginImageContext(rotatedSize)
+        if let context = UIGraphicsGetCurrentContext() {
+            let origin = CGPoint(x: rotatedSize.width / 2.0,
+                                 y: rotatedSize.height / 2.0)
+            context.translateBy(x: origin.x, y: origin.y)
+            context.rotate(by: radians)
+            draw(in: CGRect(x: -origin.y, y: -origin.x,
+                            width: size.width, height: size.height))
+            let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return rotatedImage ?? self
+        }
+        
+        return self
+    }
+    
+    func tinted(with color: UIColor) -> UIImage? {
+        defer { UIGraphicsEndImageContext() }
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        color.set()
+        self.withRenderingMode(.alwaysTemplate).draw(in: CGRect(origin: .zero, size: self.size))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
 }

@@ -211,6 +211,14 @@ public class InitializeSDKVC: UIViewController {
                                     navigator.pushViewController(viewController, animated: true)
                                 }
                             }
+                        case .rideHistory:
+                            if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "MyRidesViewController") as? MyRidesViewController {
+                                viewController.popToRestorationID = self.popToRestorationID
+                                viewController.navShown = self.navShown
+                                if let navigator = self.navigationController {
+                                    navigator.pushViewController(viewController, animated: true)
+                                }
+                            }
                         default:
                             self.backHome()
                         }

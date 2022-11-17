@@ -821,3 +821,110 @@ struct OrderResponseElement: Codable {
 }
 
 typealias OrderResponse = [OrderResponseElement]
+
+typealias TripHistoryResponse = [TripHistory]
+
+// MARK: - TripHistory
+struct TripHistory: Codable {
+    let status: String?
+    let trips: [TripItem]?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case trips = "Trips"
+    }
+}
+
+// MARK: - TripItem
+struct TripItem: Codable {
+    let createdOn: String?
+    let tripID: String?
+    let rideType: String?
+    let paymentAmount, rating: Double?
+    let riderMobileNumber: String?
+    let riderName: String?
+    let vehicleType: String?
+    let vehicleICON: String?
+    let pickupAddress: String?
+    let dropOffAddress: String?
+    let currency: String?
+    let number: String?
+    let driverDetails: [DriverDetail]?
+    let paymentMode: String?
+    let blocked: String?
+    let driverEmail: String?
+
+    enum CodingKeys: String, CodingKey {
+        case createdOn = "CreatedOn"
+        case tripID = "TripID"
+        case rideType = "RideType"
+        case paymentAmount = "PaymentAmount"
+        case rating = "Rating"
+        case riderMobileNumber = "RiderMobileNumber"
+        case riderName = "RiderName"
+        case vehicleType = "VehicleType"
+        case vehicleICON = "VehicleICON"
+        case pickupAddress = "PickupAddress"
+        case dropOffAddress = "DropOffAddress"
+        case currency = "Currency"
+        case number = "Number"
+        case driverDetails = "DriverDetails"
+        case paymentMode = "PaymentMode"
+        case blocked = "DriverBlocked"
+        case driverEmail = "DriverEmail"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.createdOn = try? container.decodeIfPresent(String.self, forKey: .createdOn)
+        self.tripID = try? container.decodeIfPresent(String.self, forKey: .tripID)
+        self.rideType = try? container.decodeIfPresent(String.self, forKey: .rideType)
+        self.riderMobileNumber = try? container.decodeIfPresent(String.self, forKey: .riderMobileNumber)
+        self.riderName = try? container.decodeIfPresent(String.self, forKey: .riderName)
+        self.vehicleType = try? container.decodeIfPresent(String.self, forKey: .vehicleType)
+        self.vehicleICON = try? container.decodeIfPresent(String.self, forKey: .vehicleICON)
+        self.pickupAddress = try? container.decodeIfPresent(String.self, forKey: .pickupAddress)
+        self.dropOffAddress = try? container.decodeIfPresent(String.self, forKey: .dropOffAddress)
+        self.currency = try? container.decodeIfPresent(String.self, forKey: .currency)
+        self.number = try? container.decodeIfPresent(String.self, forKey: .number)
+        self.driverDetails = try? container.decodeIfPresent([DriverDetail].self, forKey: .driverDetails)
+        self.paymentMode = try? container.decodeIfPresent(String.self, forKey: .paymentMode)
+        self.blocked = try? container.decodeIfPresent(String.self, forKey: .blocked)
+        self.driverEmail = try? container.decodeIfPresent(String.self, forKey: .driverEmail)
+        
+        if let paymentAmount = try? container.decodeIfPresent(Double.self, forKey: .paymentAmount) {
+            self.paymentAmount = paymentAmount
+        } else if let paymentAmount = try? container.decodeIfPresent(String.self, forKey: .paymentAmount) {
+            self.paymentAmount = Double(paymentAmount)
+        } else {
+            self.paymentAmount = nil
+        }
+        
+        if let rating = try? container.decodeIfPresent(Double.self, forKey: .rating) {
+            self.rating = rating
+        } else if let rating = try? container.decodeIfPresent(String.self, forKey: .rating) {
+            self.rating = Double(rating)
+        } else {
+            self.rating = nil
+        }
+    }
+}
+
+// MARK: - DriverDetail
+struct DriverDetail: Codable {
+    let model: String?
+    let profilePicture: String?
+    let fullName: String?
+    let isSuspended: Bool?
+    let mobileNumber: String?
+    let number: String?
+
+    enum CodingKeys: String, CodingKey {
+        case model = "Model"
+        case profilePicture = "ProfilePicture"
+        case fullName = "FullName"
+        case isSuspended = "IsSuspended"
+        case mobileNumber = "MobileNumber"
+        case number = "Number"
+    }
+}

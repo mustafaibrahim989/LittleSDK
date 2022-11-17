@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreLocation
+import UIKit
+import CoreTelephony
 
 class SDKUtils {
     static func dictionaryArrayToJson(from object: [[String: String]]) throws -> String {
@@ -14,7 +16,7 @@ class SDKUtils {
         return String(data: data, encoding: .utf8) ?? ""
     }
     
-    static func dictionaryToJson(from object: [String: String]) throws -> String {
+    static func dictionaryToJson(from object: [String: Any]) throws -> String {
         let data = try JSONSerialization.data(withJSONObject: object)
         return String(data: data, encoding: .utf8) ?? ""
     }
@@ -83,5 +85,70 @@ class SDKUtils {
         }
         
         return CLLocationCoordinate2D(latitude: 0, longitude: 0)
+    }
+    
+    static func commonJsonTags(formId: String) -> [String: Any] {
+        return [
+            "FormID": formId,
+            "SessionID": am.getMyUniqueID() ?? "",
+            "MobileNumber": am.getSDKMobileNumber() ?? "",
+            "IMEI": am.getIMEI() ?? "",
+            "CodeBase": am.getMyCodeBase() ?? "",
+            "PackageName": am.getSDKPackageName() ?? "",
+            "DeviceName": SDKUtils.getPhoneType(),
+            "SOFTWAREVERSION": SDKUtils.getAppVersion(),
+            "RiderLL": am.getCurrentLocation() ?? "0.0,0.0",
+            "LatLong": am.getCurrentLocation() ?? "0.0,0.0",
+            "TripID": "",
+            "City": am.getCity() ?? "",
+            "Country": am.getCountry() ?? "",
+            "RegisteredCountry": am.getCountry() ?? "",
+            "UniqueID": am.getMyUniqueID() ?? "",
+            "CarrierName": SDKUtils.getCarrierName() ?? "",
+            "UserAdditionalData": am.getSDKAdditionalData(),
+        ]
+    }
+
+    func commonJsonTagsString(formId: String) -> String {
+        let params = SDKUtils.commonJsonTags(formId: formId)
+        return (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+    }
+    
+    static func getAppVersion() -> String {
+        //First get the nsObject by defining as an optional anyObject
+        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
+        
+        //Then just cast the object as a String, but be careful, you may want to double check for nil
+        let version = nsObject as! String
+        
+        return version
+        
+    }
+    
+    static func getPhoneType() -> String {
+        let modelName = UIDevice.modelName
+        return modelName
+    }
+    
+    static func getCarrierName() -> String! {
+        // Setup the Network Info and create a CTCarrier object
+        let networkInfo = CTTelephonyNetworkInfo()
+        let carrier = networkInfo.subscriberCellularProvider
+        
+        // Get carrier name
+        var carrierName = carrier?.carrierName
+        
+        if carrierName == nil {
+            carrierName = ""
+        }
+        
+        return carrierName
+    }
+    
+    static func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let range = testStr.range(of: emailRegEx, options: .regularExpression)
+        let result = range != nil ? true : false
+        return result
     }
 }
