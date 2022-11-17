@@ -827,7 +827,7 @@ func formatCurrency(_ str: String) -> String {
 func printVal(object: Any) {
 #if DEBUG
     //        print("______________________________________________________________________\n")
-    //        print("Little:", object)
+            print("Little:", object)
     //        print("\n______________________________________________________________________")
 #endif
 }

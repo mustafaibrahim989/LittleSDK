@@ -273,7 +273,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         payLoad = "RestaurantDeliveryItems"
         walletID = "WalletID"
         
-        let dataToSend = "{\"FormID\":\"\(formID)\"\(commonCallParams()),\"\(payLoad)\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"\(walletID)\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(txtExtraDetails.text!)\",\"TherRerence\":\(am.getSDKAdditionalData()),\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+        let dataToSend = "{\"FormID\":\"\(formID)\"\(commonCallParams()),\"\(payLoad)\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"\(walletID)\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(txtExtraDetails.text!)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
         
         hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSFoodDelivery", switchnum: 0)
         
