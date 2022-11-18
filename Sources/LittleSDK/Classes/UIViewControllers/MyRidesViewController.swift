@@ -109,7 +109,7 @@ class MyRidesViewController: UIViewController {
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
         
         
-        self.navigationItem.leftBarButtonItem = backButton
+//        self.navigationItem.leftBarButtonItem = backButton
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         let originalImage = getImage(named: "search_black", bundle: sdkBundle)?.withRenderingMode(.alwaysTemplate)

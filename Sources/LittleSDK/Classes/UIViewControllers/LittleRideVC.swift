@@ -245,6 +245,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     @IBOutlet weak var btnPickupInformation: UIButton!
     @IBOutlet weak var btnBackStage: UIButton!
     @IBOutlet weak var menuBtn: UIButton!
+    @IBOutlet weak var historyBtnView: UIView!
+    @IBOutlet weak var historyBtn: UIButton!
     
     
     enum CardState {
@@ -453,9 +455,14 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         }
         
         self.profilePic.isHidden = true
+        
         self.menuBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
         self.menuBtn.addTarget(self, action: #selector(postBackHome), for: .touchUpInside)
         self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle!), for: UIControl.State())
+        
+        self.historyBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
+        self.historyBtn.addTarget(self, action: #selector(navigateToRideHistory), for: .touchUpInside)
+        self.historyBtn.setImage(getImage(named: "no_history", bundle: sdkBundle!)?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
         
         
         approxDestinationTimeView.isHidden = true
@@ -683,6 +690,18 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         if !isPopped {
             printVal(object: "ToRoot")
             self.navigationController?.popToRootViewController(animated: true)
+        }
+        
+    }
+    
+    
+    @objc private func navigateToRideHistory() {
+        if let viewController = UIStoryboard(name: "Trip", bundle: sdkBundle).instantiateViewController(withIdentifier: "MyRidesViewController") as? MyRidesViewController {
+            viewController.popToRestorationID = self.popToRestorationID
+            viewController.navShown = self.navShown
+            if let navigator = self.navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
         }
         
     }
@@ -1524,6 +1543,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
             
             menuBtn.isHidden = true
+            historyBtnView.isHidden = true
             
             stage = "FareEstimate"
             
@@ -3052,6 +3072,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 nearDriverMarker.removeAll()
                 
                 menuBtn.isHidden = false
+                historyBtnView.isHidden = false
                 
                 cardViewController.confirmRequestPromo.isHidden = true
                 cardViewController.confirmRequestPayments.isHidden = true
@@ -4015,6 +4036,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                             self.informationTopView.alpha = 1.0
                         }
                         self.menuBtn.isHidden = true
+                        self.historyBtnView.isHidden = true
                         self.stage = "FareEstimate"
                         self.cardViewController.carTypeTableView.isHidden = true
                         self.cardViewController.carTypeView.isHidden = false
@@ -4206,6 +4228,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                         }
                         
                         self.menuBtn.isHidden = true
+                        self.historyBtnView.isHidden = true
                         
                         self.stage = "FareEstimate"
                         
@@ -4270,6 +4293,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
             }
             
             menuBtn.isHidden = true
+            historyBtnView.isHidden = true
             
             stage = "FareEstimate"
             

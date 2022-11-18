@@ -96,7 +96,7 @@ public class LittleFramework {
         }
     }
     
-    public func initializeToRideHistory(_ vc: UIViewController) {
+    /*public func initializeToRideHistory(_ vc: UIViewController) {
         let viewController = InitializeSDKVC()
         if let navigator = vc.navigationController {
             viewController.isUAT = self.isUAT
@@ -106,7 +106,7 @@ public class LittleFramework {
             viewController.paymentVC = paymentVC
             navigator.pushViewController(viewController, animated: true)
         }
-    }
+    }*/
         
 }
 

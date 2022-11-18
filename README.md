@@ -40,10 +40,6 @@ littleFramework.initializeSDKMapKeys(googleMapsKey: Constants.MAPS_KEY, googlePl
 
 littleFramework.initializeToRides(UIViewController)
 
-### Navigate to ride history
-
-littleFramework.initializeToRideHistory(UIViewController)
-
 ### Navigate to delivery
 littleFramework.initializeToDeliveries(self, deliveryType: .food)  \/\/ Delivery Types - food, supermarket, groceries, drinks, medicine or cakes
 
