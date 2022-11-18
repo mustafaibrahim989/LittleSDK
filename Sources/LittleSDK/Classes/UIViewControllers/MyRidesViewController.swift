@@ -332,15 +332,41 @@ class MyRidesViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
-        let datatosend:String="FORMID|RATE|DRIVEREMAIL|\(am.getDRIVEREMAIL()!)|DRIVERMOBILENUMBER|\(am.getDRIVERMOBILE()!)|COMMENT|\(message)|FEEDBACKID||WRONGCOMMENTS||RATING|\(rating)|TRIPID|\(trips[selectedTripIndex].tripID ?? "")|"
+        var params = SDKUtils.commonJsonTags(formId: "RATE")
+        params["RateAgent"] = [
+            "TripID": trips[selectedTripIndex].tripID ?? "",
+            "Rating": rating,
+            "Comments": message
+        ]
+        
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
                 
-        hc.makeServerCall(sb: datatosend, method: "RATE", switchnum: 0)
+        hc.makeServerCall(sb: dataToSend, method: "RATE", switchnum: 0)
     }
     
     @objc func loadRate(_ notification: NSNotification) {
         self.view.removeAnimation()
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "RATE"), object: nil)
-        showAlerts(title: "", message: "Rating successfully done.".localized)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponse.self, from: data)
+                if let details = response.first {
+                    if details.status == "000" {
+                        self.showAlerts(title: "", message: details.message ?? "Rating successfully done.".localized)
+                    } else {
+                        self.showAlerts(title: "", message: details.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                    }
+                    
+                } else {
+                    showGeneralErrorAlert()
+                }
+                
+            } catch (let error) {
+                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
+        }
     }
     
     func cancelRide(index: Int) {
@@ -468,7 +494,7 @@ class MyRidesViewController: UIViewController {
             self.emailClientTapped(index: index)
         })
         btnInvoice.setValue(normalColor, forKey: "titleTextColor")
-        options.addAction(btnInvoice)
+//        options.addAction(btnInvoice)
         let btnCallDriver = UIAlertAction(title: String(format: "Call %1$@".localized, trips[index].driverDetails?.first?.fullName?.capitalized ?? ""), style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.callDriverTapped(index: index)
@@ -480,7 +506,7 @@ class MyRidesViewController: UIViewController {
             self.blockDriverTapped(index: index)
         })
         btnBlockDriver.setValue(blockcolor, forKey: "titleTextColor")
-        options.addAction(btnBlockDriver)
+//        options.addAction(btnBlockDriver)
         let btnReport = UIAlertAction(title: "Report a problem".localized, style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.reportAProblemTapped(index: index)

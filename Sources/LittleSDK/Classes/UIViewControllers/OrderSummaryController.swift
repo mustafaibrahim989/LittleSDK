@@ -255,49 +255,44 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     }
     
     func submitMerchantRate(message: String, rating: String) {
-        
         self.view.createLoadingNormal()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(loadMerchantRate),name:NSNotification.Name(rawValue: "MERCHANTRATINGFoodDelivery"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMerchantRate),name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"MERCHANTRATING\"\(commonCallParams()),\"TrxRating\":{\"TrxReference\":\"\(serviceTripID ?? "")\",\"Name\":\"\(rateMerchant!)\",\"MobileNumber\":\"\(rateMobile!)\",\"Rating\":\"\(rating)\",\"Feedback\":\"\(message)\",\"Comments\":\"\(message)\"}}"
+        var params = SDKUtils.commonJsonTags(formId: "RATE")
+        params["RateAgent"] = [
+            "TripID": serviceTripID ?? "",
+            "Rating": rating,
+            "Comments": message
+        ]
         
-        printVal(object: dataToSend)
-        
-        hc.makeServerCall(sb: dataToSend, method: "MERCHANTRATINGFoodDelivery", switchnum: 0)
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        hc.makeServerCall(sb: dataToSend, method: "RATE", switchnum: 0)
     }
     
     @objc func loadMerchantRate(_ notification: Notification) {
-        
         self.view.removeAnimation()
-        let data = notification.userInfo?["data"] as? Data
-        NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "MERCHANTRATINGFoodDelivery"), object: nil)
-        if data != nil {
+        
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "RATE"), object: nil)
+        
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
             do {
-                
-                let response = try JSONDecoder().decode(DefaultMessages.self, from: data!)
-                
-                if response[safe: 0]?.status == "000" {
-                    
-                    let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-                    view.loadPopup(title: "", message: "\n\(response[safe: 0]?.message ?? "")\n", image: "", action: "")
-                    view.proceedAction = {
-                       SwiftMessages.hide()
+                let response = try JSONDecoder().decode(CommonResponse.self, from: data)
+                if let details = response.first {
+                    if details.status == "000" {
+                        self.showAlerts(title: "", message: "\nMerchant rated successfully.\n")
+                    } else {
+                        self.showAlerts(title: "", message: details.message ??  "\n\("Ooops, something went wrong.".localized)\n")
                     }
-                    view.btnDismiss.isHidden = true
-                    view.configureDropShadow()
-                    var config = SwiftMessages.defaultConfig
-                    config.duration = .forever
-                    config.presentationStyle = .bottom
-                    config.dimMode = .gray(interactive: false)
-                    SwiftMessages.show(config: config, view: view)
                     
                 } else {
-                    showAlerts(title: "", message: response[safe: 0]?.message ?? "")
+                    showGeneralErrorAlert()
                 }
                 
-            } catch {
-                showAlerts(title: "", message: "Error rating. Record not saved.")
+            } catch (let error) {
+                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
             }
         }
         
@@ -309,30 +304,42 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
-        let datatosend: String = "FORMID|RATE|DRIVEREMAIL|\(rateEmail ?? "")|DRIVERMOBILENUMBER|\(rateMobile ?? "")|COMMENT|\(message)|RATING|\(rating)|TRIPID|\(serviceTripID ?? "")|"
+        var params = SDKUtils.commonJsonTags(formId: "RATE")
+        params["RateAgent"] = [
+            "TripID": serviceTripID ?? "",
+            "Rating": rating,
+            "Comments": message
+        ]
         
-        // printVal(object: datatosend)
-        
-        hc.makeServerCall(sb: datatosend, method: "RATE", switchnum: 0)
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+                
+        hc.makeServerCall(sb: dataToSend, method: "RATE", switchnum: 0)
     }
     
     @objc func loadRate(_ notification: NSNotification) {
-        let data = notification.userInfo?["Message"] as? String
         self.view.removeAnimation()
+        
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
-        let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\n\(data ?? "Your delivery guy has been rated successfully.")\n", image: "", action: "")
-        view.proceedAction = {
-           SwiftMessages.hide()
+        if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
+            do {
+                let response = try JSONDecoder().decode(CommonResponse.self, from: data)
+                if let details = response.first {
+                    if details.status == "000" {
+                        self.showAlerts(title: "", message: details.message ?? "\nYour delivery guy has been rated successfully.\n")
+                    } else {
+                        self.showAlerts(title: "", message: details.message ??  "\n\("Ooops, something went wrong.".localized)\n")
+                    }
+                    
+                } else {
+                    showGeneralErrorAlert()
+                }
+                
+            } catch (let error) {
+                showGeneralErrorAlert()
+                printVal(object: "error: \(error.localizedDescription)")
+            }
         }
-        view.btnDismiss.isHidden = true
-        view.configureDropShadow()
-        var config = SwiftMessages.defaultConfig
-        config.duration = .forever
-        config.presentationStyle = .bottom
-        config.dimMode = .gray(interactive: false)
-        SwiftMessages.show(config: config, view: view)
     }
     
     // MARK: - Functions & IBActions

@@ -928,3 +928,16 @@ struct DriverDetail: Codable {
         case number = "Number"
     }
 }
+
+typealias CommonResponse = [CommonResponseData]
+
+// MARK: - CommonResponseData
+struct CommonResponseData: Codable {
+    let status: String
+    let message: String?
+
+    enum CodingKeys: String, CodingKey {
+        case message = "Message"
+        case status = "Status"
+    }
+}
