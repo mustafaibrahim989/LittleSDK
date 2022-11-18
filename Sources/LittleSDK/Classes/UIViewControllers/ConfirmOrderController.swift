@@ -74,6 +74,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblExtra: UILabel!
     
+    private var orderSuccessMessage = ""
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -292,7 +294,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             do {
                 let orderResponse = try JSONDecoder().decode(OrderResponse.self, from: data!)
                 
-                if orderResponse[0].status == "000" {
+                if orderResponse.first?.status == "000" {
+                    self.orderSuccessMessage = orderResponse.first?.message ?? ""
                     
                     DispatchQueue.main.async(execute: {
                         
@@ -558,6 +561,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if let success = success {
             if success {
 //                self.placeFoodOrder()
+                self.showAlerts(title: "", message: orderSuccessMessage)
                 self.am.saveFromConfirmOrder(data: true)
                 let desiredViewController = self.navigationController?.viewControllers.filter { $0 is DeliveriesController }.first
                 if desiredViewController != nil {
