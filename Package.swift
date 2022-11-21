@@ -26,13 +26,15 @@ let package = Package(
         .package(name: "Alamofire", url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
         .package(name: "SDWebImage", url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.0.0"),
         .package(name: "IQKeyboardManagerSwift", url: "https://github.com/hackiftekhar/IQKeyboardManager", from: "6.0.5"),
+        .package(name: "ESPullToRefresh", url: "https://github.com/eggswift/pull-to-refresh", from: "2.9.3"),
+        .package(name: "PanModal", url: "https://github.com/slackhq/PanModal.git", from: "1.2.6"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift"],
+            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
             path: "Sources/LittleSDK",
             resources: [
                 .process("Assets/sparkle.wav"),

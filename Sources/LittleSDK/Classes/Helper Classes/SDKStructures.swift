@@ -941,3 +941,381 @@ struct CommonResponseData: Codable {
         case status = "Status"
     }
 }
+
+// MARK: - MovieTheatre
+struct MovieTheatre: Codable {
+    let movieProviderID, name: String?
+    let logo: String?
+    let restaurantID: String?
+    let locationName: String?
+    let latitude, longitude: Double?
+    let rating: Double?
+    let distance: Double?
+    let rideCost: Double?
+    let mobileNumber: String?
+    let wallet: [Balance]?
+
+    enum CodingKeys: String, CodingKey {
+        case movieProviderID = "MovieProviderID"
+        case name = "Name"
+        case logo = "Logo"
+        case restaurantID = "RestaurantID"
+        case locationName = "LocationName"
+        case latitude = "Latitude"
+        case longitude = "Longitude"
+        case rating = "Rating"
+        case distance = "Distance"
+        case rideCost = "RideCost"
+        case mobileNumber = "MobileNumber"
+        case wallet = "Wallet"
+    }
+}
+
+typealias MovieTheatres = [MovieTheatre]
+
+typealias AllMoviesRunning = [MovieRunning]
+
+// MARK: - NewMovieTheatre
+struct MovieRunning: Codable {
+    var status: String?
+    var wallet: [Balance]?
+    var moviesRunning: [Movie]?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case wallet = "Wallet"
+        case moviesRunning = "MoviesRunning"
+    }
+}
+
+// MARK: - MoviesRunning
+struct MoviesRunning: Codable {
+    var movieID, movieName, actors, director: String?
+    var censorRating: String?
+    var duration: Double?
+    var movieImageSmall, movieImageBig, movieTrailer: String?
+    var moviesRunningDescription: String?
+    var showTimes: [ShowTime]?
+
+    enum CodingKeys: String, CodingKey {
+        case movieID = "MovieID"
+        case movieName = "MovieName"
+        case actors = "Actors"
+        case director = "Director"
+        case censorRating = "CensorRating"
+        case duration = "Duration"
+        case movieImageSmall = "MovieImageSmall"
+        case movieImageBig = "MovieImageBig"
+        case movieTrailer = "MovieTrailer"
+        case moviesRunningDescription = "Description"
+        case showTimes = "ShowTimes"
+    }
+}
+
+// MARK: - Movie
+struct Movie: Codable {
+    let movieID, movieName, actors, director: String?
+    let censorRating: String?
+    let duration: Double?
+    let movieImageSmall, movieImageBig: String?
+    let movieTrailer: String?
+    let movieDescription: String?
+    var movieTimeings: [MovieTimeing]?
+    let showTimes: [ShowTime]?
+    let wallet: [Balance]?
+
+    enum CodingKeys: String, CodingKey {
+        case movieID = "MovieID"
+        case movieName = "MovieName"
+        case actors = "Actors"
+        case director = "Director"
+        case censorRating = "CensorRating"
+        case duration = "Duration"
+        case movieImageSmall = "MovieImageSmall"
+        case movieImageBig = "MovieImageBig"
+        case movieTrailer = "MovieTrailer"
+        case movieDescription = "Description"
+        case movieTimeings = "MovieTimeings"
+        case showTimes = "ShowTimes"
+        case wallet = "Wallet"
+    }
+}
+
+// MARK: - ShowTime
+struct ShowTime: Codable {
+    let showTime: String?
+    let showID: String?
+    let movieProviderID: String?
+    let screenDescription: String?
+    let name: String?
+    let ticketPrice: Double?
+    let screenID: String?
+    let screenName: String?
+    let restaurantID: String?
+    enum CodingKeys: String, CodingKey {
+        case restaurantID = "RestaurantID"
+        case showTime = "ShowTime"
+        case showID = "ShowID"
+        case movieProviderID = "MovieProviderID"
+        case screenDescription = "ScreenDescription"
+        case name = "Name"
+        case ticketPrice = "TicketPrice"
+        case screenID = "ScreenID"
+        case screenName = "ScreenName"
+    }
+}
+
+// MARK: - MovieTimeing
+struct MovieTimeing: Codable {
+    let showTime: String?
+    let showID: String?
+    let screenDescription: String?
+    let screenID: String?
+    let screenName: String?
+    let ticketPrice: Double?
+    enum CodingKeys: String, CodingKey {
+        case showTime = "ShowTime"
+        case showID = "ShowID"
+        case screenID = "ScreenID"
+        case screenDescription = "ScreenDescription"
+        case screenName = "ScreenName"
+        case ticketPrice = "TicketPrice"
+    }
+}
+
+typealias Movies = [Movie]
+
+// MARK: - PurpleMovieDate
+struct PurpleMovieDate: Codable {
+    let status: String?
+    let message: String?
+    let promoAmount, maxPromoAmount: Double?
+    let promoCode, promoType: String?
+    let movieDates: [MovieDateMovieDate]?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case message = "Message"
+        case promoCode = "PromoCode"
+        case promoAmount = "PromoAmount"
+        case promoType = "PromoType"
+        case maxPromoAmount = "MaxPromoAmount"
+        case movieDates = "MovieDates"
+    }
+}
+
+// MARK: - MovieDateMovieDate
+struct MovieDateMovieDate: Codable {
+    let showDates: String?
+    let showDetails: [MovieTimeing]?
+
+    enum CodingKeys: String, CodingKey {
+        case showDates = "ShowDates"
+        case showDetails = "ShowDetails"
+    }
+}
+
+typealias MovieDates = [PurpleMovieDate]
+
+//   let seatRows = try? newJSONDecoder().decode(SeatRows.self, from: jsonData)
+
+// MARK: - ScreenLayout
+
+struct ScreenLayout: Codable {
+    let status: String?
+    let maxManualSeats, markup: Int?
+    let message: String?
+    let seatLayout: [SeatRow]?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case maxManualSeats = "MaxManualSeats"
+        case message = "Message"
+        case markup = "Markup"
+        case seatLayout = "SeatLayout"
+    }
+}
+
+// MARK: - SeatRow
+struct SeatRow: Codable {
+    let displayOrder, maxManualSeats: Int?
+    let message, rowLayout, rowName: String?
+    let seatPrice, ticketCode: String?
+    var allocatedSeats: [AllocatedSeat]?
+
+    enum CodingKeys: String, CodingKey {
+        case displayOrder = "DisplayOrder"
+        case maxManualSeats = "MaxManualSeats"
+        case message = "Message"
+        case rowLayout = "RowLayout"
+        case rowName = "RowName"
+        case seatPrice = "SeatPrice"
+        case ticketCode = "TicketCode"
+        case allocatedSeats = "AllocatedSeats"
+    }
+}
+
+// MARK: - SelectedSeat
+struct SelectedSeat: Codable {
+    let seatNumber: String?
+    let seatPrice: Int?
+    let ticketCode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case seatNumber = "SeatNumber"
+        case seatPrice = "SeatPrice"
+        case ticketCode = "TicketCode"
+    }
+}
+
+// MARK: - AllocatedSeat
+struct AllocatedSeat: Codable {
+    var seatNumber: String?
+
+    enum CodingKeys: String, CodingKey {
+        case seatNumber = "SeatNumber"
+    }
+}
+
+typealias SeatRows = [ScreenLayout]
+
+// MARK: - QRCodeResponseElement
+struct QRCodeResponseElement: Codable {
+    let status, title, message: String?
+    let coponAmount: Int?
+    let walletToLoad: String?
+    let imageURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case title = "Title"
+        case message = "Message"
+        case coponAmount = "CoponAmount"
+        case walletToLoad = "WalletToLoad"
+        case imageURL = "ImageURL"
+    }
+}
+
+typealias QRCodeResponse = [QRCodeResponseElement]
+
+// MARK: - QRCodeLoadResponseElement
+struct QRCodeLoadResponseElement: Codable {
+    let status, message: String?
+    let amount: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case message = "Message"
+        case amount = "Amount"
+    }
+}
+
+typealias QRCodeLoadResponse = [QRCodeLoadResponseElement]
+
+// let movieTickets = try? newJSONDecoder().decode(MovieTickets.self, from: jsonData)
+
+// MARK: - MovieTicket
+struct MovieTicket: Codable {
+    var uniqueID, showDate, currentDate: String?
+    var movieProvider: [MovieProvider]?
+    var movieName: String?
+    var movieImageSmall: String?
+    var totalSeats, mobileNumber: String?
+    var amount: Double?
+    var bookingID: String?
+    var fullName: String?
+    var seats: [Seat]?
+    var wallet: [Wallet]?
+    var restaurantMenu: [RestaurantMenu]?
+
+    enum CodingKeys: String, CodingKey {
+        case uniqueID = "MovieTransactionsID"
+        case showDate = "ShowDate"
+        case currentDate = "CurrentDate"
+        case movieProvider = "MovieProvider"
+        case movieName = "MovieName"
+        case movieImageSmall = "MovieImageSmall"
+        case totalSeats = "TotalSeats"
+        case mobileNumber = "MobileNumber"
+        case amount = "Amount"
+        case bookingID = "BookingID"
+        case fullName = "FullName"
+        case seats = "Seats"
+        case wallet = "Wallet"
+        case restaurantMenu = "RestaurantMenu"
+    }
+}
+
+
+// MARK: - CheckPPResponse
+struct CheckPPResponse: Codable {
+    let status, message: String?
+    let wallets: [PPWallet]?
+    let promoTypes: [PromoType]?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case message = "Message"
+        case wallets = "Wallets"
+        case promoTypes = "PromoTypes"
+    }
+}
+
+// MARK: - PromoType
+struct PromoType: Codable {
+    let promoType, promoName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case promoType = "PromoType"
+        case promoName = "PromoName"
+    }
+}
+
+// MARK: - Wallet
+struct PPWallet: Codable {
+    let walletID, walletName: String?
+    let balance: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case walletID = "WalletID"
+        case walletName = "WalletName"
+        case balance = "Balance"
+    }
+}
+
+// MARK: - MovieProvider
+struct MovieProvider: Codable {
+    var name: String?
+    var latitude, longitude: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case name = "Name"
+        case latitude = "Latitude"
+        case longitude = "Longitude"
+    }
+}
+
+// MARK: - RestaurantMenu
+struct RestaurantMenu: Codable {
+    var foodName: String?
+    var foodImage: String?
+    var quantity: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case foodName = "FoodName"
+        case foodImage = "FoodImage"
+        case quantity = "Quantity"
+    }
+}
+
+// MARK: - Seat
+struct Seat: Codable {
+    var seatNumber, movieTransactionsID: String?
+
+    enum CodingKeys: String, CodingKey {
+        case seatNumber = "SeatNumber"
+        case movieTransactionsID = "MovieTransactionsID"
+    }
+}
+
+typealias MovieTickets = [MovieTicket]

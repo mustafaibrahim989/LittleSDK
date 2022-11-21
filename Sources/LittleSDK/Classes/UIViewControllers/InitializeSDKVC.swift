@@ -219,6 +219,14 @@ public class InitializeSDKVC: UIViewController {
                                     navigator.pushViewController(viewController, animated: true)
                                 }
                             }
+                        case .movies:
+                            if let viewController = UIStoryboard(name: "Movies", bundle: sdkBundle).instantiateViewController(withIdentifier: "MoviesController") as? MoviesController {
+                                viewController.popToRestorationID = self.popToRestorationID
+                                viewController.navShown = self.navShown
+                                if let navigator = self.navigationController {
+                                    navigator.pushViewController(viewController, animated: true)
+                                }
+                            }
                         default:
                             self.backHome()
                         }

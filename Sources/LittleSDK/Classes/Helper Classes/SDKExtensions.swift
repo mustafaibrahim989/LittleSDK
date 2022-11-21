@@ -588,6 +588,10 @@ extension UIViewController {
         SwiftMessages.show(config: config, view: view)
         
     }
+    
+    @objc func backBtnPressed(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 public extension UIApplication {
@@ -801,7 +805,7 @@ func getPhoneFaceIdType() -> Bool {
     
 }
 
-func getImage(named name : String, bundle: Bundle) -> UIImage? {
+func getImage(named name : String, bundle: Bundle = .module) -> UIImage? {
     let image = UIImage(named: name, in: bundle, compatibleWith: nil)
     return image
 }
@@ -827,13 +831,26 @@ func formatCurrency(_ str: String) -> String {
 func printVal(object: Any) {
 #if DEBUG
     //        print("______________________________________________________________________\n")
-//            print("Little:", object)
+            print("Little:", object)
     //        print("\n______________________________________________________________________")
 #endif
 }
 
 extension UIColor {
     static let littleElevatedViews = UIColor(named: "littleElevatedViews", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleMovieCells = UIColor(named: "littleMovieCells", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleCellBackgrounds = UIColor(named: "littleCellBackgrounds", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleBlue = UIColor(named: "littleBlue", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleLabelColor = UIColor(named: "littleLabelColor", in: Bundle.module, compatibleWith: nil)!
+
+    
+    static let littleWhite = UIColor(named: "littleWhite", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleBlack = UIColor(named: "littleBlack", in: Bundle.module, compatibleWith: nil)!
 }
 
 extension UIImage {
@@ -879,4 +896,30 @@ extension UIImage {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
     
+}
+
+extension UIView {
+    func dropShadowSubtle() {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor(named: "littleBlack")?.cgColor
+        layer.shadowOpacity = 0.2
+        layer.shadowOffset = CGSize.zero
+        layer.shadowRadius = 2
+    }
+    
+    func dropShadow() {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor(named: "littleBlack")?.cgColor
+        layer.shadowOpacity = 0.3
+        layer.shadowOffset = CGSize.zero
+        layer.shadowRadius = 6
+    }
+    
+    func dropShadowBlack() {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.3
+        layer.shadowOffset = CGSize.zero
+        layer.shadowRadius = 6
+    }
 }
