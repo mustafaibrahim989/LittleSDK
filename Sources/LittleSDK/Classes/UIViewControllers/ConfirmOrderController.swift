@@ -19,9 +19,14 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     var selectedRestaurant: Restaurant?
     var selectedTicketNo: Int?
-    var selectedSeats: [String] = []
+    var selectedSeats: [SelectedSeat] = []
     var selectedTime: Int = 0
     var currency: String?
+    
+    var selectedTheatre: MovieTheatre?
+    var selectedMovie: Movie?
+    var seatTotalPrice: Double = 0
+    var markup: Int = 0
     
     var menuArr: [FoodMenu] = []
     var paymentSourceArr: [Balance] = []
@@ -76,6 +81,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     private var orderSuccessMessage = ""
     
+    @IBOutlet weak var stkDelivery: UIStackView!
+    @IBOutlet weak var stkMovies: UIStackView!
+    @IBOutlet weak var lblProductsLabel: UILabel!
+    @IBOutlet weak var lblMoviesCash: UILabel!
+    @IBOutlet weak var lblPromoCodeLabel: UILabel!
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -86,6 +97,13 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         let nib2 = UINib.init(nibName: "MenuAddonsCell", bundle: sdkBundle!)
         menuTable.register(nib2, forCellReuseIdentifier: "addonsCell")
+        
+        if selectedTheatre != nil {
+            let moviePrice = seatTotalPrice // getMoviePrice()
+            
+            #warning("check maximumItemsPerOrder")
+            menuArr.insert(FoodMenu(menuID: selectedMovie?.movieID ?? "", foodCategory: "", foodName: selectedMovie?.movieName ?? "", foodDescription: "Rated: \(selectedMovie?.censorRating ?? ""), \(selectedMovie?.duration ?? 0) mins", originalPrice: moviePrice, specialPrice: moviePrice, foodImage: selectedMovie?.movieImageSmall ?? "", extraItem: "N", addonID: "", extraItems: []), at: 0)
+        }
         
         menuTable.reloadData()
         
@@ -120,6 +138,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if selectedRestaurant != nil {
             
             deliveryModeView.isHidden = false
+            stkDelivery.isHidden = false
+            stkMovies.isHidden = true
+            
+            lblProductsLabel.text = "Products".localized
+            lblPromoCodeLabel.text = "Promo Code".localized
             
             lblDeliveryCash.text = "\(currency ?? am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(String(selectedRestaurant?.deliveryCharges ?? 0)))"
             
@@ -141,13 +164,42 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             }
             
             if myPromoCode != "" {
-                showAlertPreventingInteraction(title: "Loading...", message: "Please wait as we load the selected Promo.")
+                showAlertPreventingInteraction(title: "Loading...".localized, message: "Please wait as we load the selected Promo.".localized)
                 txtPromoCode.text = myPromoCode
                 myPromoCode = ""
                 btnConfirmPromo.sendActions(for: .touchUpInside)
             }
             
             changeCartValues()
+        } else if selectedTheatre != nil {
+            
+            totalViewHeight.constant = 525 + totalHeight
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+            
+            deliveryModeView.isHidden = true
+            stkMovies.isHidden = false
+            stkDelivery.isHidden = true
+            
+            lblProductsLabel.text = "Snacks".localized
+            lblPromoCodeLabel.text = "Promo Code (Tickets Only)".localized
+            
+            lblDeliveryCash.text = "\(currency ?? am.getGLOBALCURRENCY()!) \(formatCurrency(String(0)))"
+            
+            adjustDeliveryHeight(source: DeliveryMode(deliveryModes: "Pickup".localized, deliveryModeDescription: "Movies".localized, deliveryCharges: 0.0))
+            
+            changeCartValues()
+            
+            if myPromoCode != "" {
+                showAlertPreventingInteraction(title: "Loading...".localized, message: "Please wait as we load the selected Promo.".localized)
+                txtPromoCode.text = myPromoCode
+                myPromoCode = ""
+                btnConfirmPromo.sendActions(for: .touchUpInside)
+            }
+            
+            
         }
         
         scrollView.setContentOffset(CGPoint(x: 0, y: menuTableHeight.constant + 40), animated: true)
@@ -158,7 +210,25 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         navigationController?.setNavigationBarHidden(false, animated: false)
         
+        var restaurantName = ""
+        var string = "Order"
+        
+        if selectedTheatre != nil {
+            restaurantName = selectedTheatre?.name ?? ""
+            string = "Booking"
+        } else {
+            restaurantName = selectedRestaurant?.restaurantName ?? ""
+        }
+        
+        if restaurantName.last == "s" {
+            self.lblTitle.text = "\(restaurantName)' \(string) Summary"
+        } else {
+            self.lblTitle.text = "\(restaurantName)'s \(string) Summary"
+        }
+        
         self.lblTitle.text = "\(selectedRestaurant?.restaurantName ?? "")' Summary"
+        
+        self.title = "Confirm \(string)"
         
     }
     
@@ -183,9 +253,21 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         am.savePROMOTEXT(data: "")
         am.savePROMOIMAGEURL(data: "")
         
-        let restaurantID = selectedRestaurant?.restaurantID ?? ""
+        var restaurantID = ""
+        var checkCategory = ""
+        var amount = ""
         
-        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation() ?? "0.0,0.0")|CATEGORY|\(category)|ModuleID|\(category)|RESTAURANTID|\(restaurantID)|"
+        if selectedTheatre != nil {
+            restaurantID = selectedTheatre?.restaurantID ?? ""
+            checkCategory = "MOVIES"
+            amount = (lblMoviesCash.text ?? "0.0").filterNumbersOnly()
+        } else {
+            restaurantID = selectedRestaurant?.restaurantID ?? ""
+            checkCategory = category
+            amount = (lblProductsCash.text ?? "0.0").filterNumbersOnly()
+        }
+        
+        let datatosend = "FORMID|VALIDATEPROMOCODE_V1|PROMOCODE|\(promoText)|PICKUPLL|\(am.getCurrentLocation() ?? "0.0,0.0")|CATEGORY|\(checkCategory)|ModuleID|\(checkCategory))|TRIPCOST|\(amount)|RESTAURANTID|\(restaurantID)|"
         
         hc.makeServerCall(sb: datatosend, method: "VALIDATEPROMOCODE", switchnum: 0)
     }
@@ -228,14 +310,14 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         var restaurantID = ""
         
-        var formID = ""
-        
-        var payLoad = ""
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSFoodDelivery"), object: nil)
-        
-        restaurantID = selectedRestaurant?.restaurantID ?? ""
-        
+        if selectedTheatre != nil {
+            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSMovies"), object: nil)
+            restaurantID = selectedTheatre?.restaurantID ?? ""
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(loadPlaceFoodOrder),name:NSNotification.Name(rawValue: "RESTAURANTDELIVERYITEMSFoodDelivery"), object: nil)
+            restaurantID = selectedRestaurant?.restaurantID ?? ""
+        }
+                
         for _ in cartItems {
             let index = cartItems.firstIndex(where: { $0.number == 0 })
             if index != nil {
@@ -268,18 +350,68 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             }
         }
         
+        let specialRequest = txtExtraDetails.text ?? ""
+        let deliveryDetails = txtDeliveryDetails.text ?? ""
+        
+        
         var deliveryMode = ""
-        var walletID = ""
+        var moviesString = ""
+        var dataToSend = ""
         
-        deliveryMode = selectedRestaurant?.deliveryModes?[deliveryIndex].deliveryModes ?? ""
+        var amountMovies = 0.0
         
-        formID = "RESTAURANTDELIVERYITEMS"
-        payLoad = "RestaurantDeliveryItems"
-        walletID = "WalletID"
+        if selectedTheatre != nil {
+            deliveryMode = ""
+            var screenId = ""
+            var screenDate = ""
+            var screenTime = ""
+            var seatsArr = ""
+            for each in selectedSeats {
+                seatsArr = seatsArr + "{\"SeatNumber\":\"\(each.seatNumber ?? "")\",\"SeatPrice\":\"\(each.seatPrice ?? 0)\",\"TicketCode\":\"\(each.ticketCode ?? "")\"},"
+            }
+            seatsArr = String(seatsArr.dropLast())
+            
+            if selectedMovie?.movieTimeings != nil {
+                screenId = selectedMovie?.movieTimeings?[selectedTime].screenID ?? ""
+                screenDate = selectedMovie?.movieTimeings?[selectedTime].showTime ?? ""
+                screenTime = selectedMovie?.movieTimeings?[selectedTime].showID ?? ""
+            } else {
+                screenId = selectedMovie?.showTimes?[selectedTime].screenID ?? ""
+                screenDate = selectedMovie?.showTimes?[selectedTime].showTime ?? ""
+                screenTime = selectedMovie?.showTimes?[selectedTime].showID ?? ""
+            }
+            
+            amountMovies = seatTotalPrice //(getMoviePrice() * Double(selectedTicketNo ?? 0))
+            
+            moviesString = ",\"GetPrice\":\"Y\",\"ShowDate\": \"\(screenDate)\",\"ShowID\": \"\(screenTime)\",\"MovieDetails\":{\"MovieProviderID\":\"\(selectedTheatre?.movieProviderID ?? "")\",\"MovieID\":\"\(selectedMovie?.movieID ?? "")\",\"Quantity\":\(selectedTicketNo ?? 0),\"ScreenID\": \"\(screenId)\",\"MovieTicketCost\":\"\(amountMovies)\",\"Markup\":\"\(markup)\",\"Amount\":\"\(amountMovies)\",\"PromoCode\":\"\(promoIs)\",\"PromoAmount\":\"\((lblPromoCodeCash.text ?? "").filterNumbersOnly())\",\"Seats\":[\(seatsArr)]}"
+            
+            let amountRestaurant = Double((lblProductsCash.text ?? "0").filterNumbersOnly())! - amountMovies
+            
+            var restaurantDeliveryItems = ",\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"WalletID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"WalletUniqueID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation()!)\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"FinalNotes\":\"\(specialRequest)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantCost\":\"\(amountRestaurant)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}"
+            
+            if orderString == "" {
+                restaurantDeliveryItems = ""
+            }
+            
+            dataToSend = "{\"FormID\":\"MOVIETICKETS\",\"SessionID\":\"\(am.getMyUniqueID() ?? "")\",\"MobileNumber\":\"\(am.getSDKMobileNumber() ?? "")\",\"IMEI\":\"\(am.getIMEI() ?? "")\",\"CodeBase\":\"Apple\",\"PackageName\":\"\(am.getSDKPackageName() ?? "")\",\"DeviceName\":\"\(SDKUtils.getPhoneType())\",\"SOFTWAREVERSION\":\"\(SDKUtils.getAppVersion())\",\"RiderLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"LatLong\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"TripID\":\"\",\"City\":\"\(am.getCity() ?? "")\",\"RegisteredCountry\":\"\(am.getCountry() ?? "")\",\"Country\":\"\(am.getCountry() ?? "")\",\"UniqueID\":\"\(am.getMyUniqueID() ?? "")\",\"NetworkCountry\":\"\(am.getCountry() ?? "")\",\"CarrierName\":\"\(SDKUtils.getCarrierName() ?? "")\",\"MovieTickets\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"WalletID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"WalletUniqueID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS()!)\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"Category\":\"\(category)\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(deliveryDetails)\",\"DeliveryMode\":\"\(deliveryMode)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"FinalNotes\":\"\(specialRequest)\"\(moviesString)\(restaurantDeliveryItems)}}"
+            
+        } else {
+            
+            deliveryMode = selectedRestaurant?.deliveryModes?[deliveryIndex].deliveryModes ?? ""
+            let delivery = Double(lblDeliveryCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
+            
+            let amountRestaurant = Double((lblTotalCash.text ?? "0").filterNumbersOnly())! - amountMovies
+            
+            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"WalletID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+            
+            printVal(object: "delivery fee: \(delivery), data: \(dataToSend)")
+        }
         
-        let dataToSend = "{\"FormID\":\"\(formID)\"\(commonCallParams()),\"\(payLoad)\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"\(walletID)\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text!)\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
-        
-        hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSFoodDelivery", switchnum: 0)
+        if selectedTheatre != nil {
+            hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSMovies", switchnum: 0)
+        } else {
+            hc.makeServerCall(sb: dataToSend, method: "RESTAURANTDELIVERYITEMSFoodDelivery", switchnum: 0)
+        }
         
     }
     
@@ -415,6 +547,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     @objc func stepperValueChanged(_ sender: UIStepper) {
         
+        var restaurantID = selectedRestaurant?.restaurantID ?? ""
+        if selectedTheatre != nil {
+            restaurantID = selectedTheatre?.restaurantID ?? ""
+        }
+        #warning("check restaurantID")
+        
         if menuArr[sender.tag].extraItem == "Y" {
             
             let result = cartItems.compactMap { $0 }.contains(where: { $0.addonID == menuArr[sender.tag].addonID })
@@ -445,6 +583,10 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     }
     
     func changeCartValues() {
+        var movieCost = 0.00
+        if selectedTheatre != nil {
+            movieCost = seatTotalPrice// (getMoviePrice() * Double(selectedTicketNo ?? 0))
+        }
         
         if cartItems.count > 0 {
             var total = 0.00
@@ -471,6 +613,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 }
             }
             
+            total = total + movieCost
+            
             if total == 0.00 {
                 updateOrderValues(total: 0.00)
             } else {
@@ -484,6 +628,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     }
     
     func updateOrderValues(total: Double) {
+        let val = seatTotalPrice //(getMoviePrice() * Double(selectedTicketNo ?? 0))
+        
+        if selectedTheatre != nil {
+            lblMoviesCash.text = "\(currency ?? am.getGLOBALCURRENCY() ?? "KES") \(formatCurrency(String(val)))"
+        }
         
         lblProductsCash.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(formatCurrency(String(total)))"
         let delivery = Double(lblDeliveryCash.text?.filterNumbersOnly() ?? "0.00") ?? 0.00
@@ -528,29 +677,44 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     
     func adjustDeliveryHeight(source: DeliveryMode) {
         
-        if source.deliveryModeDescription?.lowercased().contains("pickup") ?? false  || source.deliveryModeDescription == "1" {
-            self.totalViewHeight.constant = ((525.0 + totalHeight) - 120.0)
-            self.deliverLocationConst.constant = 0
-            self.topDelConst.constant = 60
+        if selectedTheatre != nil {
+            
+            #warning("check deliveryDetailsHeight")
+            self.totalViewHeight.constant = ((570.0 + totalHeight) - 120.0)
+//            self.deliveryDetailsHeight.constant = 0
             UIView.animate(withDuration: 0.3, animations: {
-                self.deliverLocationView.alpha = 0
+                self.deliveryModeView.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { completed in
-                self.deliverLocationView.isHidden = true
+                self.deliveryModeView.isHidden = true
                 self.changeCartValues()
             })
+            
         } else {
-            self.totalViewHeight.constant = (525.0 + totalHeight)
-            self.deliverLocationConst.constant = 120
-            self.topDelConst.constant = 80
-            self.deliverLocationView.alpha = 0
-            self.deliverLocationView.isHidden = false
-            UIView.animate(withDuration: 0.3, animations: {
-                self.deliverLocationView.alpha = 1
-                self.view.layoutIfNeeded()
-            }, completion: { completed in
-                self.changeCartValues()
-            })
+            if source.deliveryModeDescription?.lowercased().contains("pickup") ?? false  || source.deliveryModeDescription == "1" {
+                self.totalViewHeight.constant = ((525.0 + totalHeight) - 120.0)
+                self.deliverLocationConst.constant = 0
+                self.topDelConst.constant = 60
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.deliverLocationView.alpha = 0
+                    self.view.layoutIfNeeded()
+                }, completion: { completed in
+                    self.deliverLocationView.isHidden = true
+                    self.changeCartValues()
+                })
+            } else {
+                self.totalViewHeight.constant = (525.0 + totalHeight)
+                self.deliverLocationConst.constant = 120
+                self.topDelConst.constant = 80
+                self.deliverLocationView.alpha = 0
+                self.deliverLocationView.isHidden = false
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.deliverLocationView.alpha = 1
+                    self.view.layoutIfNeeded()
+                }, completion: { completed in
+                    self.changeCartValues()
+                })
+            }
         }
     }
     
@@ -561,11 +725,19 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if let success = success {
             if success {
 //                self.placeFoodOrder()
-                self.showAlerts(title: "", message: orderSuccessMessage)
-                self.am.saveFromConfirmOrder(data: true)
-                let desiredViewController = self.navigationController?.viewControllers.filter { $0 is DeliveriesController }.first
-                if desiredViewController != nil {
-                    self.navigationController?.popToViewController(desiredViewController!, animated: true)
+                if self.selectedTheatre != nil {
+                    self.am.saveMESSAGE(data: "FromBookingMovie")
+                    #warning("check removeAndUpdateCart")
+//                    self.removeAndUpdateCart()
+                    if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is MoviesController }).first {
+                        self.navigationController?.popToViewController(desiredViewController, animated: true)
+                    }
+                } else {
+                    self.showAlerts(title: "", message: orderSuccessMessage)
+                    self.am.saveFromConfirmOrder(data: true)
+                    if let desiredViewController = self.navigationController?.viewControllers.filter({ $0 is DeliveriesController }).first {
+                        self.navigationController?.popToViewController(desiredViewController, animated: true)
+                    }
                 }
             } else {
                 self.showAlerts(title: "", message: "Error occured completing payment. Please retry.")
@@ -721,15 +893,25 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             
-            if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) {
-                let value = cartItems.first(where: { $0.addonID == menuArr[indexPath.item].addonID })?.number ?? 0.0
-                cell.stepperMenu.value = value
-                cell.lblAmount.text = "\(Int(value))"
+            if selectedTheatre != nil && indexPath.item == 0 {
+                #warning("check stepperStack")
+                // cell.stepperStack.isHidden = true
+                cell.stepperMenu.isHidden = true
+                
+                cell.stepperMenu.value = Double(selectedTicketNo ?? 0)
                 cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                
             } else {
-                cell.stepperMenu.value = 0
-                cell.lblAmount.text = "0"
-                cell.selectedView.backgroundColor = .white
+                if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) {
+                    let value = cartItems.first(where: { $0.addonID == menuArr[indexPath.item].addonID })?.number ?? 0.0
+                    cell.stepperMenu.value = value
+                    cell.lblAmount.text = "\(Int(value))"
+                    cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                } else {
+                    cell.stepperMenu.value = 0
+                    cell.lblAmount.text = "0"
+                    cell.selectedView.backgroundColor = .white
+                }
             }
             
             cell.lblAmount.tag = indexPath.item
@@ -803,15 +985,26 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 cell.stepperMenu.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
             }
             
-            if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) && menuArr[indexPath.item].extraItem != "Y" {
-                let value = cartItems.first(where: { $0.itemID == menuArr[indexPath.item].menuID })?.number ?? 0.0
-                cell.stepperMenu.value = value
-                cell.lblAmount.text = "\(Int(value))"
+            if selectedTheatre != nil && indexPath.item == 0 {
+                
+                #warning("check stepperStack")
+                // cell.stepperStack.isHidden = true
+                cell.stepperMenu.isHidden = true
+                
+                cell.stepperMenu.value = Double(selectedTicketNo ?? 0)
                 cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                
             } else {
-                cell.stepperMenu.value = 0
-                cell.lblAmount.text = "0"
-                cell.selectedView.backgroundColor = .white
+                if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) && menuArr[indexPath.item].extraItem != "Y" {
+                    let value = cartItems.first(where: { $0.itemID == menuArr[indexPath.item].menuID })?.number ?? 0.0
+                    cell.stepperMenu.value = value
+                    cell.lblAmount.text = "\(Int(value))"
+                    cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                } else {
+                    cell.stepperMenu.value = 0
+                    cell.lblAmount.text = "0"
+                    cell.selectedView.backgroundColor = .white
+                }
             }
             
             cell.lblExtrasWithOrder.text = ""

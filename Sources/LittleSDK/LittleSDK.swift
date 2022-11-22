@@ -58,6 +58,7 @@ public class LittleFramework {
         SDKAllMethods().saveSDKAccounts(data: accountsArr)
         SDKAllMethods().saveSDKAdditionalData(data: additionalData)
         SDKAllMethods().saveSDKAPIKey(data: APIKey)
+        SDKAllMethods().saveIsUAT(data: isUAT)
     }
     
     public func initializeToRides(_ vc: UIViewController) {

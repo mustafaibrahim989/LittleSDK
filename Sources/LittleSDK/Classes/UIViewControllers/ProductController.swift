@@ -21,7 +21,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
     
     var selectedRestaurant: Restaurant?
     var selectedTicketNo: Int?
-    var selectedSeats: [String] = []
+    var selectedSeats: [SelectedSeat] = []
     var selectedTime: Int = 0
     var currency: String?
     var selectedCategory: Int?

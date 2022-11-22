@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-UI-Display-Bold.otf">
+            <string>SFUIDisplay-Bold</string>
+        </array>
+        <array key="SF-UI-Display-Regular.otf">
+            <string>SFUIDisplay-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="gPk-PG-VH3" customClass="TicketAddonCell" customModule="LittleSDK">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gPk-PG-VH3" id="gGO-MK-wqs">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Food Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="hPu-zK-bcf">
+                        <rect key="frame" x="16" y="7" width="86" height="21"/>
+                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="17"/>
+                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="x 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFU-OH-Mwk">
+                        <rect key="frame" x="283.66666666666669" y="8.6666666666666643" width="20.333333333333314" height="18"/>
+                        <fontDescription key="fontDescription" name="SFUIDisplay-Bold" family="SF UI Display" pointSize="15"/>
+                        <color key="textColor" red="0.24313725489999999" green="0.50980392159999999" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="eFU-OH-Mwk" firstAttribute="centerY" secondItem="gGO-MK-wqs" secondAttribute="centerY" id="26v-8b-BKm"/>
+                    <constraint firstAttribute="trailing" secondItem="eFU-OH-Mwk" secondAttribute="trailing" constant="16" id="OBm-du-JWR"/>
+                    <constraint firstItem="hPu-zK-bcf" firstAttribute="centerY" secondItem="gGO-MK-wqs" secondAttribute="centerY" id="d4g-3g-3MR"/>
+                    <constraint firstItem="eFU-OH-Mwk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hPu-zK-bcf" secondAttribute="trailing" constant="8" id="px2-DK-NuT"/>
+                    <constraint firstItem="hPu-zK-bcf" firstAttribute="leading" secondItem="gGO-MK-wqs" secondAttribute="leading" constant="16" id="sgS-9b-xwW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="wab-PR-bU1"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="lblAddonName" destination="hPu-zK-bcf" id="ci1-UY-Zc9"/>
+                <outlet property="lblQuantity" destination="eFU-OH-Mwk" id="Opb-Cl-iF7"/>
+            </connections>
+            <point key="canvasLocation" x="31.884057971014496" y="152.67857142857142"/>
+        </tableViewCell>
+    </objects>
+</document>

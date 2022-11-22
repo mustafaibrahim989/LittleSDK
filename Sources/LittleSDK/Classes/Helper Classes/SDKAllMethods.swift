@@ -193,6 +193,10 @@ class SDKAllMethods {
         wrapper.set(data, forKey: "ForeignDropOffLocation")
     }
     
+    func saveForeignDropOffName(data:String) {
+        wrapper.set(data, forKey: "ForeignDropOffName")
+    }
+    
     func saveGLOBALCURRENCY(data:String){
         wrapper.set(data, forKey: "GLOBALCURRENCY")
     }
@@ -406,6 +410,10 @@ class SDKAllMethods {
     
     func saveIsOSM(data:Bool) {
         wrapper.set(data, forKey: "IsOSM")
+    }
+    
+    func saveIsUAT(data:Bool) {
+        wrapper.set(data, forKey: "IsUAT")
     }
     
     func saveAmount(data:String) {
@@ -1126,6 +1134,14 @@ class SDKAllMethods {
         return check
     }
     
+    func getIsUAT() -> Bool! {
+        var check=wrapper.bool(forKey: "IsUAT")
+        if check == nil {
+            check = true
+        }
+        return check
+    }
+    
     func getAmount() -> String!{
         var check=wrapper.string(forKey: "Amount")
         if check == nil {
@@ -1282,6 +1298,16 @@ class SDKAllMethods {
     
     func getSDKAPIKey() -> String{
         let check = wrapper.string(forKey: "SDKAPIKey")
+        return check ?? ""
+    }
+    
+    func getSDKForeignDropOffLocation() -> String{
+        let check = wrapper.string(forKey: "ForeignDropOffLocation")
+        return check ?? ""
+    }
+    
+    func getSDKForeignDropOffName() -> String{
+        let check = wrapper.string(forKey: "ForeignDropOffName")
         return check ?? ""
     }
     

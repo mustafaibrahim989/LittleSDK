@@ -108,11 +108,13 @@ class MoviesController: UIViewController {
         
         if am.getMESSAGE() == "FromBookingMovie" {
             am.saveMESSAGE(data: "")
-            /*if let viewController = UIStoryboard(name: "Movies", bundle: nil).instantiateViewController(withIdentifier: "MovieTicketsController") as? MovieTicketsController {
+            if let viewController = UIStoryboard(name: "Movies", bundle: .module).instantiateViewController(withIdentifier: "MovieTicketsController") as? MovieTicketsController {
+                viewController.popToRestorationID = self.popToRestorationID
+                viewController.navShown = self.navShown
                 if let navigator = self.navigationController {
                     navigator.pushViewController(viewController, animated: true)
                 }
-            }*/
+            }
         } else {
             if selectedAccount == 1 {
                 getMovieProviders()
@@ -274,12 +276,13 @@ class MoviesController: UIViewController {
     }
     
     @IBAction func btnBookedTickets(_ sender: UIButton) {
-        #warning("check tickets")
-        /*if let viewController = UIStoryboard(name: "Movies", bundle: nil).instantiateViewController(withIdentifier: "MovieTicketsController") as? MovieTicketsController {
+        if let viewController = UIStoryboard(name: "Movies", bundle: .module).instantiateViewController(withIdentifier: "MovieTicketsController") as? MovieTicketsController {
+            viewController.popToRestorationID = self.popToRestorationID
+            viewController.navShown = self.navShown
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
-        }*/
+        }
     }
     
     

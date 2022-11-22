@@ -214,7 +214,7 @@ class ScreenController: UIViewController {
     
     func confirmOrder() {
         #warning("check ConfirmOrderController")
-        /*if let viewController = UIStoryboard(name: "Order", bundle: nil).instantiateViewController(withIdentifier: "ConfirmOrderController") as? ConfirmOrderController {
+        if let viewController = UIStoryboard(name: "Deliveries", bundle: .module).instantiateViewController(withIdentifier: "ConfirmOrderController") as? ConfirmOrderController {
             var mySeats: [SelectedSeat] = []
             if selectedManualArr.count == 0 {
                 for each in selectedSeatArr {
@@ -236,11 +236,12 @@ class ScreenController: UIViewController {
             viewController.markup = markup
             viewController.paymentSourceArr = paymentModes
             viewController.myPromoCode = myPromoCode
-            viewController.myDisclaimerMessage = myDisclaimerMessage
+            #warning("check myDisclaimerMessage")
+//            viewController.myDisclaimerMessage = myDisclaimerMessage
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
-        }*/
+        }
     }
     
     /*func bookSeatsAF() {
