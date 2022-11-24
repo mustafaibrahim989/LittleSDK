@@ -246,7 +246,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     @IBOutlet weak var btnBackStage: UIButton!
     @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var historyBtnView: UIView!
-    @IBOutlet weak var historyBtn: UIButton!
     
     
     enum CardState {
@@ -460,10 +459,6 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         self.menuBtn.addTarget(self, action: #selector(postBackHome), for: .touchUpInside)
         self.menuBtn.setImage(getImage(named: "back_super_app", bundle: sdkBundle!), for: UIControl.State())
         
-        self.historyBtn.imageEdgeInsets = UIEdgeInsets.init(top: 3,left: 3,bottom: 3,right: 3)
-        self.historyBtn.addTarget(self, action: #selector(navigateToRideHistory), for: .touchUpInside)
-        self.historyBtn.setImage(getImage(named: "no_history", bundle: sdkBundle!)?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
-        
         
         approxDestinationTimeView.isHidden = true
         
@@ -602,6 +597,8 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
         gmsMapView.bottomAnchor.constraint(equalTo: mapContainerView.bottomAnchor).isActive = true
         
         adjustMapBottomConst()
+        
+        historyBtnView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(navigateToRideHistory)))
         
     }
     

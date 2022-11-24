@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -196,13 +195,13 @@
                                 <rect key="frame" x="40" y="186" width="240" height="240"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_products" translatesAutoresizingMaskIntoConstraints="NO" id="nvM-nF-4NS">
-                                        <rect key="frame" x="101.5" y="51.5" width="37.5" height="37.5"/>
+                                        <rect key="frame" x="101.5" y="51.5" width="37" height="37"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="nvM-nF-4NS" secondAttribute="height" multiplier="1:1" id="YPF-1e-5lo"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="E9k-pD-rMN">
-                                        <rect key="frame" x="15" y="104" width="210" height="90"/>
+                                        <rect key="frame" x="15" y="103.5" width="210" height="90"/>
                                         <string key="text">We unfortunately couldn't find a Food provider within your area. We are however working hard to ensure all areas have Food providers within your reach.</string>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                         <color key="textColor" name="littleLabelColor"/>
@@ -952,7 +951,7 @@
                                 <rect key="frame" x="0.0" y="44" width="320" height="460"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLs-e4-Wrf">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="680"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="697.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Summary" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="t0g-f3-lGP">
                                                 <rect key="frame" x="16" y="8" width="288" height="22"/>
@@ -1396,11 +1395,12 @@
                                         <constraints>
                                             <constraint firstItem="Iwf-KG-pDG" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" id="0Ge-29-9c8"/>
                                             <constraint firstItem="Iwf-KG-pDG" firstAttribute="top" secondItem="TLs-e4-Wrf" secondAttribute="top" constant="40" id="19B-1J-Wfu"/>
-                                            <constraint firstAttribute="height" constant="680" id="2FS-QL-dn8"/>
+                                            <constraint firstAttribute="height" priority="1" constant="680" id="2FS-QL-dn8"/>
                                             <constraint firstAttribute="trailing" secondItem="t0g-f3-lGP" secondAttribute="trailing" constant="16" id="34o-4S-mgT"/>
                                             <constraint firstItem="u34-Cn-u7v" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" constant="16" id="3bi-Ue-ZVO"/>
                                             <constraint firstItem="JC5-6m-x8d" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" constant="16" id="6AW-Pk-9Xn"/>
                                             <constraint firstAttribute="trailing" secondItem="zxF-wz-6Zr" secondAttribute="trailing" constant="16" id="9Qc-PC-plu"/>
+                                            <constraint firstAttribute="bottom" secondItem="c15-W3-85W" secondAttribute="bottom" constant="10" id="ANg-mo-GrE"/>
                                             <constraint firstAttribute="trailing" secondItem="JC5-6m-x8d" secondAttribute="trailing" constant="16" id="CFg-UI-h3S"/>
                                             <constraint firstItem="MXs-tD-oMc" firstAttribute="leading" secondItem="xrF-FU-nlJ" secondAttribute="trailing" constant="4" id="FFb-KC-WRK"/>
                                             <constraint firstItem="JC5-6m-x8d" firstAttribute="top" secondItem="xrF-FU-nlJ" secondAttribute="bottom" id="FLK-3J-Q7i"/>
@@ -1497,6 +1497,7 @@
                         <outlet property="btnPaymentMode" destination="zxF-wz-6Zr" id="0SE-S0-ek1"/>
                         <outlet property="deliverLocationConst" destination="g2f-t6-2Mc" id="sYm-2T-GD2"/>
                         <outlet property="deliverLocationView" destination="pGK-rV-OIL" id="CAj-gP-DcV"/>
+                        <outlet property="deliverModeConst" destination="Ezb-PQ-fR4" id="xRQ-c8-QBL"/>
                         <outlet property="deliveryModeView" destination="Yic-CG-XR1" id="BS0-e7-pdK"/>
                         <outlet property="extraDeliveryView" destination="dIg-rj-c7o" id="KXb-D9-MaW"/>
                         <outlet property="extraViewConst" destination="u7R-Jt-7KB" id="8Fu-8C-Uho"/>

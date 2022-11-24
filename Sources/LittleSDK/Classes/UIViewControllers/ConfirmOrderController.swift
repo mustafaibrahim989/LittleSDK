@@ -59,6 +59,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var menuTableHeight: NSLayoutConstraint!
     @IBOutlet weak var extraViewConst: NSLayoutConstraint!
     @IBOutlet weak var deliverLocationConst: NSLayoutConstraint!
+    @IBOutlet weak var deliverModeConst: NSLayoutConstraint!
     @IBOutlet weak var totalViewHeight: NSLayoutConstraint!
     @IBOutlet weak var topDelConst: NSLayoutConstraint!
     
@@ -225,8 +226,6 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         } else {
             self.lblTitle.text = "\(restaurantName)'s \(string) Summary"
         }
-        
-        self.lblTitle.text = "\(selectedRestaurant?.restaurantName ?? "")' Summary"
         
         self.title = "Confirm \(string)"
         
@@ -682,11 +681,16 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             #warning("check deliveryDetailsHeight")
             self.totalViewHeight.constant = ((570.0 + totalHeight) - 120.0)
 //            self.deliveryDetailsHeight.constant = 0
+            self.deliverLocationConst.constant = 0
+            self.deliverModeConst.constant = 0
+            printVal(object: "hideDeliveryMode")
             UIView.animate(withDuration: 0.3, animations: {
                 self.deliveryModeView.alpha = 0
+                self.deliverLocationView.alpha = 0
                 self.view.layoutIfNeeded()
             }, completion: { completed in
                 self.deliveryModeView.isHidden = true
+                self.deliverLocationView.isHidden = true
                 self.changeCartValues()
             })
             

@@ -145,8 +145,9 @@ class ScreenController: UIViewController {
                 
                 printVal(object: "SelectedSeatArr: \(movieTicket)")
                 
-                #warning("check MovieTicketController")
-                /*let popOverVC = UIStoryboard(name: "Movies", bundle: nil).instantiateViewController(withIdentifier: "MovieTicketController") as! MovieTicketController
+                let popOverVC = UIStoryboard(name: "Movies", bundle: .module).instantiateViewController(withIdentifier: "MovieTicketController") as! MovieTicketController
+                popOverVC.popToRestorationID = self.popToRestorationID
+                popOverVC.navShown = self.navShown
                 self.addChild(popOverVC)
                 popOverVC.openAction = {
                     self.addToOrder()
@@ -171,7 +172,7 @@ class ScreenController: UIViewController {
                 popOverVC.selectedMovie = selectedMovie
                 popOverVC.view.frame = UIScreen.main.bounds
                 self.view.addSubview(popOverVC.view)
-                popOverVC.didMove(toParent: self)*/
+                popOverVC.didMove(toParent: self)
                 
             } else {
                 self.confirmOrder()
