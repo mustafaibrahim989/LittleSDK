@@ -237,8 +237,7 @@ class ScreenController: UIViewController {
             viewController.markup = markup
             viewController.paymentSourceArr = paymentModes
             viewController.myPromoCode = myPromoCode
-            #warning("check myDisclaimerMessage")
-//            viewController.myDisclaimerMessage = myDisclaimerMessage
+            viewController.myDisclaimerMessage = myDisclaimerMessage
             if let navigator = self.navigationController {
                 navigator.pushViewController(viewController, animated: true)
             }
@@ -435,6 +434,8 @@ class ScreenController: UIViewController {
                 let defaultResponse = try JSONDecoder().decode(DefaultMessage.self, from: data)
                 if defaultResponse.status != "000" {
                     showAlerts(title: "", message: defaultResponse.message ?? "")
+                } else if isPopAction {
+                    self.navigationController?.popViewController(animated: true)
                 }
                 
             } catch {}

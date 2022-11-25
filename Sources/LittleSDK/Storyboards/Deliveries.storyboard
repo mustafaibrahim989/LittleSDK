@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -625,8 +626,8 @@
         <scene sceneID="WR6-dP-Drf">
             <objects>
                 <viewController storyboardIdentifier="ProductController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PS3-m7-GVo" customClass="ProductController" customModule="LittleSDK" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TPD-U7-jJq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="TPD-U7-jJq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Xw-3C-jyN">
@@ -1394,8 +1395,6 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="Iwf-KG-pDG" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" id="0Ge-29-9c8"/>
-                                            <constraint firstItem="Iwf-KG-pDG" firstAttribute="top" secondItem="TLs-e4-Wrf" secondAttribute="top" constant="40" id="19B-1J-Wfu"/>
-                                            <constraint firstAttribute="height" priority="1" constant="680" id="2FS-QL-dn8"/>
                                             <constraint firstAttribute="trailing" secondItem="t0g-f3-lGP" secondAttribute="trailing" constant="16" id="34o-4S-mgT"/>
                                             <constraint firstItem="u34-Cn-u7v" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" constant="16" id="3bi-Ue-ZVO"/>
                                             <constraint firstItem="JC5-6m-x8d" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" constant="16" id="6AW-Pk-9Xn"/>
@@ -1405,6 +1404,7 @@
                                             <constraint firstItem="MXs-tD-oMc" firstAttribute="leading" secondItem="xrF-FU-nlJ" secondAttribute="trailing" constant="4" id="FFb-KC-WRK"/>
                                             <constraint firstItem="JC5-6m-x8d" firstAttribute="top" secondItem="xrF-FU-nlJ" secondAttribute="bottom" id="FLK-3J-Q7i"/>
                                             <constraint firstItem="Ueb-zj-Kxf" firstAttribute="centerY" secondItem="zxF-wz-6Zr" secondAttribute="centerY" id="Hcg-6r-uKk"/>
+                                            <constraint firstItem="Iwf-KG-pDG" firstAttribute="top" secondItem="t0g-f3-lGP" secondAttribute="bottom" constant="10" id="Hqh-5B-b7q"/>
                                             <constraint firstItem="Yic-CG-XR1" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" id="HrL-uw-Ddc"/>
                                             <constraint firstItem="YwW-dV-sta" firstAttribute="leading" secondItem="TLs-e4-Wrf" secondAttribute="leading" constant="16" id="LLq-zQ-Gk5"/>
                                             <constraint firstItem="bEO-vY-1GH" firstAttribute="centerY" secondItem="pWe-zd-WvA" secondAttribute="centerY" id="MIM-7k-W91"/>
@@ -1472,16 +1472,25 @@
                                     <action selector="btnConfirmOrder:" destination="yQ2-Dh-Oru" eventType="touchUpInside" id="Q7o-WN-Zq7"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9S-CP-hnc">
+                                <rect key="frame" x="5" y="560" width="310" height="0.0"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
+                                <color key="textColor" name="littleLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pFa-rF-Wk2"/>
                         <color key="backgroundColor" name="littleElevatedViews"/>
                         <constraints>
+                            <constraint firstItem="k9S-CP-hnc" firstAttribute="top" secondItem="Dob-1O-QdB" secondAttribute="bottom" constant="8" id="7kQ-Uy-r8K"/>
                             <constraint firstItem="75p-Mq-u5Z" firstAttribute="trailing" secondItem="pFa-rF-Wk2" secondAttribute="trailing" id="H4A-mg-6vM"/>
                             <constraint firstItem="pFa-rF-Wk2" firstAttribute="trailing" secondItem="Dob-1O-QdB" secondAttribute="trailing" constant="16" id="Hxk-TO-7zo"/>
+                            <constraint firstItem="pFa-rF-Wk2" firstAttribute="bottom" secondItem="k9S-CP-hnc" secondAttribute="bottom" constant="8" id="JQ1-Cw-EEn"/>
+                            <constraint firstItem="k9S-CP-hnc" firstAttribute="leading" secondItem="pFa-rF-Wk2" secondAttribute="leading" constant="5" id="RPv-05-eJa"/>
                             <constraint firstItem="Dob-1O-QdB" firstAttribute="top" secondItem="75p-Mq-u5Z" secondAttribute="bottom" constant="8" id="T9F-F4-qTu"/>
+                            <constraint firstItem="pFa-rF-Wk2" firstAttribute="trailing" secondItem="k9S-CP-hnc" secondAttribute="trailing" constant="5" id="TUb-Px-bRs"/>
                             <constraint firstItem="75p-Mq-u5Z" firstAttribute="top" secondItem="pFa-rF-Wk2" secondAttribute="top" id="h4g-Ou-ggF"/>
                             <constraint firstItem="Dob-1O-QdB" firstAttribute="leading" secondItem="pFa-rF-Wk2" secondAttribute="leading" constant="16" id="pbM-vO-3xo"/>
-                            <constraint firstItem="pFa-rF-Wk2" firstAttribute="bottom" secondItem="Dob-1O-QdB" secondAttribute="bottom" constant="16" id="uZk-Rh-XxH"/>
                             <constraint firstItem="75p-Mq-u5Z" firstAttribute="leading" secondItem="pFa-rF-Wk2" secondAttribute="leading" id="x7c-4J-g4i"/>
                         </constraints>
                     </view>
@@ -1497,11 +1506,12 @@
                         <outlet property="btnPaymentMode" destination="zxF-wz-6Zr" id="0SE-S0-ek1"/>
                         <outlet property="deliverLocationConst" destination="g2f-t6-2Mc" id="sYm-2T-GD2"/>
                         <outlet property="deliverLocationView" destination="pGK-rV-OIL" id="CAj-gP-DcV"/>
-                        <outlet property="deliverModeConst" destination="Ezb-PQ-fR4" id="xRQ-c8-QBL"/>
+                        <outlet property="deliverModeConst" destination="Ezb-PQ-fR4" id="cdq-Bg-CB7"/>
                         <outlet property="deliveryModeView" destination="Yic-CG-XR1" id="BS0-e7-pdK"/>
                         <outlet property="extraDeliveryView" destination="dIg-rj-c7o" id="KXb-D9-MaW"/>
                         <outlet property="extraViewConst" destination="u7R-Jt-7KB" id="8Fu-8C-Uho"/>
                         <outlet property="lblDeliveryCash" destination="11D-Mb-Vvw" id="YYm-h2-zP8"/>
+                        <outlet property="lblDisclaimer" destination="k9S-CP-hnc" id="lDA-od-Of1"/>
                         <outlet property="lblExtra" destination="6oP-WL-gxO" id="5GB-4I-XXe"/>
                         <outlet property="lblMoviesCash" destination="gCG-AA-0bF" id="umF-7u-wEn"/>
                         <outlet property="lblProductsCash" destination="BNz-IT-fXV" id="e40-6i-c6e"/>
@@ -1516,7 +1526,6 @@
                         <outlet property="stkDelivery" destination="E97-FZ-zJD" id="wEa-Iu-mQa"/>
                         <outlet property="stkMovies" destination="aiY-oD-h9C" id="ySP-Ev-Ojh"/>
                         <outlet property="topDelConst" destination="gIR-I9-fOA" id="Lmb-va-jNG"/>
-                        <outlet property="totalViewHeight" destination="2FS-QL-dn8" id="e5k-6R-LQs"/>
                         <outlet property="txtDeliveryDetails" destination="PKH-QO-ZZt" id="rXn-SF-fou"/>
                         <outlet property="txtExtraDetails" destination="5aF-G3-Z5y" id="7eC-5g-FvN"/>
                         <outlet property="txtPromoCode" destination="xrF-FU-nlJ" id="GGq-YL-PV2"/>

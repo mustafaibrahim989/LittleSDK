@@ -88,6 +88,10 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var lblMoviesCash: UILabel!
     @IBOutlet weak var lblPromoCodeLabel: UILabel!
     
+    @IBOutlet weak var lblDisclaimer: UILabel!
+    
+    var myDisclaimerMessage: String = ""
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,6 +111,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         }
         
         menuTable.reloadData()
+        
+        lblDisclaimer.text = myDisclaimerMessage
         
         totalHeight = 0
         menuTable.layoutIfNeeded()
@@ -130,7 +136,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         txtExtraDetails.placeholder = merchantMessage
         extraDeliveryView.isHidden = false
         
-        totalViewHeight.constant = 525 + totalHeight
+//        totalViewHeight.constant = 525 + totalHeight
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -174,7 +180,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             changeCartValues()
         } else if selectedTheatre != nil {
             
-            totalViewHeight.constant = 525 + totalHeight
+//            totalViewHeight.constant = 525 + totalHeight
             
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
@@ -203,7 +209,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
         }
         
-        scrollView.setContentOffset(CGPoint(x: 0, y: menuTableHeight.constant + 40), animated: true)
+//        scrollView.setContentOffset(CGPoint(x: 0, y: menuTableHeight.constant + 40), animated: true)
         
     }
     
@@ -621,7 +627,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             }
             
         } else {
-            updateOrderValues(total: 0.00)
+            updateOrderValues(total: 0.00 + movieCost)
         }
         menuTable.reloadData()
     }
@@ -679,10 +685,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         if selectedTheatre != nil {
             
             #warning("check deliveryDetailsHeight")
-            self.totalViewHeight.constant = ((570.0 + totalHeight) - 120.0)
+//            self.totalViewHeight.constant = ((570.0 + totalHeight) - 120.0)
 //            self.deliveryDetailsHeight.constant = 0
             self.deliverLocationConst.constant = 0
             self.deliverModeConst.constant = 0
+            self.topDelConst.constant = -10
             printVal(object: "hideDeliveryMode")
             UIView.animate(withDuration: 0.3, animations: {
                 self.deliveryModeView.alpha = 0
@@ -696,7 +703,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
         } else {
             if source.deliveryModeDescription?.lowercased().contains("pickup") ?? false  || source.deliveryModeDescription == "1" {
-                self.totalViewHeight.constant = ((525.0 + totalHeight) - 120.0)
+//                self.totalViewHeight.constant = ((525.0 + totalHeight) - 120.0)
                 self.deliverLocationConst.constant = 0
                 self.topDelConst.constant = 60
                 UIView.animate(withDuration: 0.3, animations: {
@@ -707,7 +714,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     self.changeCartValues()
                 })
             } else {
-                self.totalViewHeight.constant = (525.0 + totalHeight)
+//                self.totalViewHeight.constant = (525.0 + totalHeight)
                 self.deliverLocationConst.constant = 120
                 self.topDelConst.constant = 80
                 self.deliverLocationView.alpha = 0
@@ -842,9 +849,9 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBAction func btnConfirmOrder(_ sender: UIButton) {
         if btnConfirmOrder.backgroundColor == .darkGray {
             showAlerts(title: "", message: "Kindly ensure you have at least one item in cart.")
-        } else if txtDeliveryDetails.text == "" && !(txtDeliveryDetails.placeholder?.lowercased().contains("optional") ?? true) {
+        } else if txtDeliveryDetails.text == "" && !(txtDeliveryDetails.placeholder?.lowercased().contains("optional") ?? true) && selectedTheatre == nil {
             showAlerts(title: "", message: "Kindly ensure you have entered delivery details e.g house name, number, floor etc.")
-        } else if btnDeliverMode.title(for: UIControl.State()) == "Choose Delivery Mode" {
+        } else if btnDeliverMode.title(for: UIControl.State()) == "Choose Delivery Mode" && selectedTheatre == nil {
             showAlerts(title: "", message: "Kindly ensure you have chosen delivery mode you prefer.")
         } else if btnLocation.title(for: UIControl.State()) == "Choose Location" && deliverLocationView.isHidden == false {
             showAlerts(title: "", message: "Kindly ensure you have chosen delivery location.")
@@ -904,6 +911,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 
                 cell.stepperMenu.value = Double(selectedTicketNo ?? 0)
                 cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                cell.lblAmount.text = nil
                 
             } else {
                 if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) {
@@ -997,6 +1005,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 
                 cell.stepperMenu.value = Double(selectedTicketNo ?? 0)
                 cell.selectedView.backgroundColor = color.withAlphaComponent(0.1)
+                cell.lblAmount.text = nil
                 
             } else {
                 if cartItems.contains(where: { $0.itemID == menuArr[indexPath.item].menuID }) && menuArr[indexPath.item].extraItem != "Y" {
