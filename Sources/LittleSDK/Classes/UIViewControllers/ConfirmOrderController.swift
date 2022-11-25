@@ -466,10 +466,10 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                     
                     #warning("remove post order notification")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    /*DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                         let userInfo = ["success": true] as [String : Any]
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
-                    }
+                    }*/
                 } else if orderResponse[0].status == "091" {
                     DispatchQueue.main.async(execute: {
                         self.showAlerts(title: "", message: orderResponse[0].message ?? "Error occured creating your order. Kindly retry.")
