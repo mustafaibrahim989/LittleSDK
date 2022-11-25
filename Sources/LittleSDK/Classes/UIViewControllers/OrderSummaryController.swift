@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftMessages
+import UIView_Shimmer
 
 public class OrderSummaryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -345,12 +346,13 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     // MARK: - Functions & IBActions
     
     func loadingScreen() {
-        view.layoutIfNeeded()
+//        view.layoutIfNeeded()
+        view.setTemplateWithSubviews(true)
         
     }
     
     func stopLoading() {
-        
+        view.setTemplateWithSubviews(false)
     }
     
     // MARK: - TableView DataSource & Delegates
@@ -386,7 +388,8 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             
             cell.imgMenuImage.image = getImage(named: "default_food", bundle: sdkBundle!)
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
-            cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.price1 ?? 0)"
+            #warning("cehck price1")
+            cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.price ?? 0)"
             cell.lblMenuNumber.text = "x \(menuItem.quantity ?? 0)"
             cell.selectionStyle = .none
             

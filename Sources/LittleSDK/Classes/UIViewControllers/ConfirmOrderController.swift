@@ -465,10 +465,11 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     let userInfo = ["amount":Double(lblTotalCash.text ?? "0") ?? 0,"reference":reference, "additionalData": am.getSDKAdditionalData()] as [String : Any]
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                     
-                    /*DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    #warning("remove post order notification")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                         let userInfo = ["success": true] as [String : Any]
                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
-                    }*/
+                    }
                 } else if orderResponse[0].status == "091" {
                     DispatchQueue.main.async(execute: {
                         self.showAlerts(title: "", message: orderResponse[0].message ?? "Error occured creating your order. Kindly retry.")
