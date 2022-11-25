@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,156 +18,131 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XP4-kq-XC3">
-                        <rect key="frame" x="29" y="0.0" width="2" height="17"/>
-                        <color key="backgroundColor" name="littleBlue"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="2" id="oHi-VG-DXc"/>
-                        </constraints>
-                    </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="deliver_check" translatesAutoresizingMaskIntoConstraints="NO" id="9vV-vZ-Kj7">
-                        <rect key="frame" x="15" y="13" width="30" height="30"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checked" translatesAutoresizingMaskIntoConstraints="NO" id="9vV-vZ-Kj7">
+                        <rect key="frame" x="15" y="0.0" width="25" height="25"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" name="littleBlue"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="OFv-3a-f8P"/>
-                            <constraint firstAttribute="height" constant="30" id="csP-hl-MUF"/>
+                            <constraint firstAttribute="width" constant="25" id="OFv-3a-f8P"/>
+                            <constraint firstAttribute="height" constant="25" id="csP-hl-MUF"/>
                         </constraints>
                     </imageView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Puv-zs-J7h">
-                        <rect key="frame" x="29" y="39" width="2" height="61"/>
+                        <rect key="frame" x="26.5" y="25" width="2" height="75"/>
                         <color key="backgroundColor" name="littleBlue"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="2" id="IAY-sV-YFY"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="qZ3-JN-p3a">
-                        <rect key="frame" x="56" y="4" width="34" height="14"/>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="12"/>
+                        <rect key="frame" x="50" y="0.0" width="39.5" height="3"/>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="14"/>
                         <color key="textColor" name="littleLabelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accepted" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="iZE-ep-JlE">
-                        <rect key="frame" x="56" y="18" width="248" height="17"/>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="14"/>
+                        <rect key="frame" x="51" y="3" width="253" height="19.5"/>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="16"/>
                         <color key="textColor" name="littleLabelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="Iew-nN-Qpa">
-                        <rect key="frame" x="56" y="37" width="248" height="0.0"/>
+                        <rect key="frame" x="51" y="24.5" width="253" height="0.0"/>
                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Light" family="Apple SD Gothic Neo" pointSize="13"/>
                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJt-Wb-w3z">
-                        <rect key="frame" x="56" y="47" width="25" height="25"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vX9-Gg-Rli">
+                        <rect key="frame" x="51" y="26.5" width="95" height="30"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j0e-zM-mOm">
+                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="0IH-Uu-ZhZ"/>
+                                    <constraint firstAttribute="width" constant="30" id="LEZ-mk-UMk"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Call ArtCaffe" buttonSize="mini">
+                                    <fontDescription key="titleFontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
+                                    <color key="baseBackgroundColor" name="littleBlue"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
+                                        <real key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4X-gM-bYK">
+                                <rect key="frame" x="45" y="0.0" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="3HB-Nj-rz0"/>
+                                    <constraint firstAttribute="height" constant="30" id="5M2-Pk-nCh"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Rate" buttonSize="mini">
+                                    <fontDescription key="titleFontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
+                                    <color key="baseBackgroundColor" name="littleBlue"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="viewCornerRadius">
+                                        <real key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" constant="25" id="Ghw-t9-ndS"/>
-                            <constraint firstAttribute="height" constant="25" id="hGl-Ia-Ysn"/>
+                            <constraint firstAttribute="height" constant="30" id="nsf-ch-jXp"/>
                         </constraints>
-                        <color key="tintColor" name="littleBlue"/>
-                        <state key="normal" image="deliver_call">
-                            <color key="titleColor" name="littleBlue"/>
-                        </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <real key="value" value="12.5"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </button>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aa-Vh-lwu">
-                        <rect key="frame" x="89" y="44.5" width="88" height="30"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
-                        <state key="normal" title="Call ArtCaffe?">
-                            <color key="titleColor" name="littleBlue"/>
-                        </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <real key="value" value="12.5"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </button>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cse-G1-LXo">
-                        <rect key="frame" x="254" y="47" width="50" height="25"/>
-                        <color key="backgroundColor" name="littleBlue"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="25" id="q0S-Yp-jW8"/>
-                            <constraint firstAttribute="width" constant="50" id="wLq-Gr-ZbY"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
-                        <state key="normal" title="Rate">
-                            <color key="titleColor" name="littleWhite"/>
-                        </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <real key="value" value="12.5"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </button>
+                    </stackView>
                 </subviews>
                 <color key="backgroundColor" name="littleElevatedViews"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Iew-nN-Qpa" secondAttribute="trailing" constant="16" id="0Q4-AX-BFO"/>
-                    <constraint firstItem="cse-G1-LXo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5aa-Vh-lwu" secondAttribute="trailing" constant="8" id="147-fd-MJH"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kJt-Wb-w3z" secondAttribute="bottom" constant="4" id="31R-rr-jaV"/>
-                    <constraint firstItem="qZ3-JN-p3a" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="4ki-qs-Gm3"/>
-                    <constraint firstItem="XP4-kq-XC3" firstAttribute="centerX" secondItem="9vV-vZ-Kj7" secondAttribute="centerX" id="7J1-eE-Lqu"/>
+                    <constraint firstItem="Puv-zs-J7h" firstAttribute="top" secondItem="9vV-vZ-Kj7" secondAttribute="bottom" id="47Q-J0-JoY"/>
                     <constraint firstItem="9vV-vZ-Kj7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="7fp-BF-zuh"/>
+                    <constraint firstItem="qZ3-JN-p3a" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="D2W-Ph-2P5"/>
                     <constraint firstItem="iZE-ep-JlE" firstAttribute="top" secondItem="qZ3-JN-p3a" secondAttribute="bottom" id="G7W-Jp-IGv"/>
-                    <constraint firstItem="5aa-Vh-lwu" firstAttribute="leading" secondItem="kJt-Wb-w3z" secondAttribute="trailing" constant="8" id="INn-v6-rrQ"/>
                     <constraint firstAttribute="trailing" secondItem="iZE-ep-JlE" secondAttribute="trailing" constant="16" id="MAO-UB-vs2"/>
-                    <constraint firstItem="qZ3-JN-p3a" firstAttribute="leading" secondItem="XP4-kq-XC3" secondAttribute="trailing" constant="25" id="OB9-zE-jaG"/>
                     <constraint firstItem="Puv-zs-J7h" firstAttribute="centerX" secondItem="9vV-vZ-Kj7" secondAttribute="centerX" id="ODI-DS-JgM"/>
-                    <constraint firstItem="kJt-Wb-w3z" firstAttribute="top" secondItem="Iew-nN-Qpa" secondAttribute="bottom" constant="10" id="QJl-EC-kjz"/>
-                    <constraint firstItem="cse-G1-LXo" firstAttribute="centerY" secondItem="5aa-Vh-lwu" secondAttribute="centerY" id="RBa-HP-1Cx"/>
+                    <constraint firstItem="9vV-vZ-Kj7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="OMF-ee-Dhq"/>
                     <constraint firstItem="Iew-nN-Qpa" firstAttribute="leading" secondItem="9vV-vZ-Kj7" secondAttribute="trailing" constant="11" id="Rks-bM-RDi"/>
-                    <constraint firstItem="XP4-kq-XC3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="UGy-Fd-Hrx"/>
-                    <constraint firstAttribute="trailing" secondItem="cse-G1-LXo" secondAttribute="trailing" constant="16" id="VYp-Vt-hOT"/>
+                    <constraint firstItem="qZ3-JN-p3a" firstAttribute="leading" secondItem="9vV-vZ-Kj7" secondAttribute="trailing" constant="10" id="UXm-pv-RJa"/>
+                    <constraint firstItem="vX9-Gg-Rli" firstAttribute="top" secondItem="Iew-nN-Qpa" secondAttribute="bottom" constant="2" id="V27-A7-F8b"/>
+                    <constraint firstItem="vX9-Gg-Rli" firstAttribute="leading" secondItem="iZE-ep-JlE" secondAttribute="leading" id="WjG-bl-xTJ"/>
                     <constraint firstItem="iZE-ep-JlE" firstAttribute="leading" secondItem="9vV-vZ-Kj7" secondAttribute="trailing" constant="11" id="hpc-J9-Qnf"/>
-                    <constraint firstItem="9vV-vZ-Kj7" firstAttribute="top" secondItem="XP4-kq-XC3" secondAttribute="bottom" constant="-4" id="jtk-PJ-pZP"/>
+                    <constraint firstItem="iZE-ep-JlE" firstAttribute="centerY" secondItem="9vV-vZ-Kj7" secondAttribute="centerY" id="mJ9-Vb-J2Z"/>
                     <constraint firstAttribute="bottom" secondItem="Puv-zs-J7h" secondAttribute="bottom" id="p7Z-c2-9Dd"/>
                     <constraint firstItem="Iew-nN-Qpa" firstAttribute="top" secondItem="iZE-ep-JlE" secondAttribute="bottom" constant="2" id="sC4-fh-MxE"/>
-                    <constraint firstItem="Puv-zs-J7h" firstAttribute="top" secondItem="9vV-vZ-Kj7" secondAttribute="bottom" constant="-4" id="tVk-Z5-yYn"/>
-                    <constraint firstItem="5aa-Vh-lwu" firstAttribute="centerY" secondItem="kJt-Wb-w3z" secondAttribute="centerY" id="uNn-pm-vXh"/>
-                    <constraint firstItem="9vV-vZ-Kj7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-22" id="wt0-Au-wwb"/>
-                    <constraint firstItem="kJt-Wb-w3z" firstAttribute="leading" secondItem="Puv-zs-J7h" secondAttribute="trailing" constant="25" id="yNY-ef-7bw"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="btnCall1" destination="kJt-Wb-w3z" id="Db1-1p-vWP"/>
-                <outlet property="btnCall2" destination="5aa-Vh-lwu" id="Gjo-8P-gFL"/>
-                <outlet property="btnRate" destination="cse-G1-LXo" id="ntV-tr-CmA"/>
+                <outlet property="btnCall" destination="j0e-zM-mOm" id="NnT-Vi-j7M"/>
+                <outlet property="btnCallWidthConstraint" destination="LEZ-mk-UMk" id="0Mf-SJ-0vR"/>
+                <outlet property="btnRate" destination="g4X-gM-bYK" id="70G-1a-WKB"/>
+                <outlet property="btnRateWidthConstraint" destination="3HB-Nj-rz0" id="Qd6-JD-dWi"/>
+                <outlet property="eventTopConstraint" destination="G7W-Jp-IGv" id="bfJ-Dq-gfX"/>
+                <outlet property="eventTopSuperConstraint" destination="mJ9-Vb-J2Z" id="Vgo-rX-xkB"/>
                 <outlet property="imgSelected" destination="9vV-vZ-Kj7" id="hzC-Wx-5Pt"/>
                 <outlet property="lblDescription" destination="Iew-nN-Qpa" id="mcc-v2-mZU"/>
                 <outlet property="lblEvent" destination="iZE-ep-JlE" id="GSA-TY-Fsl"/>
                 <outlet property="lblTime" destination="qZ3-JN-p3a" id="gmR-5p-zEe"/>
-                <outlet property="overView" destination="XP4-kq-XC3" id="Ktw-Ob-Ma4"/>
                 <outlet property="underView" destination="Puv-zs-J7h" id="HD5-lI-PuY"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="171.42857142857142"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="deliver_call" width="37.5" height="37.5"/>
-        <image name="deliver_check" width="37.5" height="37.5"/>
+        <image name="checked" width="64" height="64"/>
         <namedColor name="littleBlue">
-            <color red="0.24300000071525574" green="0.50999999046325684" blue="0.99599999189376831" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.63921568627450975" green="0.16470588235294117" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="littleElevatedViews">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="littleLabelColor">
             <color red="0.25099998712539673" green="0.25099998712539673" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="littleWhite">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

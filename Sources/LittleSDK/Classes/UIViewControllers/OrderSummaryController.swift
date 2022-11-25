@@ -398,23 +398,26 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             let deliveryItem = deliveryLogsArr[indexPath.item]
             let cell = tableView.dequeueReusableCell(withIdentifier: "deliveryCell") as! DeliveryCell
             if deliveryLogsArr.count == 1 {
-                cell.overView.isHidden = true
+//                cell.overView.isHidden = true
                 cell.underView.isHidden = true
             } else if indexPath.item == 0 {
-                cell.overView.isHidden = true
+//                cell.overView.isHidden = true
                 cell.underView.isHidden = false
             } else if indexPath.item == (deliveryLogsArr.count - 1) {
-                cell.overView.isHidden = false
+//                cell.overView.isHidden = false
                 cell.underView.isHidden = true
             } else {
-                cell.overView.isHidden = false
+//                cell.overView.isHidden = false
                 cell.underView.isHidden = false
             }
-            cell.lblTime.text = deliveryItem.eventTime ?? ""
+            cell.lblTime.text = deliveryItem.eventTime ?? nil
             if deliveryItem.eventTime != nil && deliveryItem.eventTime != "" {
+                cell.eventTopConstraint.isActive = true
+                cell.eventTopSuperConstraint.isActive = false
                 let color = SDKConstants.littleSDKThemeColor
-                cell.overView.backgroundColor = color
-                cell.imgSelected.image = getImage(named: "deliver_check", bundle: sdkBundle!)
+//                cell.overView.backgroundColor = color
+                cell.imgSelected.image = getImage(named: "checked", bundle: sdkBundle!)
+                cell.imgSelected.tintColor = color
                 if indexPath.item < deliveryLogsArr.count-1 {
                     let item = deliveryLogsArr[indexPath.item+1].eventTime
                     if item != nil && item != "" {
@@ -426,14 +429,17 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                     cell.underView.backgroundColor = .lightGray
                 }
             } else {
-                cell.overView.backgroundColor = .lightGray
+                cell.eventTopConstraint.isActive = false
+                cell.eventTopSuperConstraint.isActive = true
+                cell.eventTopSuperConstraint.constant = 0
+//                cell.overView.backgroundColor = .lightGray
                 cell.underView.backgroundColor = .lightGray
-                cell.imgSelected.image = getImage(named: "deliver_uncheck", bundle: sdkBundle!)
+                cell.imgSelected.tintColor = .lightGray
+                cell.imgSelected.image = getImage(named: "circle", bundle: sdkBundle!)
             }
             if deliveryItem.mobileNumber != nil && deliveryItem.mobileNumber != "" {
-                cell.btnCall1.isHidden = true
-                cell.btnCall2.isHidden = true
-                cell.lblDescription.text = "Rate them to help improve their services."
+                cell.btnCall.isHidden = true
+                cell.lblDescription.text = "Rate \(deliveryItem.name ?? "") to help improve our services"
                 cell.btnRate.isHidden = false
                 cell.btnRate.tag = indexPath.item
                 if deliveryItem.eventName?.contains("Picked") ?? false {
@@ -442,21 +448,27 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                     cell.btnRate.addTarget(self, action: #selector(rateMerchantBtnPressed(_:)), for: .touchUpInside)
                 }
             } else {
-                cell.btnCall1.isHidden = true
-                cell.btnCall2.isHidden = true
+                cell.lblDescription.text = nil
+                cell.btnCall.isHidden = true
                 cell.lblDescription.text = ""
                 cell.btnRate.isHidden = true
             }
             if deliveryItem.eventName?.contains("Picked") ?? false {
-                cell.btnCall2.setTitle("Call rider (\((deliveryItem.name ?? "").capitalized))", for: .normal)
+                cell.btnCall.setTitle("Call rider (\((deliveryItem.name ?? "").capitalized))", for: .normal)
             }
-            if deliveryItem.eventName?.contains("Accepted") ?? false {
+            
+            cell.btnCallWidthConstraint.constant = cell.btnCall.intrinsicContentSize.width + 10
+            cell.btnRateWidthConstraint.constant = cell.btnRate.intrinsicContentSize.width + 10
+            
+            /*if deliveryItem.eventName?.contains("Accepted") ?? false {
                 cell.lblEvent.text = "What do you think of \((deliveryItem.name ?? "").capitalized)?"
             } else if deliveryItem.eventName?.contains("Picked") ?? false {
                 cell.lblEvent.text = "What do you think of \((deliveryItem.name ?? "").capitalized)?"
             } else {
                 cell.lblEvent.text = deliveryItem.eventName ?? ""
-            }
+            }*/
+            
+            cell.lblEvent.text = deliveryItem.eventName ?? ""
             
             cell.selectionStyle = .none
             return cell

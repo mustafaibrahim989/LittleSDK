@@ -14,12 +14,15 @@ class DeliveryCell: UITableViewCell {
     @IBOutlet weak var lblEvent: UILabel!
     @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var btnRate: UIButton!
-    @IBOutlet weak var btnCall1: UIButton!
-    @IBOutlet weak var btnCall2: UIButton!
+    @IBOutlet weak var btnCall: UIButton!
     @IBOutlet weak var overView: UIView!
     @IBOutlet weak var underView: UIView!
     @IBOutlet weak var imgSelected: UIImageView!
     
+    @IBOutlet weak var btnCallWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var btnRateWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var eventTopSuperConstraint: NSLayoutConstraint!
+    @IBOutlet weak var eventTopConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
