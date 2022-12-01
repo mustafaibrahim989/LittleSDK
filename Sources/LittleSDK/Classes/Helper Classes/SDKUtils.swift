@@ -151,4 +151,17 @@ class SDKUtils {
         let result = range != nil ? true : false
         return result
     }
+    
+    static func cleanDeliveryDate(dateStr: String) -> String {
+        if dateStr.containsIgnoringCase("Today".localized) {
+            let today = Date()
+            return dateStr.replacingLastOccurrenceOfString("Today".localized, with: today.scheduleDateOnlyFormat())
+            
+        } else if dateStr.containsIgnoringCase("Tomorrow".localized) {
+            let tomorrow = Date().adding(.day, value: 1)
+            return dateStr.replacingLastOccurrenceOfString("Tomorrow".localized, with: tomorrow.scheduleDateOnlyFormat())
+        }
+        
+        return dateStr
+    }
 }

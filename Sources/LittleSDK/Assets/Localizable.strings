@@ -93,3 +93,6 @@
 "✓ Has Snacks" = "✓ Has Snacks";
 "No Snacks" = "No Snacks";
 "These are the seats you are about to book:" = "These are the seats you are about to book:";
+"Tomorrow" = "Tomorrow";
+"Today" = "Today";
+"no_selected_time_slot" = "There are no selectable timeslots for %@";

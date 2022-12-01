@@ -89,8 +89,16 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var lblPromoCodeLabel: UILabel!
     
     @IBOutlet weak var lblDisclaimer: UILabel!
+    @IBOutlet weak var tfDate: UITextField!
     
     var myDisclaimerMessage: String = ""
+    
+    private var dateArr: [String] = []
+    private var timeArr: [String] = []
+    private var deliveryDate: String = ""
+    
+    private var selectedTimeRow = -1
+    private var selectedDateRow = -1
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,6 +216,8 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             
         }
+        
+        setupTimeSlots()
         
 //        scrollView.setContentOffset(CGPoint(x: 0, y: menuTableHeight.constant + 40), animated: true)
         
@@ -407,7 +417,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
             let amountRestaurant = Double((lblTotalCash.text ?? "0").filterNumbersOnly())! - amountMovies
             
-            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"WalletID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
+            dataToSend = "{\"FormID\":\"RESTAURANTDELIVERYITEMS\"\(commonCallParams()),\"RestaurantDeliveryItems\":{\"PaymentMode\":\"\(paymentSourceArr[paymentIndex].walletName ?? "")\",\"WalletID\":\"\(paymentSourceArr[paymentIndex].walletID ?? "")\",\"DeliveryName\":\"\(am.getPICKUPADDRESS() ?? "")\",\"DeliveryLL\":\"\(am.getCurrentLocation() ?? "0.0,0.0")\",\"ModuleID\":\"\(category)\",\"PromoCode\":\"\(promoIs)\",\"DeliveryDetails\":\"\(txtDeliveryDetails.text ?? "")\",\"DeliveryMode\":\"\(deliveryMode)\",\"BalanceAmount\":\"0\",\"BalanceType\":\"COMMON\",\"FinalNotes\":\"\(txtExtraDetails.text ?? "")\",\"TheirReference\":\(am.getSDKAdditionalData()),\"DeliveryDate\":\"\(deliveryDate)\",\"RestaurantDeliveryItemDetails\":[\(orderString)]}}"
             
             printVal(object: "delivery fee: \(delivery), data: \(dataToSend)")
         }
@@ -716,7 +726,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 })
             } else {
 //                self.totalViewHeight.constant = (525.0 + totalHeight)
-                self.deliverLocationConst.constant = 120
+                self.deliverLocationConst.constant = 190
                 self.topDelConst.constant = 80
                 self.deliverLocationView.alpha = 0
                 self.deliverLocationView.isHidden = false
@@ -838,6 +848,38 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
     }
     
+    @IBAction func showDatePicker(_ sender: UITextField) {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        sender.inputView = picker
+                
+        guard timeArr.count > picker.selectedRow(inComponent: 1) else {
+            tfDate.text = nil
+            selectedDateRow = -1
+            selectedTimeRow = -1
+            deliveryDate = ""
+            return
+        }
+        
+        if selectedDateRow >= 0 {
+            picker.selectRow(selectedDateRow, inComponent: 0, animated: false)
+        }
+        
+        if selectedTimeRow >= 0 {
+            picker.selectRow(selectedTimeRow, inComponent: 1, animated: false)
+        }
+        
+        selectedDateRow = picker.selectedRow(inComponent: 0)
+        selectedTimeRow = picker.selectedRow(inComponent: 1)
+        
+        if let timeStr = timeArr[selectedTimeRow].components(separatedBy: " - ").first {
+            let dateStr = dateArr[selectedDateRow]
+            deliveryDate = SDKUtils.cleanDeliveryDate(dateStr: "\(dateStr) \(timeStr)")
+            tfDate.text = deliveryDate
+        }
+    }
+    
     @IBAction func btnConfirmPromoPressed(_ sender: UIButton) {
         if txtPromoCode.text == "" {
             dismissSwiftAlert()
@@ -886,6 +928,66 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                 navigator.pushViewController(viewController, animated: true)
             }
         }
+    }
+    
+    private func setupTimeSlots() {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "dd MMM yyyy"
+        
+        let dateTimeNow = Date()
+                
+        for i in (0..<7) {
+            switch i {
+            case 0:
+                dateArr.append("Today".localized)
+            case 1:
+                dateArr.append("Tomorrow".localized)
+            default:
+                let myDate = Calendar.current.date(byAdding: .day, value: i, to: dateTimeNow)!
+                dateArr.append(formatter.string(from: myDate))
+            }
+        }
+        
+        populateTimeArr(formatter, dateTimeNow, dateTimeNow)
+        
+    }
+    
+    private func populateTimeArr(_ formatter: DateFormatter, _ dateTimeNow: Date, _ myDate: Date) {
+        
+        timeArr.removeAll()
+        
+        let timeformatter = DateFormatter()
+        timeformatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        timeformatter.dateFormat = "dd MMM yyyy HH:mm"
+        timeformatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        
+        let currentDay = formatter.string(from: myDate)
+        
+        let day = Calendar.current.component(.weekday, from: myDate)
+        let fromTime = "07:00"
+        let toTime = "16:00"
+        if var startTime = timeformatter.date(from: "\(currentDay) \(fromTime)") {
+            if let endTime = timeformatter.date(from: "\(currentDay) \(toTime)") {
+                if startTime < dateTimeNow {
+                    startTime = dateTimeNow
+                }
+                
+                let startHour = Calendar.current.component(.hour, from: startTime)
+                let endHour = Calendar.current.component(.hour, from: endTime)
+                
+                if endHour > startHour {
+                    for each in (startHour..<endHour) {
+                        let eachStr = each > 9 ? "\(each)" : "0\(each)"
+                        let eachStr2 = each + 1 > 9 ? "\(each + 1)" : "0\(each + 1)"
+                        timeArr.append("\(eachStr):00 - \(eachStr):30")
+                        timeArr.append("\(eachStr):30 - \(eachStr2):00")
+                    }
+                }
+                
+            }
+        }
+        
     }
     
     // MARK: - TableView DataSource & Delegates
@@ -1029,4 +1131,74 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             return cell
         }
     }
+}
+
+// MARK: - PickerViewDelegates
+extension ConfirmOrderController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return dateArr.count
+        } else {
+            return timeArr.count
+        }
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if component == 0 {
+            return dateArr[row]
+        } else {
+            return timeArr[row]
+        }
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+                
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "dd MMM yyyy"
+        
+        let dateTimeNow = Date()
+        let myDate = Calendar.current.date(byAdding: .day, value: row, to: dateTimeNow)!
+        
+        if component == 0 {
+            
+            populateTimeArr(formatter, dateTimeNow, myDate)
+            
+            pickerView.reloadComponent(1)
+            
+        }
+        
+        let timeformatter = DateFormatter()
+        timeformatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        timeformatter.dateFormat = "dd MMM yyyy HH:mm"
+        
+        deliveryDate = ""
+        selectedDateRow = -1
+        selectedTimeRow = -1
+        
+        guard timeArr.count > pickerView.selectedRow(inComponent: 1) else {
+            tfDate.text = nil
+            
+            showAlerts(title: "", message: String(format: "no_selected_time_slot".localized, dateArr[pickerView.selectedRow(inComponent: 0)]))
+            return
+        }
+        
+        selectedDateRow = pickerView.selectedRow(inComponent: 0)
+        selectedTimeRow = pickerView.selectedRow(inComponent: 1)
+        
+        if let timeStr = timeArr[selectedTimeRow].components(separatedBy: " - ").first {
+            let dateStr = dateArr[selectedDateRow]
+            deliveryDate = SDKUtils.cleanDeliveryDate(dateStr: "\(dateStr) \(timeStr)")
+            tfDate.text = deliveryDate
+        }
+        
+        
+        
+    }
+    
 }

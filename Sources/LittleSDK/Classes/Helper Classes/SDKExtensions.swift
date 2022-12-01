@@ -762,11 +762,57 @@ extension Date {
         
     }
     
+    static func datesInRange(from fromDate: Date, to toDate: Date, by interval: Calendar.Component) -> [Date] {
+        var dates: [Date] = []
+        var date = fromDate
+        
+        while date <= toDate {
+            dates.append(date)
+            guard let newDate = Calendar.current.date(byAdding: interval, value: 1, to: date) else { break }
+            date = newDate
+        }
+        return dates
+    }
+    
+    func adding(_ component: Calendar.Component, value: Int, using calendar: Calendar = .current) -> Date {
+        calendar.date(byAdding: component, value: value, to: self)!
+    }
+    
+    func scheduleDateOnlyFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM yyyy"
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        return formatter.string(from: self)
+    }
+    
 }
 
 extension String {
     var urlEncoded: String {
         return self.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+    }
+    
+    func containsIgnoringCase(_ string: String) -> Bool {
+        if let _ = self.range(of: string, options: .caseInsensitive) {
+            return true
+        }
+        
+        return false
+    }
+    
+    public func replacingLastOccurrenceOfString(_ searchString: String, with replacementString: String, caseInsensitive: Bool = true) -> String {
+        let options: String.CompareOptions
+        if caseInsensitive {
+            options = [.backwards, .caseInsensitive]
+        } else {
+            options = [.backwards]
+        }
+
+        if let range = self.range(of: searchString, options: options, range: nil, locale: nil) {
+
+            return self.replacingCharacters(in: range, with: replacementString)
+        }
+        return self
     }
 }
 
