@@ -1319,3 +1319,39 @@ struct Seat: Codable {
 }
 
 typealias MovieTickets = [MovieTicket]
+
+// MARK: - ResumeTripDetail
+struct ResumeTripDetail: Codable {
+    var status, tripID, driverName, driverMobile: String?
+    var driverPIC: String?
+    var driverLatitude, driverLongitude, carModel, carNumber: String?
+    var carColor, driverRating, driverBearing, liveFare: String?
+    var basePrice, distance, distanceTotalCost, time: String?
+    var timeTotalCost, badgeText, badgeColor, badgeLink: String?
+
+    enum CodingKeys: String, CodingKey {
+        case status = "Status"
+        case tripID = "TripID"
+        case driverName = "DriverName"
+        case driverMobile = "DriverMobile"
+        case driverPIC = "DriverPIC"
+        case driverLatitude = "DriverLatitude"
+        case driverLongitude = "DriverLongitude"
+        case carModel = "CarModel"
+        case carNumber = "CarNumber"
+        case carColor = "CarColor"
+        case driverRating = "DriverRating"
+        case driverBearing = "DriverBearing"
+        case liveFare = "LiveFare"
+        case basePrice = "BasePrice"
+        case distance = "Distance"
+        case distanceTotalCost = "DistanceTotalCost"
+        case time = "Time"
+        case timeTotalCost = "TimeTotalCost"
+        case badgeText = "BadgeText"
+        case badgeColor = "BadgeColor"
+        case badgeLink = "BadgeLink"
+    }
+}
+
+typealias ResumeTripDetails = [ResumeTripDetail]

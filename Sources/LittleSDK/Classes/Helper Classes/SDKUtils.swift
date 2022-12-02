@@ -108,6 +108,11 @@ class SDKUtils {
             "UserAdditionalData": am.getSDKAdditionalData(),
         ]
     }
+    
+    static func commonJsonPipedTags() -> String {
+        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
+        return "UNIQUEID|\(am.getMyUniqueID() ?? "")|MOBILENUMBER|\(am.getSDKMobileNumber() ?? "")|APKVERSION|\(SDKUtils.getAppVersion())|CODEBASE|APPLE|CITY|\(am.getCity() ?? "")|COUNTRY|\(am.getCountry() ?? "")|DEVICENAME|\(SDKUtils.getPhoneType())|IMEI|\(am.getIMEI() ?? "")|CURRENTLL|\(am.getCurrentLocation() ?? "0.0,0.0")|LanguageID|\(Locale.current.languageCode ?? "en")|NetworkCountry|\(countryCode ?? "")|CarrierName|\(SDKUtils.getCarrierName() ?? "")|"
+    }
 
     func commonJsonTagsString(formId: String) -> String {
         let params = SDKUtils.commonJsonTags(formId: formId)

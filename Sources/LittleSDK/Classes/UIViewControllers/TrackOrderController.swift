@@ -55,7 +55,12 @@ public class TrackOrderController: UIViewController {
     @IBOutlet weak var lblDriverRating: UILabel!
     @IBOutlet weak var lblDriverCar: UILabel!
     @IBOutlet weak var lblDriverPlates: UILabel!
-    @IBOutlet weak var imgDriverImage: UIImageView!
+    @IBOutlet weak var imgDriverImage: UIImageView! {
+        didSet {
+            imgDriverImage.viewCornerRadius = 25
+            imgDriverImage.clipsToBounds = true
+        }
+    }
     @IBOutlet weak var imgCarImage: UIImageView!
     @IBOutlet weak var mapContainerView: UIView!
     
@@ -105,59 +110,247 @@ public class TrackOrderController: UIViewController {
     
     // MARK: - Server Calls & Responses
     
-    func resumeTrip() {
+    private func resumeTrip() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCreateRequest),name:NSNotification.Name(rawValue: "CREATEREQUEST_NEW"), object: nil)
-        let datatosend = "FORMID|RESUME|TRIPID|\(am.getTRIPID() ?? "")|"
-        hc.makeServerCall(sb: datatosend, method: "CREATEREQUEST_NEW", switchnum: 0)
+        
+        var params = SDKUtils.commonJsonTags(formId: "RESUME")
+        params["TripID"] = trackID
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
+        
+        hc.makeServerCall(sb: dataToSend, method: "CREATEREQUEST_NEW", switchnum: 0)
     }
-       
-    @objc func loadCreateRequest() {
-           
+    
+    @objc func loadCreateRequest(_ notification: Notification) {
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "CREATEREQUEST_NEW"), object: nil)
-        showDriverDetails()
-        getTripStatus()
-        startCheckingStatusUpdate()
+        
+        if let data = notification.userInfo?["data"] as? Data {
+            
+            do {
+                let requestStatusResponse = try JSONDecoder().decode(ResumeTripDetails.self, from: data)
+                guard let response = requestStatusResponse[safe: 0] else { return }
+                
+                printVal(object: response)
+                
+                let STATUS = response.status ?? ""
+                //                DRIVERLATITUDE = "\(response.driverLatitude ?? "0.0")"
+                //                DRIVERLONGITUDE = "\(response.driverLongitude ?? "0.0")"
+                //                DRIVERBEARING = "\(response.driverBearing ?? "0.0")"
+                
+                //                am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
+                //                am.saveDRIVERLONGITUDE(data: DRIVERLONGITUDE)
+                //                am.saveDRIVERBEARING(data: DRIVERBEARING)
+                
+                am.saveTRIPID(data: response.tripID ?? "")
+                am.saveLASTSERVED(data: "")
+                am.saveDRIVERNAME(data: response.driverName ?? "")
+                am.saveDRIVERMOBILE(data: response.driverMobile ?? "")
+                am.saveDRIVEREMAIL(data: "")
+                am.saveDRIVERPICTURE(data: response.driverPIC ?? "")
+                am.saveDRIVERLATITUDE(data: response.driverLatitude ?? "")
+                am.saveDRIVERLONGITUDE(data: response.driverLongitude ?? "")
+                am.saveNUMBER(data: response.carNumber ?? "")
+                am.saveMODEL(data: response.carModel ?? "")
+                am.saveCOLOR(data: response.carColor ?? "")
+                am.saveRATING(data: response.driverRating ?? "")
+                am.saveVEHICLETYPE(data: response.carModel ?? "")
+                am.saveLIVEFARE(data: response.liveFare ?? "")
+                am.saveBASEPRICE(data: response.basePrice ?? "")
+                am.saveDISTANCE(data: response.distance ?? "")
+                am.saveTIME(data: response.time ?? "")
+                am.saveDISTANCETOTALCOST(data: response.distanceTotalCost ?? "")
+                am.saveTIMETOTALCOST(data: response.timeTotalCost ?? "")
+                
+                if STATUS != "000" {
+                    am.saveTRIPSTATUS(data: "")
+                }
+                
+                originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
+                
+                let endedMessage = "Your order has already been marked delivered and signed for. Thank you for using Little!"
+                
+                switch am.getTRIPSTATUS() {
+                case "1","2","3","4":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    if destinationCoordinate != nil {
+                        drawPath()
+                    } else {
+                        gmsMapView.animate(toLocation: originCoordinate)
+                    }
+                case "5":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                case "6":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                case "7":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                default:
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: am.getMESSAGE() ?? "")
+                }
+                
+                showDriverDetails()
+                getTripStatus()
+                startCheckingStatusUpdate()
+                
+            } catch {}
+        }
         
     }
     
-    func getTripStatus() {
-        
+    private func getTripStatus() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadRequestStatus),name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
         
-        let datatosend = "FORMID|GETREQUESTSTATUS_V1|TRIPID|\(trackID)|GETET|Y|DEVICETOKEN|\(am.getDeviceToken() ?? "")|CORPORATETRIPID||"
+        var params = SDKUtils.commonJsonTags(formId: "GETREQUESTSTATUS")
+        params["TripID"] = trackID
+        params["GetRequestStatus"] = [
+            "TripID": trackID
+        ]
+        let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
         
-        hc.makeServerCall(sb: datatosend, method: "GETREQUESTSTATUS_NEW", switchnum: 0)
+        hc.makeServerCall(sb: dataToSend, method: "GETREQUESTSTATUS_NEW", switchnum: 0)
         
     }
     
-    @objc func loadRequestStatus() {
-        NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
+    @objc private func loadRequestStatus(_ notification: Notification) {
+        let data = notification.userInfo?["data"] as? Data
+        NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "GETREQUESTSTATUS_NEW"), object: nil)
         
-        originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
-        
-        let endedMessage = "Your order has already been marked delivered and signed for. Thank you for using Little!"
-        
-        switch am.getTRIPSTATUS() {
-            case "1","2","3","4":
-                updateDriverLocation(coordinates: originCoordinate)
-                if destinationCoordinate != nil {
-                    drawPath()
-                } else {
-                    gmsMapView.animate(toLocation: originCoordinate)
+        if data != nil {
+            var STATUS = ""
+            var TRIPSTATUS = ""
+            var WIFIPASS = ""
+            var DRIVERLATITUDE = ""
+            var DRIVERLONGITUDE = ""
+            var DRIVERBEARING = ""
+            var VEHICLETYPE = ""
+            var LIVEFARE = ""
+            var BASEPRICE = ""
+            var PERMIN = ""
+            var PERKM = ""
+            var CORPORATECODE = ""
+            var BASEFARE = ""
+            var DISTANCE = ""
+            var TIME = ""
+            var DISTANCETOTALCOST = ""
+            var TIMETOTALCOST = ""
+            var PAYMENTCODES = ""
+            var PAYMENTCOSTS = ""
+            var ET = ""
+            var ED = ""
+            var MESSAGE = ""
+            var CURRENCY = ""
+            
+            am.saveTRIPSTATUS(data: TRIPSTATUS)
+            am.saveWIFIPASS(data: WIFIPASS)
+            am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
+            am.saveDRIVERLONGITUDE(data: DRIVERLONGITUDE)
+            am.saveDRIVERBEARING(data: DRIVERBEARING)
+            am.saveVEHICLETYPE(data: VEHICLETYPE)
+            am.savePERMIN(data: PERMIN)
+            am.savePERKM(data: PERKM)
+            am.saveCORPORATECODE(data: CORPORATECODE)
+            am.saveLIVEFARE(data: LIVEFARE)
+            am.saveBASEPRICE(data: BASEPRICE)
+            am.saveBASEFARE(data: BASEFARE)
+            am.saveDISTANCE(data: DISTANCE)
+            am.saveTIME(data: TIME)
+            am.saveGLOBALCURRENCY(data: CURRENCY)
+            am.saveDISTANCETOTALCOST(data: DISTANCETOTALCOST)
+            am.saveTIMETOTALCOST(data: TIMETOTALCOST)
+            am.savePAYMENTCODES(data: PAYMENTCODES)
+            am.savePAYMENTCOSTS(data: PAYMENTCOSTS)
+            am.saveET(data: ET)
+            am.saveED(data: ED)
+            am.saveMESSAGE(data: MESSAGE)
+            
+            do {
+                let requestStatusResponse = try JSONDecoder().decode(RequestStatusResponse.self, from: data!)
+                guard let response = requestStatusResponse[safe: 0] else { return }
+                
+                printVal(object: response)
+                
+                STATUS = response.status ?? ""
+                TRIPSTATUS = response.tripStatus ?? ""
+                WIFIPASS = response.wifiPass ?? ""
+                DRIVERLATITUDE = "\(response.driverLatitude ?? "0.0")"
+                DRIVERLONGITUDE = "\(response.driverLongitude ?? "0.0")"
+                DRIVERBEARING = "\(response.driverBearing ?? "0.0")"
+                VEHICLETYPE = response.vehicleType ?? ""
+                LIVEFARE = response.liveFare ?? ""
+                BASEFARE = response.minimumFare ?? ""
+                BASEPRICE = response.basePrice ?? ""
+                PERMIN = "\(response.costPerMinute ?? "0.0")"
+                PERKM = "\(response.costPerKilometer ?? "0.0")"
+                CORPORATECODE = response.corporateID ?? ""
+                DISTANCE = response.distance ?? ""
+                TIME = response.time ?? ""
+                DISTANCETOTALCOST = response.distanceTotalCost ?? ""
+                TIMETOTALCOST = response.timeTotalCost ?? ""
+                PAYMENTCODES = response.paymentCodes ?? ""
+                PAYMENTCOSTS = response.paymentCosts ?? ""
+                ET = response.et ?? ""
+                ED = response.ed ?? ""
+                MESSAGE = response.message ?? ""
+                CURRENCY = response.currency ?? ""
+                
+                am.saveTRIPSTATUS(data: TRIPSTATUS)
+                am.saveWIFIPASS(data: WIFIPASS)
+                am.saveDRIVERLATITUDE(data: DRIVERLATITUDE)
+                am.saveDRIVERLONGITUDE(data: DRIVERLONGITUDE)
+                am.saveDRIVERBEARING(data: DRIVERBEARING)
+                am.saveVEHICLETYPE(data: VEHICLETYPE)
+                am.savePERMIN(data: PERMIN)
+                am.savePERKM(data: PERKM)
+                am.saveCORPORATECODE(data: CORPORATECODE)
+                am.saveLIVEFARE(data: LIVEFARE)
+                am.saveBASEPRICE(data: BASEPRICE)
+                am.saveBASEFARE(data: BASEFARE)
+                am.saveDISTANCE(data: DISTANCE)
+                am.saveTIME(data: TIME)
+                am.saveGLOBALCURRENCY(data: CURRENCY)
+                am.saveDISTANCETOTALCOST(data: DISTANCETOTALCOST)
+                am.saveTIMETOTALCOST(data: TIMETOTALCOST)
+                am.savePAYMENTCODES(data: PAYMENTCODES)
+                am.savePAYMENTCOSTS(data: PAYMENTCOSTS)
+                am.saveET(data: ET)
+                am.saveED(data: ED)
+                am.saveMESSAGE(data: MESSAGE)
+                
+                if STATUS != "000" {
+                    am.saveTRIPSTATUS(data: "")
                 }
-            case "5":
-                updateDriverLocation(coordinates: originCoordinate)
-                tripEnded(message: endedMessage)
-            case "6":
-                updateDriverLocation(coordinates: originCoordinate)
-                tripEnded(message: endedMessage)
-            case "7":
-                updateDriverLocation(coordinates: originCoordinate)
-                tripEnded(message: endedMessage)
-            default:
-                updateDriverLocation(coordinates: originCoordinate)
-                tripEnded(message: am.getMESSAGE() ?? "")
+                
+                originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
+                
+                let endedMessage = "Your order has already been marked delivered and signed for. Thank you for using Little!"
+                
+                switch am.getTRIPSTATUS() {
+                case "1","2","3","4":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    if destinationCoordinate != nil {
+                        drawPath()
+                    } else {
+                        gmsMapView.animate(toLocation: originCoordinate)
+                    }
+                case "5":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                case "6":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                case "7":
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: endedMessage)
+                default:
+                    updateDriverLocation(coordinates: originCoordinate)
+                    tripEnded(message: am.getMESSAGE() ?? "")
+                }
+                
+            } catch {}
         }
+        
     }
     
     // MARK: - Functions & IBActions
@@ -216,8 +409,8 @@ public class TrackOrderController: UIViewController {
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "", message: "\n\(message)\n", image: "", action: "")
         view.proceedAction = {
-           SwiftMessages.hide()
-           self.navigationController?.popViewController(animated: true)
+            SwiftMessages.hide()
+            self.navigationController?.popViewController(animated: true)
         }
         view.btnDismiss.isHidden = true
         view.configureDropShadow()
@@ -270,11 +463,11 @@ public class TrackOrderController: UIViewController {
     
     func drawPath() {
         goLocal()
-//        if am.getCountry()?.uppercased() == "KENYA" {
-//            goLocal()
-//        } else {
-//            goGoogle()
-//        }
+        //        if am.getCountry()?.uppercased() == "KENYA" {
+        //            goLocal()
+        //        } else {
+        //            goGoogle()
+        //        }
     }
     
     func goGoogle() {
@@ -339,7 +532,7 @@ public class TrackOrderController: UIViewController {
                         }
                     }
                     
-                    }.resume()
+                }.resume()
                 
             }
         }
@@ -351,42 +544,44 @@ public class TrackOrderController: UIViewController {
         
         animatePath = GMSPath()
         if originCoordinate != nil {
-                    if destinationCoordinate != nil {
-                        let origin = "\(originCoordinate.latitude),\(originCoordinate.longitude)"
-                        let destination = "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"
-                        let directionURL = "https://maps.little.bz/api/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
-
-                        guard let url = URL(string: directionURL) else { return }
-        
-                        URLSession.shared.dataTask(with: url) { (data, response, error) in
-                            if error != nil {
-//                                self.goGoogle()
-                                // printVal(object: error as Any)
-                            } else {
-                                do {
-        
-                                    let parsedData = try JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]
-        
-                                    let paths = parsedData["paths"] as? Array<Dictionary<String, AnyObject>>
-                                    
-                                    self.overviewPolylineString = paths?[safe: 0]?["points"] as? String
-                                    
-                                    DispatchQueue.main.async {
-                                        self.configureMapAndMarkersForRoute()
-                                        self.drawRoute()
-                                    }
-                                    
-                                    // printVal(object: "This is local")
-                                    
-                                    // printVal(object: parsedData.description)
-                                } catch _ as NSError {
-//                                    self.goGoogle()
-                                    // printVal(object: error)
-                                }
+            if destinationCoordinate != nil {
+                let origin = "\(originCoordinate.latitude),\(originCoordinate.longitude)"
+                let destination = "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"
+                let directionURL = "https://maps.little.bz/api/direction/full?origin=\(origin)&destination=\(destination)&key=\(am.DecryptDataKC(DataToSend: cn.littleMapKey))"
+                
+                printVal(object: "directionURL: \(directionURL)")
+                
+                guard let url = URL(string: directionURL) else { return }
+                
+                URLSession.shared.dataTask(with: url) { (data, response, error) in
+                    if error != nil {
+                        //                                self.goGoogle()
+                        // printVal(object: error as Any)
+                    } else {
+                        do {
+                            
+                            let parsedData = try JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]
+                            
+                            let paths = parsedData["paths"] as? Array<Dictionary<String, AnyObject>>
+                            
+                            self.overviewPolylineString = paths?[safe: 0]?["points"] as? String
+                            
+                            DispatchQueue.main.async {
+                                self.configureMapAndMarkersForRoute()
+                                self.drawRoute()
                             }
-        
-                        }.resume()
+                            
+                            // printVal(object: "This is local")
+                            
+                            // printVal(object: parsedData.description)
+                        } catch _ as NSError {
+                            //                                    self.goGoogle()
+                            // printVal(object: error)
+                        }
                     }
+                    
+                }.resume()
+            }
         }
     }
     
@@ -463,7 +658,7 @@ public class TrackOrderController: UIViewController {
         if number != "" {
             number="+"+number
             guard let url = URL(string: "telprompt://\(number)") else {
-              return
+                return
             }
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
@@ -516,8 +711,8 @@ public class TrackOrderController: UIViewController {
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
         view.loadPopup(title: "", message: "\nLocation Services Disabled. Please enable location services in settings to help identify your current location. This will be used by keep track of your current order.\n", image: "", action: "")
         view.proceedAction = {
-           SwiftMessages.hide()
-           guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            SwiftMessages.hide()
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
             if UIApplication.shared.canOpenURL(settingsUrl) {

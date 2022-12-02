@@ -78,12 +78,14 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     
     public override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
         if restaurantName?.last?.lowercased() == "s" {
             lblTitle.text = "\(restaurantName ?? "")' Order Summary"
         } else {
             lblTitle.text = "\(restaurantName ?? "")'s Order Summary"
         }
         self.bottomButtonHeight.constant = 0
+        
         getOrderSummary()
     }
     

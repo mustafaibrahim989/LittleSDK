@@ -94,7 +94,7 @@ class SDKHandleCalls {
             
 
                 if data != nil {
-                    printVal(object: "makeServerCall raw \(String(data: data!, encoding: .utf8))")
+//                    printVal(object: "makeServerCall raw \(String(data: data!, encoding: .utf8))")
                     do {
                         
                         let sDKData = try JSONDecoder().decode(SDKData.self, from: data!)

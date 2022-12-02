@@ -21,8 +21,8 @@ class DeliveryCell: UITableViewCell {
     
     @IBOutlet weak var btnCallWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnRateWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var eventTopSuperConstraint: NSLayoutConstraint!
-    @IBOutlet weak var eventTopConstraint: NSLayoutConstraint!
+    @IBOutlet var eventTopSuperConstraint: NSLayoutConstraint!
+    @IBOutlet var eventTopConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
