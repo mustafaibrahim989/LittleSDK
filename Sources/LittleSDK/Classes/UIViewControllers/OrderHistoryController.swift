@@ -135,7 +135,6 @@ public class OrderHistoryController: UIViewController, UITableViewDataSource, UI
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let viewController = UIStoryboard(name: "Deliveries", bundle: sdkBundle!).instantiateViewController(withIdentifier: "OrderSummaryController") as? OrderSummaryController {
-            printVal(object: "tripID: \(historyArr[indexPath.item].serviceTripID)")
             viewController.deliveryID = historyArr[indexPath.item].deliveryTripID ?? ""
             viewController.orderAmount = historyArr[indexPath.item].orderAmount ?? 0.0
             viewController.tripStatus = historyArr[indexPath.item].tripStatus ?? ""

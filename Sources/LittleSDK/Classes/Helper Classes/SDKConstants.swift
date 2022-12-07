@@ -28,7 +28,11 @@ class SDKConstants {
     }
     
     func link() -> String {
-        return uat
+        if SDKAllMethods().getIsUAT() {
+            return uat
+        }
+        
+        return live
     }
     
     static let testDriverEmail = "og12@gmail.com"

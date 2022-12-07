@@ -260,18 +260,21 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     func submitMerchantRate(message: String, rating: String) {
         self.view.createLoadingNormal()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(loadMerchantRate),name:NSNotification.Name(rawValue: "RATE"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMerchantRate),name:NSNotification.Name(rawValue: "MERCHANTRATING"), object: nil)
         
-        var params = SDKUtils.commonJsonTags(formId: "RATE")
-        params["RateAgent"] = [
-            "TripID": serviceTripID ?? "",
+        var params = SDKUtils.commonJsonTags(formId: "MERCHANTRATING")
+        params["TrxRating"] = [
+            "TrxReference": deliveryID ?? "",
             "Rating": rating,
-            "Comments": message
+            "Feedback": message,
+            "Comments": message,
+            "Name": rateMerchant,
+            "MobileNumber": rateMobile
         ]
         
         let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
                 
-        hc.makeServerCall(sb: dataToSend, method: "RATE", switchnum: 0)
+        hc.makeServerCall(sb: dataToSend, method: "MERCHANTRATING", switchnum: 0)
     }
     
     @objc func loadMerchantRate(_ notification: Notification) {
@@ -390,7 +393,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
             
             cell.imgMenuImage.image = getImage(named: "default_food", bundle: sdkBundle!)
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
-            #warning("cehck price1")
+            #warning("check price1")
             cell.lblMenuAmount.text = "\(currency ?? (am.getGLOBALCURRENCY() ?? "KES")) \(menuItem.price ?? 0)"
             cell.lblMenuNumber.text = "x \(menuItem.quantity ?? 0)"
             cell.selectionStyle = .none
@@ -440,9 +443,10 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 cell.imgSelected.image = getImage(named: "circle", bundle: sdkBundle!)
             }
             if deliveryItem.mobileNumber != nil && deliveryItem.mobileNumber != "" {
+                let picked  = deliveryItem.eventName?.contains("Picked") ?? false
                 cell.btnCall.isHidden = true
-                cell.lblDescription.text = "Rate \(deliveryItem.name ?? "") to help improve our services"
-                cell.btnRate.isHidden = false
+                cell.lblDescription.text = !picked ? "Rate \(deliveryItem.name ?? "") to help improve our services" : nil
+                cell.btnRate.isHidden = picked
                 cell.btnRate.tag = indexPath.item
                 if deliveryItem.eventName?.contains("Picked") ?? false {
                     cell.btnRate.addTarget(self, action: #selector(rateDriverBtnPressed(_:)), for: .touchUpInside)
