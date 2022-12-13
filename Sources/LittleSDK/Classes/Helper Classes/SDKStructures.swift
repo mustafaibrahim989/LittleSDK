@@ -251,6 +251,7 @@ struct RequestStatusResponseElement: Codable {
     let time, paymentCodes, paymentCosts: String?
     let startOTP, endOTP, parkingOTP, tripChat: String?
     let tripDropOffDetails: [TripDropOffDetail]?
+    let dropOffLL, pickupLL: String?
 
     enum CodingKeys: String, CodingKey {
         case status = "Status"
@@ -282,6 +283,8 @@ struct RequestStatusResponseElement: Codable {
         case parkingOTP = "ParkingOTP"
         case tripChat = "TripChat"
         case tripDropOffDetails = "TripDropOffDetails"
+        case dropOffLL = "DropOffLL"
+        case pickupLL = "PickUpLL"
     }
 }
 

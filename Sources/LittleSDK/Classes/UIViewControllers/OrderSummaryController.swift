@@ -104,6 +104,12 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         btnCancelOrder.isHidden = !shouldCancel
         
         btnTrackOrder.isHidden = (serviceTripID ?? "").isEmpty
+        
+        if btnTrackOrder.isHidden && btnCancelOrder.isHidden {
+            bottomButtonHeight.constant = 0
+        } else {
+            bottomButtonHeight.constant = 70
+        }
     }
     
     func commonCallParams() -> String {

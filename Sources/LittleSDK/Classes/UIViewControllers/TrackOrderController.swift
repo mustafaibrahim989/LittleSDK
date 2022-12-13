@@ -64,6 +64,8 @@ public class TrackOrderController: UIViewController {
     @IBOutlet weak var imgCarImage: UIImageView!
     @IBOutlet weak var mapContainerView: UIView!
     
+    private var shouldDrawPath = true
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -324,15 +326,21 @@ public class TrackOrderController: UIViewController {
                 
                 originCoordinate = CLLocationCoordinate2DMake(Double(am.getDRIVERLATITUDE() ?? "0") ?? 0.0, Double(am.getDRIVERLONGITUDE() ?? "0") ?? 0.0)
                 
+                if let dropOffLL = response.dropOffLL, dropOffLL.components(separatedBy: ",").count > 1 {
+                    let lat = Double(dropOffLL.components(separatedBy: ",")[0]) ?? 0
+                    let lng = Double(dropOffLL.components(separatedBy: ",")[1]) ?? 0
+                    self.destinationCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                }
+                
                 let endedMessage = "Your order has already been marked delivered and signed for. Thank you for using Little!"
                 
                 switch am.getTRIPSTATUS() {
                 case "1","2","3","4":
                     updateDriverLocation(coordinates: originCoordinate)
-                    if destinationCoordinate != nil {
+                    if destinationCoordinate != nil && shouldDrawPath {
                         drawPath()
                     } else {
-                        gmsMapView.animate(toLocation: originCoordinate)
+                        gmsMapView.animate(to: GMSCameraPosition(target: originCoordinate, zoom: 15))
                     }
                 case "5":
                     updateDriverLocation(coordinates: originCoordinate)
@@ -623,6 +631,8 @@ public class TrackOrderController: UIViewController {
                 self.animatetimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(animatePolylinePath), userInfo: nil, repeats: true)
             }
         }
+        
+        self.shouldDrawPath = false
         
     }
     
