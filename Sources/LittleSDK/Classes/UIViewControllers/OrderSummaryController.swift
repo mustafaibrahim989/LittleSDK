@@ -44,6 +44,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var bottomButtonHeight: NSLayoutConstraint!
     
     @IBOutlet weak var btnTrackOrder: UIButton!
+    @IBOutlet weak var btnCancelOrder: UIButton!
     
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblProductsAmount: UILabel!
@@ -51,6 +52,8 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
     @IBOutlet weak var lblPromoCode: UILabel!
     @IBOutlet weak var lblTotalAmount: UILabel!
     @IBOutlet weak var lblOrderID: UILabel!
+    
+    private var shouldCancelOrder = true
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -89,6 +92,20 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         getOrderSummary()
     }
     
+    private func setupButtons() {
+        var shouldCancel = false
+        
+        deliveryLogsArr.forEach { item in
+            if item.eventName?.equalIgnoreCase("accepted") == true && (item.eventTime == nil || (item.eventTime ?? "").isEmpty) {
+                shouldCancel = true
+            }
+        }
+        
+        btnCancelOrder.isHidden = !shouldCancel
+        
+        btnTrackOrder.isHidden = (serviceTripID ?? "").isEmpty
+    }
+    
     func commonCallParams() -> String {
         
         let version = getAppVersion()
@@ -122,6 +139,7 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 cartItems.removeAll()
                 let orderSummary = try JSONDecoder().decode(OrderSummary.self, from: data!)
                 guard let orderSummaryItem = orderSummary.first else { return}
+                serviceTripID = orderSummaryItem.serviceTripID
                 cartItems = orderSummaryItem.deliveryTripDetails ?? []
                 deliveryLogsArr = orderSummaryItem.deliveryLogs ?? []
                 rateEmail = orderSummaryItem.driverEMail ?? ""
@@ -159,6 +177,8 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
                 trackTable.reloadData()
             } 
         }
+        
+        setupButtons()
         
     }
     

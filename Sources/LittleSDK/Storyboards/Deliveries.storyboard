@@ -603,6 +603,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="bottomButtonHeight" destination="m3o-mY-Pl2" id="s2h-25-X0m"/>
+                        <outlet property="btnCancelOrder" destination="REa-Pr-5c2" id="FNn-k1-jMN"/>
                         <outlet property="btnTrackOrder" destination="CpO-UO-WGU" id="ugo-9O-O20"/>
                         <outlet property="deliveryTableHeight" destination="eX3-gi-ev7" id="ay3-xi-aTx"/>
                         <outlet property="lblDeliveryFee" destination="qIu-L4-H19" id="HcO-6o-LfO"/>
@@ -626,7 +627,7 @@
         <scene sceneID="WR6-dP-Drf">
             <objects>
                 <viewController storyboardIdentifier="ProductController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PS3-m7-GVo" customClass="ProductController" customModule="LittleSDK" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TPD-U7-jJq">
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="TPD-U7-jJq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
