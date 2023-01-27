@@ -453,6 +453,7 @@ class MyRidesViewController: UIViewController {
         self.addChild(popOverVC)
         popOverVC.driverName = trips[index].driverDetails?.first?.fullName ?? ""
         popOverVC.driverImage = trips[index].driverDetails?.first?.profilePicture ?? ""
+        popOverVC.showRating = false
         popOverVC.view.frame = UIScreen.main.bounds
         self.view.addSubview(popOverVC.view)
         popOverVC.didMove(toParent: self)
@@ -475,15 +476,15 @@ class MyRidesViewController: UIViewController {
         }
         
         var ratingMessage = ""
-        let rating = trips[index].rating ?? 0
-        if rating == 0 {
-            ratingMessage = "Rate your trip".localized
-        } else {
-            ratingMessage = String(format: "Re-submit rating (Current: ★%1$d)".localized, Int(rating))
-        }
+//        let rating = trips[index].rating ?? 0
+//        if rating == 0 {
+//            ratingMessage = "Rate your trip".localized
+//        } else {
+//            ratingMessage = String(format: "Re-submit rating (Current: ★%1$d)".localized, Int(rating))
+//        }
         
         let options = UIAlertController(title: nil, message: String(format: "Trip options (%1$@ by %2$@)".localized, trips[index].createdOn ?? "", trips[index].driverDetails?.first?.fullName?.capitalized ?? ""), preferredStyle: .actionSheet)
-        let btnRating = UIAlertAction(title: ratingMessage, style: .default, handler: {
+        let btnRating = UIAlertAction(title: "report_trip_issue".localized , style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.rateDriver(index: index, type: "TRIP")
         })
@@ -500,14 +501,14 @@ class MyRidesViewController: UIViewController {
             self.callDriverTapped(index: index)
         })
         btnCallDriver.setValue(callColor, forKey: "titleTextColor")
-        options.addAction(btnCallDriver)
+//        options.addAction(btnCallDriver)
         let btnBlockDriver = UIAlertAction(title: blocktitle, style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.blockDriverTapped(index: index)
         })
         btnBlockDriver.setValue(blockcolor, forKey: "titleTextColor")
 //        options.addAction(btnBlockDriver)
-        let btnReport = UIAlertAction(title: "Report a problem".localized, style: .default, handler: {
+        let btnReport = UIAlertAction(title: "email_support".localized, style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.reportAProblemTapped(index: index)
         })
@@ -562,11 +563,11 @@ class MyRidesViewController: UIViewController {
     func reportAProblemTapped(index: Int) {
         
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "\nProceed to report a problem/issue with the selected Trip?\n", image: "", action: "")
+        view.loadPopup(title: "", message: "proceed_to_email_customer_care".localized, image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
-            let subject = "Reporting a Problem on Trip: \(self.trips[index].tripID ?? "")"
-            let body = ""
+            let subject = "trip_query".localized
+            let body = "Trip\n\(self.trips[index].tripID?.components(separatedBy: "-").first ?? "")\n\nDriver\n\(self.trips[index].driverDetails?.first?.fullName ?? "")\n\nComments\n"
             let email = "operations@little.africa"
             let recipients = [email]
             
@@ -584,7 +585,7 @@ class MyRidesViewController: UIViewController {
         view.cancelAction = {
             SwiftMessages.hide()
         }
-        view.btnProceed.setTitle("Report Issue", for: .normal)
+        view.btnProceed.setTitle("email_support".localized, for: .normal)
         view.configureDropShadow()
         var config = SwiftMessages.defaultConfig
         config.duration = .forever

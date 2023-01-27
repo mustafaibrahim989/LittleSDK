@@ -96,3 +96,9 @@
 "Tomorrow" = "Tomorrow";
 "Today" = "Today";
 "no_selected_time_slot" = "There are no selectable timeslots for %@";
+"report_trip_issue" = "Report trip issue";
+"email_support" = "Email support";
+"trip_query" = "Trip Query";
+"proceed_to_email_customer_care" = "\nProceed to email customer care?\n";
+"rating_placeholder" = "Share your experience you had with your driver to help us serve you better and improve our services";
+"comment_required" = "Please enter your comment";

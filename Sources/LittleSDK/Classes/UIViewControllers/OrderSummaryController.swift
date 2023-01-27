@@ -96,10 +96,12 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         var shouldCancel = false
         
         deliveryLogsArr.forEach { item in
-            if item.eventName?.equalIgnoreCase("accepted") == true && (item.eventTime == nil || (item.eventTime ?? "").isEmpty) {
+            if item.eventName?.trimmingCharacters(in: .whitespacesAndNewlines).equalIgnoreCase("accepted") == true && (item.eventTime == nil || (item.eventTime ?? "").isEmpty) {
                 shouldCancel = true
             }
         }
+        
+        printVal(object: "shouldCancel: \(shouldCancel)")
         
         btnCancelOrder.isHidden = !shouldCancel
         

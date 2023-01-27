@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i2u-F4-ncL">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -2188,8 +2189,8 @@
         <scene sceneID="p9V-Q2-HI6">
             <objects>
                 <viewController storyboardIdentifier="ReceiptVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G9Z-ox-UMg" customClass="ReceiptVC" customModule="LittleSDK" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="SkZ-5t-E8d">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="SkZ-5t-E8d">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avz-Iy-gCI">
@@ -3145,7 +3146,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1h-dE-y7Q">
                                         <rect key="frame" x="10" y="166" width="260" height="144"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share your trip experience with us to help us serve you better (Optional)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNC-6j-vba">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share your trip experience with us to help us serve you better" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNC-6j-vba">
                                                 <rect key="frame" x="33" y="46" width="194" height="52.5"/>
                                                 <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="15"/>
                                                 <nil key="textColor"/>
@@ -3299,6 +3300,7 @@
                         <outlet property="imgDriverImage" destination="Rbn-am-6Vf" id="UAX-36-an5"/>
                         <outlet property="lblDriverName" destination="94b-nl-hC1" id="3jw-bR-tEQ"/>
                         <outlet property="lblPlaceHolder" destination="UNC-6j-vba" id="A5L-xp-gdI"/>
+                        <outlet property="ratingViewHeightConstraint" destination="3vD-Hx-suv" id="yZR-sv-PH5"/>
                         <outlet property="txtCommentsShared" destination="XQ3-yU-Ogs" id="dEx-LX-Zaf"/>
                     </connections>
                 </viewController>

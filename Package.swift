@@ -39,7 +39,7 @@ let package = Package(
             resources: [
                 .process("Assets/sparkle.wav"),
                 .process("Assets/style.json"),
-                .process("Assets/Localizable.swift")
+                .process("Assets/Localizable.strings")
             ]),
         .testTarget(
             name: "LittleSDKTests",

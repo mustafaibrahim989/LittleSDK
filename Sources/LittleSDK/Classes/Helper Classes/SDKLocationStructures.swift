@@ -76,6 +76,36 @@ struct LittlePredictionSDK: Codable {
         case predictionDescription = "description"
         case country, city, state, street, countrycode, latlng
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.predictionDescription = try? container.decodeIfPresent(String.self, forKey: .predictionDescription)
+        self.country = try? container.decodeIfPresent(String.self, forKey: .country)
+        self.city = try? container.decodeIfPresent(String.self, forKey: .city)
+        self.state = try? container.decodeIfPresent(String.self, forKey: .state)
+        self.street = try? container.decodeIfPresent(String.self, forKey: .street)
+        self.countrycode = try? container.decodeIfPresent(String.self, forKey: .countrycode)
+        self.latlng = try? container.decodeIfPresent(String.self, forKey: .latlng)
+        
+        if let id = try? container.decodeIfPresent(Int.self, forKey: .id) {
+            self.id = String(id)
+        } else if let id = try? container.decodeIfPresent(String.self, forKey: .id) {
+            self.id = id
+        } else {
+            self.id = nil
+        }
+    }
+    
+    init(id: String? = nil, predictionDescription: String? = nil, country: String? = nil, city: String? = nil, state: String? = nil, street: String? = nil, countrycode: String? = nil, latlng: String? = nil) {
+        self.id = id
+        self.predictionDescription = predictionDescription
+        self.country = country
+        self.city = city
+        self.state = state
+        self.street = street
+        self.countrycode = countrycode
+        self.latlng = latlng
+    }
 }
 
 // MARK: - PlaceDetails

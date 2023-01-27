@@ -226,7 +226,7 @@
                                     <constraint firstAttribute="height" constant="40" id="Oga-s7-yJX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="15"/>
-                                <state key="normal" title="View Order History">
+                                <state key="normal" title="My Orders">
                                     <color key="titleColor" name="littleWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>

@@ -13,6 +13,7 @@ class NewRatingViewController: UIViewController, UITextViewDelegate, FloatRating
     var driverName: String?
     
     var isMerchant: Bool = false
+    var showRating = true
     
     @IBOutlet weak var lblDriverName: UILabel!
     @IBOutlet weak var imgDriverImage: UIImageView!
@@ -22,17 +23,27 @@ class NewRatingViewController: UIViewController, UITextViewDelegate, FloatRating
     
     @IBOutlet weak var floatRatingView: FloatRatingView!
     
+    @IBOutlet weak var ratingViewHeightConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.littleElevatedViews.withAlphaComponent(0.75)
         
+        if !showRating {
+            ratingViewHeightConstraint.constant = 0
+        }
+        
         
         let color = UIColor(hex: "#FFCC01")
         
-        lblDriverName.text = "Rate".localized + " \((driverName ?? "").capitalized)"
+        if showRating {
+            lblDriverName.text = "Rate".localized + " \((driverName ?? "").capitalized)"
+        } else {
+            lblDriverName.text = "report_trip_issue".localized
+        }
         imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: UIImage(named: "default"))
-        lblPlaceHolder.text = "Share your experience you had with your driver to help us serve you better and improve our services (Optional)".localized
+        lblPlaceHolder.text = "rating_placeholder".localized
         
         // Required float rating view params
         self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: Bundle.module)
@@ -52,12 +63,24 @@ class NewRatingViewController: UIViewController, UITextViewDelegate, FloatRating
     }
     
     @IBAction func btnSubmitRating(_ sender: UIButton) {
-        if self.floatRatingView.rating > 0 {
-            let dic = ["data": "\(NSString(format: "%.1f", self.floatRatingView.rating)):::\(txtCommentsShared.text!)"]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RATECANCEL"), object: nil, userInfo: dic)
-            removeAnimate()
+        let text = txtCommentsShared.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if showRating  {
+            if self.floatRatingView.rating > 0 {
+                let dic = ["data": "\(NSString(format: "%.1f", self.floatRatingView.rating)):::\(txtCommentsShared.text!)"]
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RATECANCEL"), object: nil, userInfo: dic)
+                removeAnimate()
+            } else {
+                showAlerts(title: "", message: "Kindly ensure you rate \((driverName ?? "").capitalized) to proceed.")
+            }
         } else {
-            showAlerts(title: "", message: "Kindly ensure you rate \((driverName ?? "").capitalized) to proceed.")
+            if text.isEmpty {
+                showAlerts(title: "", message: "comment_required".localized)
+            } else {
+                let dic = ["data": ":::\(txtCommentsShared.text ?? "")"]
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RATECANCEL"), object: nil, userInfo: dic)
+                removeAnimate()
+            }
         }
     }
     

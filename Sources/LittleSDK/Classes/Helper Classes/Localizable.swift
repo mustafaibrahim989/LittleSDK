@@ -10,6 +10,6 @@ import UIKit
 extension String {
     
     public var localized: String {
-        return NSLocalizedString(self, bundle: .module, comment: "")
+        return Bundle.module.localizedString(forKey: self, value: self, table: "Localizable")
     }
 }
