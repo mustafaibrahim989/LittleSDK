@@ -188,7 +188,6 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                                 } else {
                                     myMenuID = ""
                                     cartItems.append(CartItems(itemID: sortedArr[index!].menuID, addonID: nil, number: 1))
-                                    changeCartValues()
                                     printVal(object: cartItems)
                             
                                     let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
@@ -213,6 +212,8 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
                     
                     sortToLife()
                 }
+                
+                changeCartValues()
             } catch {
                 menuArr = []
                 categoryArr = []
