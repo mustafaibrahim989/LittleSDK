@@ -933,7 +933,8 @@ extension MyRidesViewController: UITableViewDelegate, UITableViewDataSource, UIS
         
         let rating = item.rating ?? 0
         if rating == 0 {
-            cell.lblDriverRating.text = "Driver not rated.".localized
+//            cell.lblDriverRating.text = "Driver not rated.".localized
+            cell.lblDriverRating.text = nil
         } else {
             cell.lblDriverRating.text = String(format: "%.1f", rating)
         }

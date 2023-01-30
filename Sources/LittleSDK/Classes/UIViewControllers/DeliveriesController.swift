@@ -223,7 +223,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRestaurants),name:NSNotification.Name(rawValue: "GETRESTAURANTSFoodDelivery"), object: nil)
         
-        let dataToSend = "{\"FormID\":\"GETRESTAURANTS\"\(commonCallParams()),\"CATEGORY\":\"\(category)\",\"ModuleID\":\"\(category)\"}"
+        let dataToSend = "{\"FormID\":\"GETRESTAURANTS_V2\"\(commonCallParams()),\"CATEGORY\":\"\(category)\",\"ModuleID\":\"\(category)\"}"
         
         hc.makeServerCall(sb: dataToSend, method: "GETRESTAURANTSFoodDelivery", switchnum: 0)
         
