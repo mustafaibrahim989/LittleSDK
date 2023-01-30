@@ -102,3 +102,8 @@
 "proceed_to_email_customer_care" = "\nProceed to email customer care?\n";
 "rating_placeholder" = "Share your experience you had with your driver to help us serve you better and improve our services";
 "comment_required" = "Please enter your comment";
+"search" = "Search";
+"month" = "Month";
+"year" = "Year";
+"dismiss" = "Dismiss";
+"my_ride_history" = "My Ride History";

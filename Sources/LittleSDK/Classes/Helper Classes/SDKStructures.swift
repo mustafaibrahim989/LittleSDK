@@ -1358,3 +1358,17 @@ struct ResumeTripDetail: Codable {
 }
 
 typealias ResumeTripDetails = [ResumeTripDetail]
+
+struct PickerItem {
+    var name: String
+    var value: String
+    var secondaryValue: String
+    var displayName: String
+    
+    init(name: String, displayName: String, value: String, secondaryValue: String) {
+        self.name = name
+        self.value = value
+        self.displayName = displayName
+        self.secondaryValue = secondaryValue
+    }
+}

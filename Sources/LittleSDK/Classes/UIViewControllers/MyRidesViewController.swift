@@ -18,41 +18,6 @@ class MyRidesViewController: UIViewController {
     
     // Variables
     
-    var HISTORYDATE=[String]()
-    var PICKUPADDRESS=[String]()
-    var DROPOFFADDRESS=[String]()
-    var AMOUNT=[String]()
-    var TIP=[String]()
-    var FULLNAME=[String]()
-    var DRIVERIMAGE=[String]()
-    var VEHICLEICON=[String]()
-    var MODE=[String]()
-    var TRIPID=[String]()
-    var MOBILENUMBER=[String]()
-    var RATING=[String]()
-    var BLOCKED=[String]()
-    var EMAIL=[String]()
-    var CURRENCY=[String]()
-    var RIDETYPE=[String]()
-    
-    var TRIPIDSHUTTLE=[String]()
-    var SHUTTLETIMESHUTTLE=[String]()
-    var PICKUPTIMESHUTTLE=[String]()
-    var DROPOFFTIMESHUTTLE=[String]()
-    var PICKUPLLSHUTTLE=[String]()
-    var DROPOFFLLSHUTTLE=[String]()
-    var AMOUNTSHUTTLE=[String]()
-    var DRIVEREMAILIDSHUTTLE=[String]()
-    var DRIVERMOBILESHUTTLE=[String]()
-    var DRIVERNAMESHUTTLE=[String]()
-    var COLORSHUTTLE=[String]()
-    var NUMBERSHUTTLE=[String]()
-    var MODELSHUTTLE=[String]()
-    var MODESHUTTLE=[String]()
-    var DRIVERIMAGESHUTTLE=[String]()
-    var DROPOFFADDRESSSHUTTLE=[String]()
-    var PICKUPADDRESSSHUTTLE=[String]()
-    
    
     var which=""
     var dtfromdate=Date()
@@ -84,26 +49,77 @@ class MyRidesViewController: UIViewController {
     @IBOutlet weak var sendingEmailView: UIView!
     @IBOutlet weak var sendingEmailText: UILabel!
     
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var upcomingShuttleRidesView: UIView!
     @IBOutlet weak var lblUpcomingShuttleRides: UILabel!
     
+    @IBOutlet weak var searchBar: UIView!
+    @IBOutlet weak var monthPickerView: PickerView!
+    @IBOutlet weak var yearPickerView: PickerView!
+    
+    private let searchBgView: CardView = {
+        let view = CardView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.cornerRadius = 20
+        view.layer.shadowRadius = 0
+        view.showTopLeftRadius = false
+        view.showTopRightRadius = false
+        view.backgroundColor = .littleBlue
+        return view
+    }()
+    
+    private let textfieldContainer: CardView = {
+        let view = CardView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.cornerRadius = 25
+        view.layer.shadowRadius = 2
+        view.backgroundColor = .littleElevatedViews
+        return view
+    }()
+    
+    private let tfSearch: TextFieldWithPadding = {
+        let view = TextFieldWithPadding()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textPadding = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 10)
+        view.viewCornerRadius = 25
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.placeholder = "search".localized
+        view.textColor = .littleLabelColor
+        view.returnKeyType = .search
+        return view
+    }()
+    
+    private let imgSearch: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.image = getImage(named: "search_black")?.withRenderingMode(.alwaysTemplate)
+        view.tintColor = .littleBlack
+        return view
+    }()
+    
+    private var allTrips = [TripItem]()
     private var trips = [TripItem]()
     
     var popToRestorationID: UIViewController?
     var navShown: Bool?
     
     private var sdkBundle: Bundle!
+    
+    private var years = [Int]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sdkBundle = Bundle.module
         
+        setupSearch()
+        
+        setupDatePicker()
+        
         let nib = UINib.init(nibName: "NewTripCell", bundle: sdkBundle)
         historyTable.register(nib, forCellReuseIdentifier: "newCell")
         
-        self.title = "History".localized
+        self.title = "my_ride_history".localized
         
         let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle)?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
@@ -119,45 +135,98 @@ class MyRidesViewController: UIViewController {
         let today = NSDate()
         printVal(object: "\(today)")
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        let dateFormatter2 = DateFormatter()
-        dateFormatter2.locale = Locale(identifier: Locale.current.languageCode ?? "en")
-        dateFormatter2.dateFormat = "MMMM, yyyy"
-        let dateFormatter3 = DateFormatter()
-        dateFormatter3.locale = Locale(identifier: Locale.current.languageCode ?? "en")
-        dateFormatter3.dateFormat = "yyyy-MM"
-        let strDate = dateFormatter3.string(from: today as Date)
-        dttodate=today as Date
-        dtyearmonth=today as Date
-        todate = strDate
-        yearmonth = strDate
-        let gregorian = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
-        let offsetComponents = NSDateComponents()
-        offsetComponents.month = -1
-        let minusmonth = gregorian!.date(byAdding: offsetComponents as DateComponents, to: today as Date, options: [])!
-        printVal(object: "\(minusmonth)")
-        let strLastMonth = dateFormatter.string(from: minusmonth)
-        dtfromdate = (minusmonth as NSDate) as Date
-        fromdate = strLastMonth
-        
-        noHistoryLbl.text = "No trips taken in the month of".localized + " \(dateFormatter2.string(from: today as Date))."
+        noHistoryLbl.text = "No trips taken in the month of".localized + " \(Date.parseYearMonth(dateString: yearmonth)?.yearMonthLongFormat() ?? "")."
         noHistoryView.alpha = 0
         noHistoryView.isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.noHistoryView.alpha = 1
         }
-        
-        topConstraint.constant = 0
-        
+                
         historyTable.tag = 0
-        
-        getHistory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        changeNavBarAppearance(isLightContent: true)
+        
+        hideNavBarShadow()
+        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.hidesSearchBarWhenScrolling = true
+    }
+    
+    private func setupDatePicker() {
+        monthPickerView.lbl.text = "month".localized
+        yearPickerView.lbl.text = "year".localized
+        
+        let now = Date()
+        yearmonth = now.yearMonthFormat()
+        
+        monthPickerView.setText(now.monthLongFormat(), value: now.monthLongFormat())
+        yearPickerView.setText(now.yearFormat(), value: now.yearFormat())
+        
+        (2016...now.year()).reversed().forEach{( years.append($0) )}
+        
+        yearPickerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showYearPicker)))
+        monthPickerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showMonthPicker)))
+                
+        getHistory()
+    }
+    
+    @objc private func showMonthPicker() {
+        let now = Date()
+        guard let date = Date.parseYearMonth(dateString: yearmonth) else { return }
+        var month = date.month()
+        
+        if date.year() < now.year() {
+            month = 12
+        }
+        
+        let items = (1...month).map({ PickerItem(name: Date.monthName(month: $0), displayName: Date.monthName(month: $0), value: String($0), secondaryValue: String($0)) })
+                
+        self.showActionPicker(onView: monthPickerView.lblValue, pickerTitle: nil, items: items) { (index, item) in
+            self.monthPickerView.setText(item.name, value: item.value)
+            guard let date = Date.parseYearMonth(dateString: self.yearmonth) else {return}
+            guard let finalDate = date.withMonth(month: Int(item.value) ?? 0) else {return}
+            
+            self.yearmonth = finalDate.yearMonthFormat()
+            
+            self.getHistory()
+            
+            
+        }
+        
+    }
+    
+    @objc private func showYearPicker() {
+        let items = years.map({ PickerItem(name: String($0), displayName: String($0), value: String($0), secondaryValue: String($0)) })
+        
+        self.showActionPicker(onView: yearPickerView.lblValue, pickerTitle: nil, items: items) { (index, item) in
+            self.yearPickerView.setText(item.name, value: item.value)
+            guard let date = Date.parseYearMonth(dateString: self.yearmonth) else {return}
+            guard var finalDate = date.withYear(year: Int(item.value) ?? 0) else {return}
+            let now = Date()
+            
+            if finalDate > now {
+                finalDate = finalDate.withMonth(month: now.month()) ?? finalDate
+                self.monthPickerView.setText(finalDate.monthFormat(), value: finalDate.monthFormat())
+            }
+            
+            self.yearmonth = finalDate.yearMonthFormat()
+            
+            self.getHistory()
+            
+            
+        }
+        
+        
     }
     
     // Functions
@@ -189,15 +258,62 @@ class MyRidesViewController: UIViewController {
         }
         
         if !isPopped {
-            printVal(object: "ToRoot")
             self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
-    func getHistory() {
-        topConstraint.constant = 0
+    private func setupSearch() {
+        searchBar.addSubview(searchBgView)
+        searchBar.addSubview(textfieldContainer)
+        textfieldContainer.addSubview(tfSearch)
+        textfieldContainer.addSubview(imgSearch)
         
-        self.view.createLoadingNormal()
+        NSLayoutConstraint.activate([
+            searchBgView.topAnchor.constraint(equalTo: searchBar.topAnchor),
+            searchBgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBgView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            searchBgView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        NSLayoutConstraint.activate([
+            textfieldContainer.centerYAnchor.constraint(equalTo: searchBgView.bottomAnchor),
+            textfieldContainer.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            textfieldContainer.leadingAnchor.constraint(equalTo: searchBar.leadingAnchor, constant: 15),
+            textfieldContainer.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: -15),
+        ])
+        
+        tfSearch.pinToView(parentView: textfieldContainer)
+        tfSearch.heightAnchor.constraint(equalToConstant: 50).activate()
+        
+        imgSearch.applyAspectRatio(aspectRation: 1)
+        NSLayoutConstraint.activate([
+            imgSearch.centerYAnchor.constraint(equalTo: tfSearch.centerYAnchor),
+            imgSearch.leadingAnchor.constraint(equalTo: tfSearch.leadingAnchor, constant: 20),
+            imgSearch.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        tfSearch.addTarget(self, action: #selector(handleSearchTextChange), for: .editingChanged)
+        tfSearch.delegate = self
+    }
+    
+    @objc private func handleSearchTextChange(_ sender: UITextField) {
+        guard let searchText = sender.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
+        
+        trips.removeAll()
+        if searchText.isEmpty {
+            trips.append(contentsOf: allTrips)
+        } else {
+            let filteredTrips = allTrips.filter { (item: TripItem) -> Bool in
+                return item.driverDetails?.first?.fullName?.containsIgnoringCase(searchText) == true || item.pickupAddress?.containsIgnoringCase(searchText) == true || item.dropOffAddress?.containsIgnoringCase(searchText) == true
+            }
+            trips.append(contentsOf: filteredTrips)
+        }
+        
+        historyTable.reloadData()
+    }
+    
+    func getHistory() {
+        self.navigationController?.view.createLoadingNormal()
         
         noHistoryView.isHidden = true
         
@@ -216,7 +332,7 @@ class MyRidesViewController: UIViewController {
     
     func blockDriver(index: Int, action: String, remarks: String) {
         
-        self.view.createLoadingNormal()
+        self.navigationController?.view.createLoadingNormal()
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadBlockDriver),name:NSNotification.Name(rawValue: "BLOCKDRIVER"), object: nil)
         
@@ -232,17 +348,19 @@ class MyRidesViewController: UIViewController {
                 
         NotificationCenter.default.removeObserver(self, name:NSNotification.Name(rawValue: "GetTripsJSONData"), object: nil)
         
-        self.view.removeAnimation()
+        self.navigationController?.view.removeAnimation()
         
 //        allIndivCorpSC.selectedSegmentIndex = 0
         
         self.trips.removeAll()
+        self.allTrips.removeAll()
         
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
             do {
                 let response = try JSONDecoder().decode(TripHistoryResponse.self, from: data)
                 if let details = response.first {
                     self.trips.append(contentsOf: details.trips ?? [])
+                    self.allTrips.append(contentsOf: details.trips ?? [])
                     
                 } else {
                     showGeneralErrorAlert()
@@ -260,7 +378,7 @@ class MyRidesViewController: UIViewController {
                 let dateFormatter2 = DateFormatter()
                 dateFormatter2.locale = Locale(identifier: Locale.current.languageCode ?? "en")
                 dateFormatter2.dateFormat = "MMMM, yyyy"
-                noHistoryLbl.text = "No trips taken in the month of".localized + " \(dateFormatter2.string(from: dtyearmonth))."
+                noHistoryLbl.text = "No trips taken in the month of".localized + " \(Date.parseYearMonth(dateString: yearmonth)?.yearMonthLongFormat() ?? "")."
                 noHistoryView.alpha = 0
                 noHistoryView.alpha = 0
                 noHistoryView.isHidden = false
@@ -282,7 +400,7 @@ class MyRidesViewController: UIViewController {
         
     @objc func cancelTrip(index: Int) {
     
-        self.view.createLoadingNormal()
+        self.navigationController?.view.createLoadingNormal()
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadCancelRequest(_:)),name:NSNotification.Name(rawValue: "CANCELREQUEST"), object: nil)
         
@@ -293,7 +411,7 @@ class MyRidesViewController: UIViewController {
     }
     
     @objc func loadCancelRequest(_ notification: NSNotification) {
-        self.view.removeAnimation()
+        self.navigationController?.view.removeAnimation()
         let data = notification.userInfo!["data"] as! Data
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "CANCELREQUEST"), object: nil)
         
@@ -328,7 +446,7 @@ class MyRidesViewController: UIViewController {
     
     func submitDriverRate(message: String, rating: String) {
         
-        self.view.createLoadingNormal()
+        self.navigationController?.view.createLoadingNormal()
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadRate),name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
@@ -345,7 +463,7 @@ class MyRidesViewController: UIViewController {
     }
     
     @objc func loadRate(_ notification: NSNotification) {
-        self.view.removeAnimation()
+        self.navigationController?.view.removeAnimation()
         NotificationCenter.default.removeObserver(self,name:NSNotification.Name(rawValue: "RATE"), object: nil)
         
         if let userInfo = notification.userInfo, let data = userInfo["data"] as? Data {
@@ -796,11 +914,7 @@ extension MyRidesViewController: UITableViewDelegate, UITableViewDataSource, UIS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if historyTable.tag == 1 {
-            return PICKUPTIMESHUTTLE.count
-        } else {
-            return trips.count
-        }
+        trips.count
     }
     
     
@@ -868,19 +982,10 @@ extension MyRidesViewController: UITableViewDelegate, UITableViewDataSource, UIS
         
         //change flag as soon as last displayable cell is being loaded (which will mean table has initially loaded)
         
-        if historyTable.tag == 1 {
-            if PICKUPTIMESHUTTLE.count > 0 && !finishedLoadingInitialTableCells {
-                if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows,
-                    let lastIndexPath = indexPathsForVisibleRows.last, lastIndexPath.row == indexPath.row {
-                    lastInitialDisplayableCell = true
-                }
-            }
-        } else {
-            if HISTORYDATE.count > 0 && !finishedLoadingInitialTableCells {
-                if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows,
-                    let lastIndexPath = indexPathsForVisibleRows.last, lastIndexPath.row == indexPath.row {
-                    lastInitialDisplayableCell = true
-                }
+        if !trips.isEmpty && !finishedLoadingInitialTableCells {
+            if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows,
+                let lastIndexPath = indexPathsForVisibleRows.last, lastIndexPath.row == indexPath.row {
+                lastInitialDisplayableCell = true
             }
         }
         
@@ -926,6 +1031,15 @@ extension MyRidesViewController: MFMailComposeViewControllerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+}
+
+// Mark: - UITextFieldDelegate
+extension MyRidesViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        tfSearch.resignFirstResponder()
+        return true
+    }
 }
 
 

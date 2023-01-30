@@ -592,6 +592,83 @@ extension UIViewController {
     @objc func backBtnPressed(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    func hideNavBarShadow() {
+        if #available(iOS 13.0, *) {
+            guard let navBarAppearance = self.navigationController?.navigationBar.standardAppearance else { return }
+            navBarAppearance.shadowColor = .clear
+            navBarAppearance.shadowImage = UIImage()
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        } else {
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        }
+        
+    }
+    
+    func changeNavBarAppearance(isLightContent: Bool) {
+        
+        if #available(iOS 13.0, *) {
+            if isLightContent {
+                let navBarAppearance = UINavigationBarAppearance()
+                navBarAppearance.configureWithOpaqueBackground()
+                navBarAppearance.backgroundColor = .littleBlue
+                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleWhite]
+                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleWhite]
+                navigationController?.navigationBar.standardAppearance = navBarAppearance
+                navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            } else {
+                let navBarAppearance = UINavigationBarAppearance()
+                navBarAppearance.configureWithOpaqueBackground()
+                navBarAppearance.backgroundColor = .littleWhite
+                navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.littleBlue]
+                navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.littleBlue]
+                navigationController?.navigationBar.standardAppearance = navBarAppearance
+                navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            }
+        }
+        
+        if isLightContent {
+            navigationController?.navigationBar.isTranslucent = false
+            navigationController?.navigationBar.tintColor = .littleWhite
+            navigationController?.navigationBar.barTintColor = .littleBlue
+            navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                                                       .foregroundColor: UIColor.littleWhite]
+        } else {
+            navigationController?.navigationBar.isTranslucent = false
+            navigationController?.navigationBar.tintColor = .littleBlue
+            navigationController?.navigationBar.barTintColor = .littleWhite
+            navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 20.0),
+                                                                       .foregroundColor: UIColor.littleBlue]
+        }
+    }
+    
+    func showActionPicker(onView view: UIView, pickerTitle: String?, items: [PickerItem], actionButtonClosure:  ((_ index: Int, _ item: PickerItem) -> Void)? = nil) {
+        self.view.endEditing(true)
+        if !items.isEmpty {
+            let vc = UIAlertController(title: pickerTitle, message: nil, preferredStyle: .actionSheet)
+            for (index, item) in items.enumerated() {
+                let alertAction = UIAlertAction(title: item.displayName, style: .default) { (alertAction: UIAlertAction!) in
+                    actionButtonClosure?(index, item)
+                }
+                vc.addAction(alertAction)
+            }
+            
+            let cancelAction = UIAlertAction(title: "dismiss".localized, style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            vc.addAction(cancelAction)
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                vc.popoverPresentationController?.sourceView = view
+                vc.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.size.width / 6.0, y: view.bounds.size.height / 2.0, width: 1.0, height: 1.0)
+            }
+            self.present(vc, animated: true)
+        }
+    }
 }
 
 public extension UIApplication {
@@ -893,6 +970,8 @@ extension UIColor {
     static let littleBlue = UIColor(named: "littleBlue", in: Bundle.module, compatibleWith: nil)!
     
     static let littleLabelColor = UIColor(named: "littleLabelColor", in: Bundle.module, compatibleWith: nil)!
+    
+    static let littleSecondaryLabelColor = UIColor(named: "LittleSecondaryLabelColor", in: Bundle.module, compatibleWith: nil)!
 
     
     static let littleWhite = UIColor(named: "littleWhite", in: Bundle.module, compatibleWith: nil)!
@@ -968,5 +1047,186 @@ extension UIView {
         layer.shadowOpacity = 0.3
         layer.shadowOffset = CGSize.zero
         layer.shadowRadius = 6
+    }
+    
+    func pinToView(parentView: UIView, leading: Bool = true, trailing: Bool = true, top: Bool = true, bottom: Bool = true) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = leading
+        self.trailingAnchor.constraint(equalTo: parentView.trailingAnchor).isActive = trailing
+        self.topAnchor.constraint(equalTo: parentView.topAnchor).isActive = top
+        self.bottomAnchor.constraint(equalTo: parentView.bottomAnchor).isActive = bottom
+    }
+    
+    func pinToView(parentView: UIView, constant: CGFloat, leading: Bool = true, trailing: Bool = true, top: Bool = true, bottom: Bool = true) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: constant).isActive = leading
+        self.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -constant).isActive = trailing
+        self.topAnchor.constraint(equalTo: parentView.topAnchor, constant: constant).isActive = top
+        self.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -constant).isActive = bottom
+    }
+    
+    func centerOnView(parentView: UIView, centerX: Bool = true, centerY: Bool = true) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.centerXAnchor.constraint(equalTo: parentView.centerXAnchor).isActive = centerX
+        self.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = centerY
+    }
+    
+    func applyAspectRatio(aspectRation: CGFloat) {
+        NSLayoutConstraint(item: self,
+                           attribute: NSLayoutConstraint.Attribute.width,
+                           relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: self,
+                           attribute: NSLayoutConstraint.Attribute.height,
+                           multiplier: aspectRation,
+                           constant: 0).isActive = true
+    }
+}
+
+extension NSLayoutConstraint {
+    func activate() {
+        self.isActive = true
+    }
+    
+    func deactivate() {
+        self.isActive = false
+    }
+}
+
+extension Date {
+    static func parseYearMonth(dateString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "yyyy-MM"
+        return formatter.date(from: dateString)
+    }
+    
+    func yearMonthFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "yyyy-MM"
+        
+        return formatter.string(from: self)
+    }
+    
+    func yearMonthLongFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "MMMM yyyy"
+        
+        return formatter.string(from: self)
+    }
+    
+    func monthLongFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "MMMM"
+        
+        return formatter.string(from: self)
+    }
+    
+    func monthFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "MMM"
+        
+        return formatter.string(from: self)
+    }
+    
+    func yearFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "yyyy"
+        
+        return formatter.string(from: self)
+    }
+    
+    func noon(using calendar: Calendar = .current) -> Date {
+        calendar.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+    }
+    
+    func midnight(using calendar: Calendar = .current) -> Date {
+        calendar.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
+    }
+    
+    func day(using calendar: Calendar = .current) -> Int {
+        calendar.component(.day, from: self)
+    }
+    
+    func month(using calendar: Calendar = .current) -> Int {
+        calendar.component(.month, from: self)
+    }
+    
+    func monthSymbol(using calendar: Calendar = .current) -> String {
+        calendar.monthSymbols[calendar.component(.month, from: self)-1]
+    }
+    
+    func year(using calendar: Calendar = .current) -> Int {
+        calendar.component(.year, from: self)
+    }
+    
+    /// Returns the amount of years from another date
+    func years(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.year], from: date, to: self).year ?? 0
+    }
+    
+    /// Returns the amount of months from another date
+    func months(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: date, to: self).month ?? 0
+    }
+    
+    /// Returns the amount of weeks from another date
+    func weeks(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.weekOfMonth], from: date, to: self).weekOfMonth ?? 0
+    }
+    
+    /// Returns the amount of days from another date
+    func days(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: self).day ?? 0
+    }
+    
+    /// Returns the amount of hours from another date
+    func hours(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date, to: self).hour ?? 0
+    }
+    
+    /// Returns the amount of minutes from another date
+    func minutes(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.minute], from: date, to: self).minute ?? 0
+    }
+    
+    /// Returns the amount of seconds from another date
+    func seconds(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
+    }
+    
+    func withYear(year: Int) -> Date? {
+        let calendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+        let calendar = Calendar.current
+        var components = calendar.dateComponents(calendarComponents, from: self)
+        
+        components.year = year
+        
+        return calendar.date(from: components)
+    }
+    
+    func withMonth(month: Int) -> Date? {
+        let calendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+        let calendar = Calendar.current
+        var components = calendar.dateComponents(calendarComponents, from: self)
+        
+        components.month = month
+        
+        return calendar.date(from: components)
+    }
+    
+    static func monthName(month: Int) -> String {
+        if month > 12 {
+            return ""
+        }
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: Locale.current.languageCode ?? "en")
+        formatter.dateFormat = "MM"
+        return formatter.monthSymbols[month - 1]
     }
 }
