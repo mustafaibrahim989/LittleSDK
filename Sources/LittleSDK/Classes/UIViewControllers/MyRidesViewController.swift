@@ -130,7 +130,7 @@ class MyRidesViewController: UIViewController {
         
         let originalImage = getImage(named: "search_black", bundle: sdkBundle)?.withRenderingMode(.alwaysTemplate)
         let rightButton: UIBarButtonItem = UIBarButtonItem(image: originalImage?.renderResizedImage(25), style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.pickMonth))
-        navigationItem.rightBarButtonItem = rightButton
+//        navigationItem.rightBarButtonItem = rightButton
         
         let today = NSDate()
         printVal(object: "\(today)")
