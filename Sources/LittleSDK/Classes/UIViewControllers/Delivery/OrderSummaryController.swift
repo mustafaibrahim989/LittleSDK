@@ -291,13 +291,15 @@ public class OrderSummaryController: UIViewController, UITableViewDataSource, UI
         NotificationCenter.default.addObserver(self, selector: #selector(loadMerchantRate),name:NSNotification.Name(rawValue: "MERCHANTRATING"), object: nil)
         
         var params = SDKUtils.commonJsonTags(formId: "MERCHANTRATING")
+        params["PaymentFrom"] = "DELIVERY"
         params["TrxRating"] = [
             "TrxReference": deliveryID ?? "",
             "Rating": rating,
             "Feedback": message,
             "Comments": message,
             "Name": rateMerchant,
-            "MobileNumber": rateMobile
+            "MobileNumber": rateMobile,
+            "PaymentFrom": "DELIVERY"
         ]
         
         let dataToSend = (try? SDKUtils.dictionaryToJson(from: params)) ?? ""
