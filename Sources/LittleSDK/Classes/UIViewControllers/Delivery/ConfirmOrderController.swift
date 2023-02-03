@@ -1184,7 +1184,7 @@ extension ConfirmOrderController: UIPickerViewDelegate, UIPickerViewDataSource {
         guard timeArr.count > pickerView.selectedRow(inComponent: 1) else {
             tfDate.text = nil
             
-            showAlerts(title: "", message: String(format: "no_selected_time_slot".localized, dateArr[pickerView.selectedRow(inComponent: 0)]))
+            showAlerts(title: "", message: String(format: "There are no selectable timeslots for %@".localized, dateArr[pickerView.selectedRow(inComponent: 0)]))
             return
         }
         

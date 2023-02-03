@@ -119,7 +119,7 @@ class MyRidesViewController: UIViewController {
         let nib = UINib.init(nibName: "NewTripCell", bundle: sdkBundle)
         historyTable.register(nib, forCellReuseIdentifier: "newCell")
         
-        self.title = "my_ride_history".localized
+        self.title = "My Ride History".localized
         
         let backButton = UIBarButtonItem(image: getImage(named: "backios", bundle: sdkBundle)?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(backHome))
         backButton.imageInsets = UIEdgeInsets(top: 1, left: -8, bottom: 1, right: 10)
@@ -602,7 +602,7 @@ class MyRidesViewController: UIViewController {
 //        }
         
         let options = UIAlertController(title: nil, message: String(format: "Trip options (%1$@ by %2$@)".localized, trips[index].createdOn ?? "", trips[index].driverDetails?.first?.fullName?.capitalized ?? ""), preferredStyle: .actionSheet)
-        let btnRating = UIAlertAction(title: "report_trip_issue".localized , style: .default, handler: {
+        let btnRating = UIAlertAction(title: "Report trip issue".localized , style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.rateDriver(index: index, type: "TRIP")
         })
@@ -626,7 +626,7 @@ class MyRidesViewController: UIViewController {
         })
         btnBlockDriver.setValue(blockcolor, forKey: "titleTextColor")
 //        options.addAction(btnBlockDriver)
-        let btnReport = UIAlertAction(title: "email_support".localized, style: .default, handler: {
+        let btnReport = UIAlertAction(title: "Email support".localized, style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             self.reportAProblemTapped(index: index)
         })
@@ -681,10 +681,10 @@ class MyRidesViewController: UIViewController {
     func reportAProblemTapped(index: Int) {
         
         let view: PopOverAlertWithAction = try! SwiftMessages.viewFromNib(named: "PopOverAlertWithAction", bundle: sdkBundle!)
-        view.loadPopup(title: "", message: "proceed_to_email_customer_care".localized, image: "", action: "")
+        view.loadPopup(title: "", message: "\nProceed to email customer care?\n".localized, image: "", action: "")
         view.proceedAction = {
             SwiftMessages.hide()
-            let subject = "trip_query".localized
+            let subject = "Trip Query".localized
             let body = "Trip\n\(self.trips[index].tripID?.components(separatedBy: "-").first ?? "")\n\nDriver\n\(self.trips[index].driverDetails?.first?.fullName ?? "")\n\nComments\n"
             let email = "operations@little.africa"
             let recipients = [email]
@@ -703,7 +703,7 @@ class MyRidesViewController: UIViewController {
         view.cancelAction = {
             SwiftMessages.hide()
         }
-        view.btnProceed.setTitle("email_support".localized, for: .normal)
+        view.btnProceed.setTitle("Email support".localized, for: .normal)
         view.configureDropShadow()
         var config = SwiftMessages.defaultConfig
         config.duration = .forever

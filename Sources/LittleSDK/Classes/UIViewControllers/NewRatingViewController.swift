@@ -40,10 +40,10 @@ class NewRatingViewController: UIViewController, UITextViewDelegate, FloatRating
         if showRating {
             lblDriverName.text = "Rate".localized + " \((driverName ?? "").capitalized)"
         } else {
-            lblDriverName.text = "report_trip_issue".localized
+            lblDriverName.text = "Report trip issue".localized
         }
         imgDriverImage.sd_setImage(with: URL(string: driverImage ?? ""), placeholderImage: UIImage(named: "default"))
-        lblPlaceHolder.text = "rating_placeholder".localized
+        lblPlaceHolder.text = "Share your experience you had with your driver to help us serve you better and improve our services".localized
         
         // Required float rating view params
         self.floatRatingView.emptyImage = getImage(named: "Star_Empty", bundle: Bundle.module)
@@ -75,7 +75,7 @@ class NewRatingViewController: UIViewController, UITextViewDelegate, FloatRating
             }
         } else {
             if text.isEmpty {
-                showAlerts(title: "", message: "comment_required".localized)
+                showAlerts(title: "", message: "Please enter your comment".localized)
             } else {
                 let dic = ["data": ":::\(txtCommentsShared.text ?? "")"]
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RATECANCEL"), object: nil, userInfo: dic)

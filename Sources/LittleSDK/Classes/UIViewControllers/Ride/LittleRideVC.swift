@@ -1654,7 +1654,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                     if PaymentModes.count > selectedPaymentMode {
                         cardViewController.lblPaymentMode.text = "\(PaymentModes[selectedPaymentMode])"
                     } else {
-                        cardViewController.lblPaymentMode.text = "no_payment_modes".localized
+                        cardViewController.lblPaymentMode.text = "No payment modes".localized
                     }
                 }
                 
@@ -3346,7 +3346,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
                 } else {
                     PaymentMode = ""
                     PaymentModeID = ""
-                    cardViewController.lblPaymentMode.text = "no_payment_modes".localized
+                    cardViewController.lblPaymentMode.text = "No payment modes".localized
                 }
 
             }
@@ -4402,7 +4402,7 @@ public class LittleRideVC: UIViewController, UITextFieldDelegate, UITableViewDel
     
     func makeRideRequestNew() {
         if PaymentModes.count <= selectedPaymentMode {
-            showAlerts(title: "", message: "select_payment_mode".localized)
+            showAlerts(title: "", message: "Select payment mode".localized)
             return
         }
         
