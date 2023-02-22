@@ -715,7 +715,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
             cell.closedView.isHidden = false
             cell.lblClosed.isHidden = false
             
-            SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
+            SDWebImageManager.shared.imageCache.removeImage?(forKey: product.image, cacheType: .all)
             cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                 
             }
@@ -723,7 +723,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
         } else {
             cell.closedView.isHidden = true
             cell.lblClosed.isHidden = true
-            SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
+            SDWebImageManager.shared.imageCache.removeImage?(forKey: product.image, cacheType: .all)
             cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                 
             }
@@ -843,7 +843,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                 cell.closedView.isHidden = false
                 cell.lblClosed.isHidden = false
                 // cell.isUserInteractionEnabled = false
-                SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
+                SDWebImageManager.shared.imageCache.removeImage?(forKey: product.image, cacheType: .all)
 
                 cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!)) { _,_,_,_  in
                     
@@ -853,7 +853,7 @@ public class DeliveriesController: UIViewController, UITableViewDataSource, UITa
                 cell.closedView.isHidden = true
                 cell.lblClosed.isHidden = true
                 // cell.isUserInteractionEnabled = true
-                SDWebImageManager.shared.imageCache.removeImage(forKey: product.image ?? "", cacheType: .all)
+                SDWebImageManager.shared.imageCache.removeImage?(forKey: product.image, cacheType: .all)
                 cell.imgShopImage.sd_setImage(with: URL(string: product.image ?? ""), placeholderImage: getImage(named: "default_restaurant", bundle: sdkBundle!))
             }
             
