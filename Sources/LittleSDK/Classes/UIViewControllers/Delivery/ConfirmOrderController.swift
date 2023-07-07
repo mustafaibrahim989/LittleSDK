@@ -217,6 +217,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             
         }
         
+        setupPayment()
         setupTimeSlots()
         
 //        scrollView.setContentOffset(CGPoint(x: 0, y: menuTableHeight.constant + 40), animated: true)
@@ -245,6 +246,15 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
         
         self.title = "Confirm \(string)"
         
+    }
+    
+    private func setupPayment() {
+        if let wallet = paymentSourceArr.first {
+            let normalColor = SDKConstants.littleSDKThemeColor
+            
+            btnPaymentMode.setTitle("\(wallet.walletName ?? "")", for: .normal)
+            self.paymentIndex = 0
+        }
     }
     
     // MARK: - Server Calls & Responses
@@ -476,10 +486,12 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_REQUEST"), object: nil, userInfo: userInfo)
                     
                     #warning("remove post order notification")
-                    /*DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        let userInfo = ["success": true] as [String : Any]
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
-                    }*/
+                    if SDKConstants.SDK_CLIENT == .VOOMA {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                         let userInfo = ["success": true] as [String : Any]
+                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PAYMENT_RESULT"), object: nil, userInfo: userInfo)
+                         }
+                    }
                 } else if orderResponse[0].status == "091" {
                     DispatchQueue.main.async(execute: {
                         self.showAlerts(title: "", message: orderResponse[0].message ?? "Error occured creating your order. Kindly retry.")

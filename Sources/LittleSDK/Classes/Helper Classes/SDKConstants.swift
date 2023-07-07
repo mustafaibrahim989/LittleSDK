@@ -13,7 +13,7 @@ class SDKConstants {
     var iv: NSString="i7otp4rq4ysrdh5v"
     var headerkey: NSString=""
     var headeriv: NSString="HDJAK$2$23232Fax"
-    
+        
     var live = "lwCGahusOkXBoFnNKoWjOC58LxqE0rYr6QCBcag234r0pkyhIFs/8YyL3zZcOT1C"
     var uat = "oMmWr0f0bfDELjSmIqIpgnU/USZNk3hHo+k42DEsDlEejQ+2FXu21HrYmzke3fgyJs+FRbwCnp+JwTBHLP49mw=="
     var mapsKey = "H+9x5dNgB0X7+tCZaCwKe9SbL0rG7i55NxDxQ+LReuubZ+nLUyINNG70bIAgqkME"
@@ -42,17 +42,20 @@ class SDKConstants {
     static let littleGreen = UIColor(hex: "#0D9848")
     
     // Equity
-    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
+//    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-//    static var littleSDKThemeColor = UIColor(hex: "#891755")
+    static var littleSDKThemeColor = UIColor(hex: "#891755")
     
     // Equity
-    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
     
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
     static var littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
+    
+    // Change to vooma or quity
+    static let SDK_CLIENT = SDKClient.VOOMA
     
 }

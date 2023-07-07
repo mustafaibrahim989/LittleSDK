@@ -1372,3 +1372,8 @@ struct PickerItem {
         self.secondaryValue = secondaryValue
     }
 }
+
+enum SDKClient {
+    case EQUITY
+    case VOOMA
+}
