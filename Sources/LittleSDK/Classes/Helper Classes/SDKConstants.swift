@@ -42,20 +42,20 @@ class SDKConstants {
     static let littleGreen = UIColor(hex: "#0D9848")
     
     // Equity
-//    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
+    static var littleSDKThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-    static var littleSDKThemeColor = UIColor(hex: "#891755")
+//    static var littleSDKThemeColor = UIColor(hex: "#891755")
     
     // Equity
-//    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
+    static var littleSDKDarkThemeColor = UIColor(hex: "#A32A29")
     // Vooma
-    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
+//    static var littleSDKDarkThemeColor = UIColor(hex: "#891755")
     
     static var littleSDKLabelColor = UIColor(hex: "#404040")
     static var littleSDKCellBackgroundColor = UIColor(hex: "#FFFFFF")
     static var littleSDKPageBackgroundColor = UIColor(hex: "#FFFFFF")
     
     // Change to vooma or quity
-    static let SDK_CLIENT = SDKClient.VOOMA
+    static let SDK_CLIENT = SDKClient.EQUITY
     
 }
