@@ -30,7 +30,7 @@ class PopOverAlertWithAction: MessageView {
         layoutIfNeeded()
 
         imgConstraint.constant = 20
-        SDWebImageManager.shared.imageCache.removeImage?(forKey: image, cacheType: .all)
+        SDWebImageManager.shared.imageCache.removeImage(forKey: image, cacheType: .all)
         imgPopUp.sd_setImage(with: URL(string: image)) { (image, error, cache, url) in
             if image != nil {
                 let ratio = (image!).size.height/(image!).size.width

@@ -8,7 +8,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         // Only add support for iOS 11 and up.
-        .iOS(.v11)
+        .iOS(.v15)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -23,6 +23,7 @@ let package = Package(
         .package(name: "UIView-Shimmer", url: "https://github.com/omerfarukozturk/UIView-Shimmer.git", from: "1.0.0"),
         .package(name: "EasyNotificationBadge", url: "https://github.com/Minitour/EasyNotificationBadge.git", from: "1.0.0"),
         .package(name: "GoogleMaps", url: "https://github.com/googlemaps/ios-maps-sdk", .upToNextMajor(from: "9.1.1")),
+        .package(name: "GooglePlaces", url: "https://github.com/googlemaps/ios-places-sdk", .upToNextMajor(from: "9.1.0")),
         .package(name: "Alamofire", url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
         .package(name: "SDWebImage", url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.14.1"),
         .package(name: "IQKeyboardManagerSwift", url: "https://github.com/hackiftekhar/IQKeyboardManager", from: "6.0.5"),
@@ -34,7 +35,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "LittleSDK",
-            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge",.product(name: "GoogleMaps", package: "GoogleMaps"),.product(name: "GooglePlaces", package: "GoogleMaps"),"Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
+            dependencies: ["SwiftMessages","NVActivityIndicatorView","UIView-Shimmer","EasyNotificationBadge","GoogleMaps","GooglePlaces","Alamofire","SDWebImage","IQKeyboardManagerSwift", "ESPullToRefresh", "PanModal"],
             path: "Sources/LittleSDK",
             resources: [
                 .process("Assets/sparkle.wav"),

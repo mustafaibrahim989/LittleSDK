@@ -723,7 +723,7 @@ public class ProductController: UIViewController, UITableViewDataSource, UITable
             cell.layoutIfNeeded()
             cell.imgMenu.layoutIfNeeded()
             
-            SDWebImageManager.shared.imageCache.removeImage?(forKey: menuItem.foodImage, cacheType: .all)
+            SDWebImageManager.shared.imageCache.removeImage(forKey: menuItem.foodImage, cacheType: .all)
             cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage: getImage(named: "default_food", bundle: sdkBundle!))
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
             cell.lblDescription.text = "\(menuItem.foodDescription ?? "")"
