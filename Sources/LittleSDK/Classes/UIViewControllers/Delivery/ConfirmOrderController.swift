@@ -1076,7 +1076,7 @@ public class ConfirmOrderController: UIViewController, UITableViewDataSource, UI
             cell.layoutIfNeeded()
             cell.imgMenu.layoutIfNeeded()
             
-            SDWebImageManager.shared.imageCache.removeImage(forKey: menuItem.foodImage, cacheType: .all)
+            SDWebImageManager.shared.imageCache.removeImage?(forKey: menuItem.foodImage, cacheType: .all)
             cell.imgMenu.sd_setImage(with: URL(string: menuItem.foodImage ?? ""), placeholderImage:  getImage(named: "default_food", bundle: sdkBundle!))
             cell.imgMenu.alpha = 1
             cell.lblMenuName.text = "\(menuItem.foodName ?? "")"
