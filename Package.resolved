@@ -21,11 +21,11 @@
       },
       {
         "package": "GoogleMaps",
-        "repositoryURL": "https://github.com/YAtechnologies/GoogleMaps-SP.git",
+        "repositoryURL": "https://github.com/googlemaps/ios-maps-sdk",
         "state": {
           "branch": null,
-          "revision": "0e4d95a5844c2a40381bf659fff84cf66699e17b",
-          "version": "6.0.0"
+          "revision": "3786e5028d868482ef88140117d33efd60828300",
+          "version": "9.1.1"
         }
       },
       {
@@ -69,7 +69,7 @@
         "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
         "state": {
           "branch": null,
-          "revision": "2c53f531f1bedd253f55d85105409c28ed4a922c",
+          "revision": "80683c20d8f15e10ac1ce605cca5008a295846bd",
           "version": "5.14.1"
         }
       },
